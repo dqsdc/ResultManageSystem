@@ -1,0 +1,9 @@
+#查看springboot开启了哪些配置
+debug: true
+
+
+spring: 
+    profiles: 
+        active: dev
+
+   

@@ -1,0 +1,63 @@
+spring:
+    profiles: dev
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        master:
+           name: test
+           url: jdbc:mysql://115.159.33.73:3306/achievement?useSSL=false
+           username: root
+           password: 123
+           driver-class-name: com.mysql.jdbc.Driver
+           filters: stat
+           maxActive: 20
+           initialSize: 1
+           maxWait: 60000
+           minIdle: 1
+           timeBetweenEvictionRunsMillis: 60000
+           minEvictableIdleTimeMillis: 300000
+           validationQuery: select 'x' FROM DUAL
+           testWhileIdle: true
+           testOnBorrow: false
+           testOnReturn: false
+           poolPreparedStatements: true
+           maxOpenPreparedStatements: 20
+
+mapper:
+    mappers: tk.mybatis.mapper.common.Mapper
+    identity: select sys_guid() from dual
+    order: before
+---
+########################################################
+###THYMELEAF (ThymeleafAutoConfiguration)
+########################################################
+spring:
+    thymeleaf:
+        prefix: classpath:/templates/
+        suffix: .html
+        mode: LEGACYHTML5
+        encoding: UTF-8
+        cache: false
+        cache-period: 0
+
+---
+server:
+  port: 7000
+  session-timeout: 30
+  ##tomcat.max-threads: 0
+  tomcat.uri-encoding: UTF-8
+
+logging:
+  level:
+     com.qilinxx.kuding : info
+#上传文件大小不限制
+ # spring.servlet.multipart.max-file-size=-1
+  #spring.servlet.multipart.max-request-size=-1
+spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  mvc:
+    favicon:
+      enabled: false
+
