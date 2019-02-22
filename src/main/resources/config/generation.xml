@@ -12,29 +12,29 @@
 		</commentGenerator>
 		<!--mysql数据库链接地址账号密码-->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://115.159.33.73:3306/ku" userId="root" password="123">
+			connectionURL="jdbc:mysql://115.159.33.73:3306/achievement" userId="root" password="123">
 		</jdbcConnection>
 
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<!--生成Model类存放位置 -->
-		<javaModelGenerator targetPackage="com.qilinxx.kuding.domain.model"
+		<javaModelGenerator targetPackage="com.qilinxx.rms.domain.model"
 			targetProject="src">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<!--生成映射文件存放位置 -->
-		<sqlMapGenerator targetPackage="com.qilinxx.kuding.domain.mapper"
+		<sqlMapGenerator targetPackage="com.qilinxx.rms.domain.mapper"
 			targetProject="src">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		<!--生成DaoMapper类存放位置 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.qilinxx.kuding.domain.mapper" targetProject="src">
+			targetPackage="com.qilinxx.rms.domain.mapper" targetProject="src">
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!--生成对应表及类名,需要记住的一点是逆向工程无法生成关联关系,只能生成单表操作 -->
-		<table tableName="web_certificate" domainObjectName="Certificate"></table>
+		<table tableName="user_major" domainObjectName="UserMajor"></table>
 	</context>
 </generatorConfiguration>
