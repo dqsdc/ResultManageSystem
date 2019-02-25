@@ -25,14 +25,12 @@
     <div class="loginbox">
 <form th:action="login" id="form-login" method="post" >
         <ul>
-            <!--th:value="${account!=null}?${account}"
-            th:value="${password!=null}?${password}"-->
-            <li><input name="account" type="text" class="loginuser" id="account"
+            <li><input name="account" type="text" class="loginuser" id="account" th:value="${account!=null}?${account}"
                        data-easyform="length:4 16;number;real-time;"
                        data-message="账号必须为4—16位的数字"
                        data-easytip="position:right;class:easy-red;" /></li>
-            <li><input name="password" type="password" class="loginpwd" id="password"
-                       data-easyform="length:4 16;real-time;"
+            <li><input name="password" type="password" class="loginpwd" id="password" th:value="${password!=null}?${password}"
+                       data-easyform="length:6 16;real-time;"
                        data-message="密码必须为6—16位"
                        data-easytip="position:right;class:easy-red;"></li>
             <li><input  type="submit" class="loginbtn" value="登录" /></li>
