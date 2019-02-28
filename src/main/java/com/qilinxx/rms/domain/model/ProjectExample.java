@@ -504,73 +504,73 @@ public class ProjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andFromIsNull() {
-            addCriterion("from is null");
+        public Criteria andSourceIsNull() {
+            addCriterion("source is null");
             return (Criteria) this;
         }
 
-        public Criteria andFromIsNotNull() {
-            addCriterion("from is not null");
+        public Criteria andSourceIsNotNull() {
+            addCriterion("source is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFromEqualTo(String value) {
-            addCriterion("from =", value, "from");
+        public Criteria andSourceEqualTo(String value) {
+            addCriterion("source =", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromNotEqualTo(String value) {
-            addCriterion("from <>", value, "from");
+        public Criteria andSourceNotEqualTo(String value) {
+            addCriterion("source <>", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromGreaterThan(String value) {
-            addCriterion("from >", value, "from");
+        public Criteria andSourceGreaterThan(String value) {
+            addCriterion("source >", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromGreaterThanOrEqualTo(String value) {
-            addCriterion("from >=", value, "from");
+        public Criteria andSourceGreaterThanOrEqualTo(String value) {
+            addCriterion("source >=", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromLessThan(String value) {
-            addCriterion("from <", value, "from");
+        public Criteria andSourceLessThan(String value) {
+            addCriterion("source <", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromLessThanOrEqualTo(String value) {
-            addCriterion("from <=", value, "from");
+        public Criteria andSourceLessThanOrEqualTo(String value) {
+            addCriterion("source <=", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromLike(String value) {
-            addCriterion("from like", value, "from");
+        public Criteria andSourceLike(String value) {
+            addCriterion("source like", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromNotLike(String value) {
-            addCriterion("from not like", value, "from");
+        public Criteria andSourceNotLike(String value) {
+            addCriterion("source not like", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromIn(List<String> values) {
-            addCriterion("from in", values, "from");
+        public Criteria andSourceIn(List<String> values) {
+            addCriterion("source in", values, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromNotIn(List<String> values) {
-            addCriterion("from not in", values, "from");
+        public Criteria andSourceNotIn(List<String> values) {
+            addCriterion("source not in", values, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromBetween(String value1, String value2) {
-            addCriterion("from between", value1, value2, "from");
+        public Criteria andSourceBetween(String value1, String value2) {
+            addCriterion("source between", value1, value2, "source");
             return (Criteria) this;
         }
 
-        public Criteria andFromNotBetween(String value1, String value2) {
-            addCriterion("from not between", value1, value2, "from");
+        public Criteria andSourceNotBetween(String value1, String value2) {
+            addCriterion("source not between", value1, value2, "source");
             return (Criteria) this;
         }
 

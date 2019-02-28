@@ -12,6 +12,9 @@ public class Reward {
     @Column(name = "name")
     private String name;
 
+    @Column(name="people")
+    private String people;
+
     @Column(name ="company")
     private String company;
 
@@ -127,11 +130,16 @@ public class Reward {
         this.remake = remake == null ? null : remake.trim();
     }
 
+    public String getPeople() { return people; }
+
+    public void setPeople(String people) { this.people = people == null ? null : people.trim(); }
+
     @Override
     public String toString() {
         return "Reward{" +
                 "rid='" + rid + '\'' +
                 ", name='" + name + '\'' +
+                ", people='" + people + '\'' +
                 ", company='" + company + '\'' +
                 ", getTime=" + getTime +
                 ", profile='" + profile + '\'' +

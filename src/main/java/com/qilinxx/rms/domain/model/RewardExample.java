@@ -244,6 +244,76 @@ public class RewardExample {
             return (Criteria) this;
         }
 
+        public Criteria andPeopleIsNull() {
+            addCriterion("people is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleIsNotNull() {
+            addCriterion("people is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleEqualTo(String value) {
+            addCriterion("people =", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleNotEqualTo(String value) {
+            addCriterion("people <>", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleGreaterThan(String value) {
+            addCriterion("people >", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleGreaterThanOrEqualTo(String value) {
+            addCriterion("people >=", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleLessThan(String value) {
+            addCriterion("people <", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleLessThanOrEqualTo(String value) {
+            addCriterion("people <=", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleLike(String value) {
+            addCriterion("people like", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleNotLike(String value) {
+            addCriterion("people not like", value, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleIn(List<String> values) {
+            addCriterion("people in", values, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleNotIn(List<String> values) {
+            addCriterion("people not in", values, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleBetween(String value1, String value2) {
+            addCriterion("people between", value1, value2, "people");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeopleNotBetween(String value1, String value2) {
+            addCriterion("people not between", value1, value2, "people");
+            return (Criteria) this;
+        }
+
         public Criteria andCompanyIsNull() {
             addCriterion("company is null");
             return (Criteria) this;

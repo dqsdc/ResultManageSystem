@@ -24,8 +24,8 @@ public class Project {
     @Column(name = "end_time")
     private Long endTime;
 
-    @Column(name = "from")
-    private String from;
+    @Column(name = "source")
+    private String source;
 
     @Column(name = "money")
     private Integer money;
@@ -108,12 +108,12 @@ public class Project {
         this.endTime = endTime;
     }
 
-    public String getFrom() {
-        return from;
+    public String getsource() {
+        return source;
     }
 
-    public void setFrom(String from) {
-        this.from = from == null ? null : from.trim();
+    public void setsource(String source) {
+        this.source = source == null ? null : source.trim();
     }
 
     public Integer getMoney() {
@@ -213,7 +213,7 @@ public class Project {
                 ", name='" + name + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", from='" + from + '\'' +
+                ", source='" + source + '\'' +
                 ", money=" + money +
                 ", rank='" + rank + '\'' +
                 ", type='" + type + '\'' +

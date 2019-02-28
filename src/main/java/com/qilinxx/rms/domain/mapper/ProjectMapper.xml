@@ -8,7 +8,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="start_time" jdbcType="BIGINT" property="startTime" />
     <result column="end_time" jdbcType="BIGINT" property="endTime" />
-    <result column="from" jdbcType="VARCHAR" property="from" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
     <result column="money" jdbcType="INTEGER" property="money" />
     <result column="rank" jdbcType="VARCHAR" property="rank" />
     <result column="type" jdbcType="VARCHAR" property="type" />
@@ -80,7 +80,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    pid, host, people, name, start_time, end_time, from, money, rank, type, set_time, 
+    pid, host, people, name, start_time, end_time, source, money, rank, type, set_time, 
     profile, state, create_id, create_time, update_time, mid, remake
   </sql>
 </mapper>
