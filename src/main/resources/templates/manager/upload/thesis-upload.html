@@ -37,9 +37,9 @@
     <div id="usual1" class="usual">
         <div class="itab">
             <ul>
-                <li><a id="a1" href="project"  >发布项目</a></li>
-                <li><a id="a2" href="thesis" class="selected">发布论文</a></li>
-                <li><a id="a3" href="reward" >发布奖励</a></li>
+                <li><a id="a1" href="project-upload"  >发布项目</a></li>
+                <li><a id="a2" href="thesis-upload" class="selected">发布论文</a></li>
+                <li><a id="a3" href="reward-upload" >发布奖励</a></li>
             </ul>
         </div>
 
@@ -54,13 +54,13 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【第一作者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text"  id="host" name="host">
+                        <input type="text" class="input-text" placeholder="只能填写一名作者" id="host" name="host">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【其他作者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" name="people" id="people" placeholder="其他作者的姓名用逗号(中英皆可)隔开"  class="input-text">
+                        <input type="text" name="people" id="people" placeholder="若为多名作者，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
@@ -149,7 +149,7 @@
         </div>
 
         <div id="tab3" class="tabson" >
-            tab3
+
         </div>
     </div>
 </div>
@@ -851,36 +851,45 @@
         $("#thesis-form").validate({
             rules:{
                 name :{
-                    required:true
+                    required:true,
+                    maxlength:250
                 },
                 host :{
-                    required:true
+                    required:true,
+                    maxlength:250
                 },
                 people:{
-                    required:true
+                    required:true,
+                    maxlength:290
                 },
                 book:{
-                    required:true
+                    required:true,
+                    maxlength:250
                 },
                 year:{
                     required:true,
-                    number:true
+                    number:true,
+                    maxlength:4
                 },
                 dossier:{
                     required:true,
-                    number:true
+                    number:true,
+                    maxlength:9
                 },
                 issue:{
                     required:true,
-                    number:true
+                    number:true,
+                    maxlength:9
                 },
                 startPage:{
                     required:true,
-                    number:true
+                    number:true,
+                    maxlength:9
                 },
                 endPage:{
                     required:true,
-                    number:true
+                    number:true,
+                    maxlength:9
                 },
                 rank:{
                     required:true

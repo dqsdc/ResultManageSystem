@@ -9,6 +9,8 @@ public interface UserInfoService {
     UserInfo findUserByUid(Integer uid);
     /**修改用户信息*/
     void modifyUser(UserInfo userInfo);
-    /**通过姓名查找用户*/
+    /**通过姓名查找用户，返回重复用户集合*/
     List<UserInfo> findUserByName(String name);
+    /**通过姓名查找用户，范湖重复数量*/
+    int countUserByName(String name);
 }

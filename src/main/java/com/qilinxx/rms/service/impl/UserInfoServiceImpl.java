@@ -29,4 +29,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         example.createCriteria().andNameEqualTo(name);
         return userInfoMapper.selectByExample(example);
     }
+
+    @Override
+    public int countUserByName(String name) {
+        UserInfoExample example=new UserInfoExample();
+        example.createCriteria().andNameEqualTo(name);
+        return userInfoMapper.selectCountByExample(example);
+    }
 }

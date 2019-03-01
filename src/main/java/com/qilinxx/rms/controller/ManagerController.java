@@ -19,9 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class ManagerController {
@@ -39,6 +37,8 @@ public class ManagerController {
     DocumentService documentService;
     @Autowired
     ThesisService thesisService;
+    @Autowired
+    RewardService rewardService;
 
     /**
      * @return  来到教师成果管理系统页面
@@ -174,13 +174,13 @@ public class ManagerController {
     /**
      * @return 来到项目上传页面
      */
-    @GetMapping("project")
+    @GetMapping("project-upload")
     public String project(HttpSession session){
         UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setProjectFileList(FileKit.clearOrInitList(FileKit.getProjectFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//project"));
-        return "manager/upload/project";
+        return "manager/upload/project-upload";
     }
 
     /**
@@ -228,7 +228,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxProjectForm(HttpSession session,Project project,String startTimeDate,String endTimeDate,String setTimeDate) throws IOException {
         JSONObject json=new JSONObject();
-        //以下两种错误
+        //以下三种种错误
         int projectNum = projectService.findProjectByNameHostFrom(project.getName(), project.getHost(), project.getsource());
         if(projectNum!=0){
             json.put("msg","该项目已被提交！");
@@ -239,12 +239,31 @@ public class ManagerController {
             json.put("msg","请先上传附件！");
             return json;
         }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names=project.getPeople().replace("，",",").replace("、",",").replace(" ","").split(",");
+        Map<String,String> nameMap=new HashMap<>();
+        String people="";
+        for (String name:names) {
+            if(!name.equals("")){
+                nameMap.put(name,"");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people=people+(String)entry.getKey()+",";
+        }
+        nameMap.put(project.getHost(),"");//添加主持人
+        if(!nameMap.containsKey(user.getName())){
+            json.put("msg","此项目与本账号用户无关！");
+            return json;
+        }
+        project.setPeople(people.substring(0,people.lastIndexOf(",")));
         /**
          * 新建项目记录
          */
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
-        //将中文逗号转化为英文逗号
-        project.setPeople(project.getPeople().replace("，",",").replace(" ",""));
+
         //将日期转化为时间戳
         startTimeDate+=" 00:00:00";endTimeDate+=" 00:00:00";setTimeDate+=" 00:00:00";
         project.setStartTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(startTimeDate)))));
@@ -262,20 +281,10 @@ public class ManagerController {
         UserItem userItem=new UserItem();
         userItem.setItemId(project.getPid());
         userItem.setItemType("project");
-        String[] names=project.getPeople().split(",");
-        int i=0;
-        for (String name:names) {
-            if(name.equals(project.getHost())){
-                i++;
-            }
-            List<UserInfo> userInfoList = userInfoService.findUserByName(name);
-            if(userInfoList.size()!=0){
-                userItem.setUid(userInfoList.get(0).getUid());
-                userItemService.createUserItem(userItem);
-            }
-        }
-        if(i==0){
-            List<UserInfo> userInfoList = userInfoService.findUserByName(project.getHost());
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
             if(userInfoList.size()!=0){
                 userItem.setUid(userInfoList.get(0).getUid());
                 userItemService.createUserItem(userItem);
@@ -311,13 +320,13 @@ public class ManagerController {
     /**
      * @return 来到论文上传页面
      */
-    @GetMapping("thesis")
+    @GetMapping("thesis-upload")
     public String thesis(HttpSession session){
         UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setThesisFileList(FileKit.clearOrInitList(FileKit.getThesisFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//thesis"));
-        return "manager/upload/thesis";
+        return "manager/upload/thesis-upload";
     }
     /**
      * ajax 提交论文附件
@@ -363,7 +372,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxThesisForm(Thesis thesis,Integer startPage,Integer endPage, HttpSession session) throws IOException {
         JSONObject json=new JSONObject();
-        //以下两种错误
+        //以下三种错误
         int thesisNum = thesisService.findThesisByHostName(thesis.getHost(), thesis.getName());
         if(thesisNum!=0){
             json.put("msg","该项目已被提交！");
@@ -374,17 +383,36 @@ public class ManagerController {
             json.put("msg","请先上传附件！");
             return json;
         }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names=thesis.getPeople().replace("，",",").replace("、",",").replace(" ","").split(",");
+        Map<String,String> nameMap=new HashMap<>();
+        String people="";
+        for (String name:names) {
+            if(!name.equals("")){
+                nameMap.put(name,"");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people=people+(String)entry.getKey()+",";
+        }
+        nameMap.put(thesis.getHost(),"");//添加主持人
+        if(!nameMap.containsKey(user.getName())){
+            json.put("msg","此论文与本账号用户无关！");
+            return json;
+        }
+        thesis.setPeople(people.substring(0,people.lastIndexOf(",")));
         /**
          * 新建论文记录
          */
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
         thesis.setPageNum(startPage+"-"+endPage);
         thesis.setTid(UUID.randomUUID().toString().replace("-",""));
         thesis.setState("0");
         thesis.setCreateId(user.getUid());
         thesis.setCreateTime(DateKit.getUnixTimeLong());
         thesis.setMid(user.getMid());
-        thesis.setPeople(thesis.getPeople().replace("，",",").replace(" ",""));
         thesisService.createThesis(thesis);
         /**
          * 新建用户与论文的关系记录
@@ -392,20 +420,10 @@ public class ManagerController {
         UserItem userItem=new UserItem();
         userItem.setItemId(thesis.getTid());
         userItem.setItemType("thesis");
-        String[] names=thesis.getPeople().split(",");
-        int i=0;
-        for (String name:names) {
-            if(name.equals(thesis.getHost())){
-                i++;
-            }
-            List<UserInfo> userInfoList = userInfoService.findUserByName(name);
-            if(userInfoList.size()!=0){
-                userItem.setUid(userInfoList.get(0).getUid());
-                userItemService.createUserItem(userItem);
-            }
-        }
-        if(i==0){
-            List<UserInfo> userInfoList = userInfoService.findUserByName(thesis.getHost());
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
             if(userInfoList.size()!=0){
                 userItem.setUid(userInfoList.get(0).getUid());
                 userItemService.createUserItem(userItem);
@@ -436,17 +454,153 @@ public class ManagerController {
         File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis");
         FileKit.deleteFile(dirFile);
 
-        System.out.println(thesis);
         json.put("msg","提交成功待审核！");
         return json;
     }
 
-    @GetMapping("reward")
+    /**
+     * @return  来到奖励上传页面
+     */
+    @GetMapping("reward-upload")
     public String reward(HttpSession session){
         UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setRewardFileList(FileKit.clearOrInitList(FileKit.getRewardFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//reward"));
-        return "manager/upload/reward";
+        return "manager/upload/reward-upload";
     }
+
+    /**
+     * ajax 提交奖励附件
+     * @param file  奖励附件
+     * @throws IOException
+     */
+    @PostMapping("ajax-reward-file")
+    @ResponseBody
+    public JSONObject ajaxRewardFile(MultipartFile file, HttpSession session) throws IOException {
+        JSONObject json=new JSONObject();
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        List<MultipartFile> rewardFileList=FileKit.getRewardFileList();
+        //手动去重
+        int i=0;
+        if(rewardFileList.size()!=0){
+            for (MultipartFile multipartFile:rewardFileList) {
+                if(multipartFile.getOriginalFilename().equals(file.getOriginalFilename())){
+                    i++;
+                }
+            }
+        }
+        if (i==0){
+            rewardFileList.add(file);
+            FileKit.setRewardFileList(rewardFileList);
+
+            String path = UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//reward";//存储的根路径 临时文件目录
+            File dirFile=new File(path);
+            dirFile.mkdirs();
+            String fileName = file.getOriginalFilename();//原文件名
+            File targetFile = new File(path, fileName);
+            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
+        }
+        return json;
+    }
+
+    /**
+     * ajax提交奖励，保存附件
+     * @param getTimeDate    研究开始时间
+     * @throws IOException
+     */
+    @PostMapping("ajax-reward-form")
+    @ResponseBody
+    public JSONObject ajaxProjectForm(HttpSession session,Reward reward,String getTimeDate) throws IOException {
+        JSONObject json=new JSONObject();
+        //日期转化为时间戳
+        getTimeDate+=" 00:00:00";
+        reward.setGetTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(getTimeDate)))));
+
+        //姓名去重，并重新排序
+        String[] names=reward.getPeople().replace("，",",").replace("、",",").replace(" ","").split(",");
+        Map<String,String> nameMap=new HashMap<>();
+        String people="";
+        for (String name:names) {
+            if(!name.equals("")){
+                nameMap.put(name,"");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people=people+(String)entry.getKey()+",";
+        }
+        reward.setPeople(people.substring(0,people.lastIndexOf(",")));
+
+        //以下两种错误
+        int rewardNum = rewardService.findRewardByNamePeopleGetTime(reward.getName(), reward.getPeople(),reward.getGetTime());
+        if(rewardNum!=0){
+            json.put("msg","该奖励已被提交！");
+            return json;
+        }
+        List<MultipartFile> rewardFileList = FileKit.getRewardFileList();
+        if(rewardFileList.size()==0){
+            json.put("msg","请先上传附件！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        if(!nameMap.containsKey(user.getName())){
+            json.put("msg","此奖励与本账号用户无关！");
+            return json;
+        }
+        /**
+         * 新建奖励记录
+         */
+        //将日期转化为时间戳
+        reward.setGetTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(getTimeDate)))));
+        reward.setRid(UUID.randomUUID().toString().replace("-",""));
+        reward.setState("0");
+        reward.setCreateId(user.getUid());
+        reward.setMid(user.getMid());
+        reward.setCreateTime(DateKit.getUnixTimeLong());
+        rewardService.createReward(reward);
+        /**
+         * 新建用户与奖励的关系记录
+         */
+        UserItem userItem=new UserItem();
+        userItem.setItemId(reward.getRid());
+        userItem.setItemType("reward");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
+            if(userInfoList.size()!=0){
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        /**
+         * 新建附件记录
+         */
+        Document document=new Document();
+        document.setItemId(reward.getRid());
+        document.setItemType("reward");
+        String fileName="";
+        for (MultipartFile file:rewardFileList) {
+            fileName=file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\"+user.getUid()+"\\reward\\"+reward.getCreateTime()+"\\"+fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//reward",fileName);
+            File targetFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//reward//"+reward.getCreateTime(),fileName);
+            File pathFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//reward//"+reward.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile,targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setRewardFileList(FileKit.clearOrInitList(rewardFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward");
+        FileKit.deleteFile(dirFile);
+        json.put("msg","提交成功待审核！");
+        return json;
+    }
+
 }

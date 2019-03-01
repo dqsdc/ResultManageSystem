@@ -30,37 +30,55 @@
     <span >位置：</span>
     <ul class="placeul" >
         <li><a href="index">首页</a></li>
-        <li><a href="reward">上传成果</a></li>
+        <li><a href="project">上传成果</a></li>
     </ul>
 </div>
 <div class="formbody">
     <div id="usual1" class="usual">
         <div class="itab">
             <ul>
-                <li><a id="a1" href="project"  >发布项目</a></li>
-                <li><a id="a2" href="thesis" >发布论文</a></li>
-                <li><a id="a3" href="reward" class="selected">发布奖励</a></li>
+                <li><a id="a1" href="project-upload"  class="selected">发布项目</a></li>
+                <li><a id="a2" href="thesis-upload" >发布论文</a></li>
+                <li><a id="a3" href="reward-upload" >发布奖励</a></li>
             </ul>
         </div>
 
         <div id="tab1" class="tabson">
-            <form  class="form form-horizontal" id="reward-form" method="post">
+            <form  class="form form-horizontal" id="project-form" method="post">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【奖励名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目名称】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" class="input-text"  id="name" name="name">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖人】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【主持人】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" name="people" id="people" placeholder="获奖人的姓名用逗号(中英皆可)隔开"  class="input-text">
+                        <input type="text" class="input-text" placeholder="只能填写一名主持人" id="host" name="host">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖时间】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【参与者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="getTimeDate" id="getTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" name="people" id="people" placeholder="若为多名参与者，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【研究开始时间】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【研究结束时间】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【立项时间】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" placeholder="批准时间" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="setTimeDate" id="setTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
@@ -141,7 +159,7 @@
         </div>
 
         <div id="tab3" class="tabson" >
-            tab3
+
         </div>
     </div>
 </div>
@@ -429,7 +447,7 @@
                 swf: 'H-ui/lib/webuploader/0.1.5/Uploader.swf',
                 chunked: false,
                 chunkSize: 512 * 1024,
-                server: 'ajax-reward-file',
+                server: 'ajax-project-file',
                 // runtimeOrder: 'flash',
 
                 // accept: {
@@ -840,16 +858,19 @@
             increaseArea: '20%'
         });
 
-        $("#reward-form").validate({
+        $("#project-form").validate({
             rules:{
                 name :{
-                    required:true
+                    required:true,
+                    maxlength:250
                 },
                 host :{
-                    required:true
+                    required:true,
+                    maxlength:250
                 },
                  people:{
-                    required:true
+                    required:true,
+                     maxlength:290
                 },
                 startTimeDate:{
                     required:true
@@ -858,7 +879,8 @@
                     required:true
                 },
                 source:{
-                    required:true
+                    required:true,
+                    maxlength:250
                 },
                 money:{
                     required:true,
@@ -885,7 +907,7 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    url: "/ajax-reward-form" ,
+                    url: "/ajax-project-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
