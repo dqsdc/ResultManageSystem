@@ -7,4 +7,6 @@ public interface ProjectService {
     int findProjectByNameHostFrom(String name,String host,String source);
     /**新建一个项目*/
     void createProject(Project project);
+    /**通过项目pid查询项目*/
+    Project findProjectByPid(String pid);
 }

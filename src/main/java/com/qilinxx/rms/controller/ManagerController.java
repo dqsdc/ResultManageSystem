@@ -229,7 +229,7 @@ public class ManagerController {
     public JSONObject ajaxProjectForm(HttpSession session,Project project,String startTimeDate,String endTimeDate,String setTimeDate) throws IOException {
         JSONObject json=new JSONObject();
         //以下三种种错误
-        int projectNum = projectService.findProjectByNameHostFrom(project.getName(), project.getHost(), project.getsource());
+        int projectNum = projectService.findProjectByNameHostFrom(project.getName(), project.getHost(), project.getProjectSource());
         if(projectNum!=0){
             json.put("msg","该项目已被提交！");
             return json;
@@ -603,4 +603,18 @@ public class ManagerController {
         return json;
     }
 
+    @GetMapping("project-overview")
+    public String projectOverview(HttpSession session,Model model){
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(user.getUid(), "project");
+        List<Project> projectList=new ArrayList<>();
+        for (UserItem userItem:userItemList) {
+            projectList.add(projectService.findProjectByPid(userItem.getItemId()));
+        }
+        System.out.println(projectList.get(0).getProjectSource());
+        System.out.println(projectList.size());
+        model.addAttribute("projectList",projectList);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/overview/project-overview";
+    }
 }

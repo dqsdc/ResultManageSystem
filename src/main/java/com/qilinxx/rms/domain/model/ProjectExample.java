@@ -504,73 +504,73 @@ public class ProjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andSourceIsNull() {
-            addCriterion("source is null");
+        public Criteria andProjectSourceIsNull() {
+            addCriterion("project_source is null");
             return (Criteria) this;
         }
 
-        public Criteria andSourceIsNotNull() {
-            addCriterion("source is not null");
+        public Criteria andProjectSourceIsNotNull() {
+            addCriterion("project_source is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSourceEqualTo(String value) {
-            addCriterion("source =", value, "source");
+        public Criteria andProjectSourceEqualTo(String value) {
+            addCriterion("project_source =", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotEqualTo(String value) {
-            addCriterion("source <>", value, "source");
+        public Criteria andProjectSourceNotEqualTo(String value) {
+            addCriterion("project_source <>", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceGreaterThan(String value) {
-            addCriterion("source >", value, "source");
+        public Criteria andProjectSourceGreaterThan(String value) {
+            addCriterion("project_source >", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceGreaterThanOrEqualTo(String value) {
-            addCriterion("source >=", value, "source");
+        public Criteria andProjectSourceGreaterThanOrEqualTo(String value) {
+            addCriterion("project_source >=", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceLessThan(String value) {
-            addCriterion("source <", value, "source");
+        public Criteria andProjectSourceLessThan(String value) {
+            addCriterion("project_source <", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceLessThanOrEqualTo(String value) {
-            addCriterion("source <=", value, "source");
+        public Criteria andProjectSourceLessThanOrEqualTo(String value) {
+            addCriterion("project_source <=", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceLike(String value) {
-            addCriterion("source like", value, "source");
+        public Criteria andProjectSourceLike(String value) {
+            addCriterion("project_source like", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotLike(String value) {
-            addCriterion("source not like", value, "source");
+        public Criteria andProjectSourceNotLike(String value) {
+            addCriterion("project_source not like", value, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceIn(List<String> values) {
-            addCriterion("source in", values, "source");
+        public Criteria andProjectSourceIn(List<String> values) {
+            addCriterion("project_source in", values, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotIn(List<String> values) {
-            addCriterion("source not in", values, "source");
+        public Criteria andProjectSourceNotIn(List<String> values) {
+            addCriterion("project_source not in", values, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceBetween(String value1, String value2) {
-            addCriterion("source between", value1, value2, "source");
+        public Criteria andProjectSourceBetween(String value1, String value2) {
+            addCriterion("project_source between", value1, value2, "projectSource");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotBetween(String value1, String value2) {
-            addCriterion("source not between", value1, value2, "source");
+        public Criteria andProjectSourceNotBetween(String value1, String value2) {
+            addCriterion("project_source not between", value1, value2, "projectSource");
             return (Criteria) this;
         }
 

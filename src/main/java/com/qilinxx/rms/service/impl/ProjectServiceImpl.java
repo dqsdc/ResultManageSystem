@@ -15,13 +15,18 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int findProjectByNameHostFrom(String name, String host, String source) {
         ProjectExample example=new ProjectExample();
-        example.createCriteria().andNameEqualTo(name).andHostEqualTo(host).andSourceEqualTo(source);
+        example.createCriteria().andNameEqualTo(name).andHostEqualTo(host).andProjectSourceEqualTo(source);
         return projectMapper.selectCountByExample(example);
     }
 
     @Override
     public void createProject(Project project) {
         projectMapper.insert(project);
+    }
+
+    @Override
+    public Project findProjectByPid(String pid) {
+        return projectMapper.selectByPrimaryKey(pid);
     }
 
 }
