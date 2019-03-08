@@ -22,4 +22,19 @@ public class RewardServiceImpl implements RewardService {
     public void createReward(Reward reward) {
         rewardMapper.insert(reward);
     }
+
+    @Override
+    public void deleteReward(String rid) {
+        rewardMapper.deleteByPrimaryKey(rid);
+    }
+
+    @Override
+    public Reward findRewardByRid(String rid) {
+        return rewardMapper.selectByPrimaryKey(rid);
+    }
+
+    @Override
+    public void updateReward(Reward reward) {
+        rewardMapper.updateByPrimaryKeySelective(reward);
+    }
 }

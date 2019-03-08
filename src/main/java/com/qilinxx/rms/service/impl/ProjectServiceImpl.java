@@ -7,6 +7,8 @@ import com.qilinxx.rms.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -27,6 +29,24 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project findProjectByPid(String pid) {
         return projectMapper.selectByPrimaryKey(pid);
+    }
+
+    @Override
+    public void deleteProjectByPid(String pid) {
+        projectMapper.deleteByPrimaryKey(pid);
+    }
+
+    @Override
+    public void updateProject(Project project) {
+        projectMapper.updateByPrimaryKeySelective(project);
+    }
+
+    @Override
+    public List<Project> findProjectByMid(Integer mid) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andMidEqualTo(mid);
+        example.setOrderByClause("'state' ASC,'create_time' DESC");
+        return projectMapper.selectByExample(example);
     }
 
 }

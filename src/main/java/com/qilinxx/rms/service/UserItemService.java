@@ -9,4 +9,6 @@ public interface UserItemService {
     void createUserItem(UserItem userItem);
     /**通过 项目关联人uid 、项目类型itemType 寻找项目与用户记录*/
     List<UserItem> findUserItemByUidItemType(Integer uid,String itemType);
+    /**通过项目itemId删除 项目和用户关系*/
+    void deleteUserItemByItemId(String itemId);
 }

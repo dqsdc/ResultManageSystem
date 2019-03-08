@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Controller
@@ -171,6 +170,11 @@ public class ManagerController {
         return json;
     }
 
+
+
+
+
+     //项目上传与其附件保存
     /**
      * @return 来到项目上传页面
      */
@@ -317,6 +321,12 @@ public class ManagerController {
         json.put("msg","提交成功待审核！");
         return json;
     }
+
+
+
+
+
+    //论文上传与其附件保存
     /**
      * @return 来到论文上传页面
      */
@@ -458,6 +468,11 @@ public class ManagerController {
         return json;
     }
 
+
+
+
+
+    //奖励上传与其附件保存
     /**
      * @return  来到奖励上传页面
      */
@@ -603,18 +618,285 @@ public class ManagerController {
         return json;
     }
 
+
+
+
+
+
+
+
+
+    /**
+     * @return  来到项目总览页面
+     */
     @GetMapping("project-overview")
     public String projectOverview(HttpSession session,Model model){
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
-        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(user.getUid(), "project");
+        Integer uid=(Integer) session.getAttribute("uid");
+        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "project");
         List<Project> projectList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
         for (UserItem userItem:userItemList) {
             projectList.add(projectService.findProjectByPid(userItem.getItemId()));
         }
-        System.out.println(projectList.get(0).getProjectSource());
-        System.out.println(projectList.size());
+        for (Project project:projectList) {
+            createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+        }
+        //将projectList倒序
+        Collections.reverse(projectList);
+        model.addAttribute("uid",uid);
+        model.addAttribute("createrMap",createrMap);
         model.addAttribute("projectList",projectList);
         model.addAttribute("dateKit",new DateKit());
         return "manager/overview/project-overview";
     }
+    /**
+     * @return  来到论文总览页面
+     */
+    @GetMapping("thesis-overview")
+    public String thesisOverview(HttpSession session,Model model){
+        Integer uid=(Integer) session.getAttribute("uid");
+        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "thesis");
+        List<Thesis> thesisList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        for (UserItem userItem:userItemList) {
+            thesisList.add(thesisService.findThesisByTid(userItem.getItemId()));
+        }
+        for (Thesis thesis:thesisList) {
+            createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));
+        }
+        //将projectList倒序
+        Collections.reverse(thesisList);
+        model.addAttribute("uid",uid);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("thesisList",thesisList);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/overview/thesis-overview";
+    }
+    /**
+     * @return  来到论文总览页面
+     */
+    @GetMapping("reward-overview")
+    public String rewardOverview(HttpSession session,Model model){
+        Integer uid=(Integer) session.getAttribute("uid");
+        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "reward");
+        List<Reward> rewardList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        for (UserItem userItem:userItemList) {
+            rewardList.add(rewardService.findRewardByRid(userItem.getItemId()));
+        }
+        for (Reward reward:rewardList) {
+            createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
+        }
+        //将rewardList倒序
+        Collections.reverse(rewardList);
+        model.addAttribute("uid",uid);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("rewardList",rewardList);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/overview/reward-overview";
+    }
+
+
+
+
+
+
+    //item公共用方法
+    /**
+     * ajax删除所传id  的item
+     * @param itemType     为item类别
+     * @param id        为itemId
+     */
+    @PostMapping("ajax-item-delete")
+    @ResponseBody
+    public JSONObject ajaxItemDelete(String itemType,String id){
+        JSONObject json=new JSONObject();
+        switch(itemType){
+            case "project":
+                projectService.deleteProjectByPid(id);
+                userItemService.deleteUserItemByItemId(id);
+                List<Document> documentList1 = documentService.findDocumentByItemId(id);
+                if(documentList1.size()!=0){
+                    FileKit.deleteFile(new File(UploadUtil.getUploadFilePath()+"//"+documentList1.get(0).getPath()).getParentFile());
+                }
+                documentService.deleteDocumentByItemId(id);
+                break;
+            case "thesis":
+                thesisService.deleteThesisByTid(id);
+                userItemService.deleteUserItemByItemId(id);
+                List<Document> documentList2 = documentService.findDocumentByItemId(id);
+                if(documentList2.size()!=0){
+                    FileKit.deleteFile(new File(UploadUtil.getUploadFilePath()+"//"+documentList2.get(0).getPath()).getParentFile());
+                }
+                documentService.deleteDocumentByItemId(id);
+                break;
+            case "reward":
+                rewardService.deleteReward(id);
+                userItemService.deleteUserItemByItemId(id);
+                List<Document> documentList3 = documentService.findDocumentByItemId(id);
+                if(documentList3.size()!=0){
+                    FileKit.deleteFile(new File(UploadUtil.getUploadFilePath()+"//"+documentList3.get(0).getPath()).getParentFile());
+                }
+                documentService.deleteDocumentByItemId(id);
+                break;
+            default:
+                json.put("msg","删除失败！");
+                return json;
+        }
+        json.put("msg","删除成功！");
+        return json;
+    }
+
+    /**
+     * @param id    itemId
+     * @param itemType  item的类别
+     * @return      来到item的详情页面
+     */
+    @GetMapping("item-detail")
+    public String projectDetail(String id,String itemType,Model model,HttpSession session,String from){
+        UserInfo user=userInfoService.findUserByUid((Integer)session.getAttribute("uid"));
+        boolean display=true;
+        if(!from.equals("user")){
+            display=false;
+        }
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        switch(itemType){
+            case "project":
+                Project project = projectService.findProjectByPid(id);
+                if (project.getState().equals("2")||!project.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+                model.addAttribute("project",project);
+                break;
+            case "thesis":
+                Thesis thesis = thesisService.findThesisByTid(id);
+                if (thesis.getState().equals("2")||!thesis.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));
+                model.addAttribute("thesis",thesis);
+                break;
+            case "reward":
+                Reward reward = rewardService.findRewardByRid(id);
+                if (reward.getState().equals("2")||!reward.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
+                model.addAttribute("reward",reward);
+                break;
+        }
+
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("display",display);
+        model.addAttribute("documentList",documentList);
+        model.addAttribute("itemType",itemType);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/detail/item-detail";
+    }
+
+    /**
+     * 附件下载
+     * @param did   文件document的id
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("download")
+    public void  download(Integer did, HttpServletResponse response) throws IOException {
+        Document document = documentService.findDocumentByDid(did);
+        String fileName = document.getName();// 文件名
+        if (fileName != null) {
+            //设置文件路径
+            File file = new File(UploadUtil.getUploadFilePath()+"//"+document.getPath());
+            //File file = new File(realPath , fileName);
+            if (file.exists()) {
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** ajax 附件删除
+     * @param did   文件document的id
+     * @return
+     */
+    @PostMapping("ajax-document-delete")
+    @ResponseBody
+    public JSONObject ajaxDocumentDelete(Integer did,String itemType){
+        JSONObject json=new JSONObject();
+
+        Document document = documentService.findDocumentByDid(did);
+        List<Document> documentList = documentService.findDocumentByItemId(document.getItemId());
+        if(documentList.size()==1){
+            json.put("msg","至少保留一个文件！");
+            return json;
+        }
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath()+"//"+document.getPath()));
+        documentService.deleteDocumentByDid(did);
+        //item 记录更新
+        switch(itemType){
+            case "project":
+                Project project=new Project();
+                project.setPid(document.getItemId());project.setState("0");project.setUpdateTime(DateKit.getUnixTimeLong());
+                projectService.updateProject(project);
+                break;
+            case "thesis":
+                Thesis thesis=new Thesis();
+                thesis.setTid(document.getItemId());thesis.setState("0");thesis.setUpdateTime(DateKit.getUnixTimeLong());
+                thesisService.updateThesis(thesis);
+                break;
+            case "reward":
+                Reward reward=new Reward();
+                reward.setRid(document.getItemId());reward.setState("0");reward.setUpdateTime(DateKit.getUnixTimeLong());
+                rewardService.updateReward(reward);
+        }
+        json.put("msg","删除成功！");
+        return json;
+    }
+
+    @GetMapping("check")
+    public String check(Integer mid,Model model){
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        List<Project> projectList = projectService.findProjectByMid(mid);
+        for (Project project:projectList) {
+            createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+        }
+        System.out.println(projectList.size());
+        model.addAttribute("projectList",projectList);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/check/check";
+    }
+
 }

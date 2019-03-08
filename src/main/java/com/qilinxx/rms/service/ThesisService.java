@@ -7,4 +7,10 @@ public interface ThesisService {
     int findThesisByHostName(String host,String name);
     /**新建一个论文记录*/
     void createThesis(Thesis thesis);
+    /**通过论文tid 删除论文记录*/
+    void deleteThesisByTid(String tid);
+    /**通过论文tid查找 论文记录*/
+    Thesis findThesisByTid(String tid);
+    /**更新论文字段*/
+    void updateThesis(Thesis thesis);
 }

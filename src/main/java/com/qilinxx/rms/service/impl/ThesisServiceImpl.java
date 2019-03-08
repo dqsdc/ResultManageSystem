@@ -22,4 +22,19 @@ public class ThesisServiceImpl implements ThesisService {
     public void createThesis(Thesis thesis) {
         thesisMapper.insert(thesis);
     }
+
+    @Override
+    public void deleteThesisByTid(String tid) {
+        thesisMapper.deleteByPrimaryKey(tid);
+    }
+
+    @Override
+    public Thesis findThesisByTid(String tid) {
+        return thesisMapper.selectByPrimaryKey(tid);
+    }
+
+    @Override
+    public void updateThesis(Thesis thesis) {
+        thesisMapper.updateByPrimaryKeySelective(thesis);
+    }
 }

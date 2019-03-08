@@ -7,4 +7,10 @@ public interface RewardService {
     int findRewardByNamePeopleGetTime(String name,String people,long getTime);
     /**新建一个奖励记录*/
     void createReward(Reward reward);
+    /**通过奖励rid   删除奖励*/
+    void deleteReward(String rid);
+    /**通过奖励rid 查找奖励记录*/
+    Reward findRewardByRid(String rid);
+    /**更新奖励字段*/
+    void updateReward(Reward reward);
 }

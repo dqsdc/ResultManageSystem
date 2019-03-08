@@ -1,0 +1,284 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="mis/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="mis/css/select.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui.admin/css/style.css" />
+    <script type="text/javascript" src="mis/js/jquery.js"></script>
+    <script type="text/javascript" src="mis/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="mis/js/select-ui.min.js"></script>
+    <style>
+        .imglist li h2 {
+            text-align: center;
+            line-height: 12px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="formbody">
+
+    <div id="usual1" class="usual">
+
+        <div class="itab">
+            <ul>
+                <li><a href="#tab1" class="selected">基本信息</a></li>
+                <li><a href="#tab2">附件信息</a></li>
+            </ul>
+        </div>
+
+        <div id="tab1" class="tabson" style="height: 37px;">
+            <div class="page-container" style="padding: 0px;">
+
+                <table th:if="${itemType.equals('project')}" class="table table-border table-bordered table-bg mt-20">
+                    <thead>
+                    <tr>
+                        <th colspan="2" scope="col" >项目信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th width="30%" >项目名称:</th>
+                        <td><span id="lbServerName" th:text="${project.name}">http://127.0.0.1/</span></td>
+                    </tr>
+                    <tr>
+                        <td >主持人:</td>
+                        <td th:text="${project.host}">192.168.1.1</td>
+                    </tr>
+                    <tr >
+                        <td>参与者:</td>
+                        <td th:text="${project.people}"></td>
+                    </tr>
+                    <tr>
+                        <td>研究开始时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.startTime,'YYYY-MM-DD')}">80</td>
+                    </tr>
+                    <tr>
+                        <td>研究结束时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.endTime,'YYYY-MM-DD')}">80</td>
+                    </tr>
+                    <tr>
+                        <td>立项时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.setTime,'YYYY-MM-DD')}">80</td>
+                    </tr>
+                    <tr>
+                        <td>项目经费:</td>
+                        <td th:text="${project.money}+'万元'">80</td>
+                    </tr>
+                    <tr>
+                        <td>项目级别:</td>
+                        <td th:text="${project.rank}">80</td>
+                    </tr>
+                    <tr>
+                        <td>项目类别:</td>
+                        <td th:text="${project.type}">80</td>
+                    </tr>
+                    <tr>
+                        <td>备注:</td>
+                        <td th:text="${project.profile}">80</td>
+                    </tr>
+                    <tr>
+                        <td>发布人:</td>
+                        <td th:text="${createrMap.get(project.createId).name}">80</td>
+                    </tr>
+                    <tr>
+                        <td>发布时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.createTime)}">Microsoft-IIS/6.0</td>
+                    </tr>
+                    <tr th:if="${project.updateTime}!=null">
+                    <td>更新时间:</td>
+                    <td th:text="${dateKit.formatDateByUnixTime(project.updateTime)}">Microsoft-IIS/6.0</td>
+                    </tr>
+                    <tr th:switch="${project.state}">
+                        <td>发布状态：</td>
+                        <td style="color: #7d7d7d" th:case="0" >待审核</td>
+                        <td style="color: red" th:case="1" >未通过</td>
+                        <td style="color: green" th:case="2" >已发布</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table th:if="${itemType.equals('thesis')}" class="table table-border table-bordered table-bg mt-20">
+                    <thead>
+                    <tr>
+                        <th colspan="2" scope="col" >论文信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th width="30%" >论文名称:</th>
+                        <td><span  th:text="${thesis.name}">http://127.0.0.1/</span></td>
+                    </tr>
+                    <tr>
+                        <td >第一作者:</td>
+                        <td th:text="${thesis.host}">192.168.1.1</td>
+                    </tr>
+                    <tr >
+                        <td>其他作者:</td>
+                        <td th:text="${thesis.people}"></td>
+                    </tr>
+                    <tr>
+                        <td>期刊:</td>
+                        <td th:text="${thesis.book}">80</td>
+                    </tr>
+                    <tr>
+                        <td>年卷期页码:</td>
+                        <td th:text="${thesis.year}+','+${thesis.dossier}+'('+${thesis.issue}+'):'+${thesis.pageNum}">80</td>
+                    </tr>
+                    <tr>
+                        <td>论文级别:</td>
+                        <td th:text="${thesis.rank}">80</td>
+                    </tr>
+                    <tr>
+                        <td>论文类别:</td>
+                        <td th:text="${thesis.type}">80</td>
+                    </tr>
+                    <tr>
+                        <td>备注:</td>
+                        <td th:text="${thesis.profile}">80</td>
+                    </tr>
+                    <tr>
+                        <td>发布人:</td>
+                        <td th:text="${createrMap.get(thesis.createId).name}">80</td>
+                    </tr>
+                    <tr>
+                        <td>发布时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(thesis.createTime)}">Microsoft-IIS/6.0</td>
+                    </tr>
+                    <tr th:if="${thesis.updateTime}!=null">
+                        <td>更新时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(thesis.updateTime)}">Microsoft-IIS/6.0</td>
+                    </tr>
+                    <tr th:switch="${thesis.state}">
+                        <td>发布状态：</td>
+                        <td style="color: #7d7d7d" th:case="0" >待审核</td>
+                        <td style="color: red" th:case="1" >未通过</td>
+                        <td style="color: green" th:case="2" >已发布</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table th:if="${itemType.equals('reward')}" class="table table-border table-bordered table-bg mt-20">
+                    <thead>
+                    <tr>
+                        <th colspan="2" scope="col" >奖励信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th width="30%" >奖励名称:</th>
+                        <td><span  th:text="${reward.name}">http://127.0.0.1/</span></td>
+                    </tr>
+                    <tr >
+                        <td>获奖人:</td>
+                        <td th:text="${reward.people}"></td>
+                    </tr>
+                    <tr>
+                        <td>授奖单位:</td>
+                        <td th:text="${reward.company}">80</td>
+                    </tr>
+                    <tr>
+                        <td>获奖时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-DD')}">80</td>
+                    </tr>
+                    <tr>
+                        <td>备注:</td>
+                        <td th:text="${reward.profile}">80</td>
+                    </tr>
+                    <tr>
+                        <td>发布人:</td>
+                        <td th:text="${createrMap.get(reward.createId).name}">80</td>
+                    </tr>
+                    <tr>
+                        <td>发布时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(reward.createTime)}">Microsoft-IIS/6.0</td>
+                    </tr>
+                    <tr th:if="${reward.updateTime}!=null">
+                        <td>更新时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(reward.updateTime)}">Microsoft-IIS/6.0</td>
+                    </tr>
+                    <tr th:switch="${reward.state}">
+                        <td>发布状态：</td>
+                        <td style="color: #7d7d7d" th:case="0" >待审核</td>
+                        <td style="color: red" th:case="1" >未通过</td>
+                        <td style="color: green" th:case="2" >已发布</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+        <div id="tab2" class="tabson">
+                <ul class="imglist">
+                    <li th:if="${documentList.size()}!=0" th:each="document:${documentList}">
+                        <span><img th:href="'download?did='+${document.did}" th:download="${document.name}" src="mis/images/img01.png" /></span>
+                        <h2><a th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
+                        <p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span th:if="${display}==true">&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'deldte_document(this,\''+${document.did}+'\')'">删除</a></span></p>
+                    </li>
+                </ul>
+                <div class="pagin">
+                    <div class="message">共<i class="blue" th:text="${documentList.size()}">1256</i>个文件</div>
+                    <!--<ul class="paginList" style=" white-space:nowrap; ">-->
+                        <!--<li  th:if="${documentList.size()}!=0" class="paginItem"><a style="width: 83px;" th:href="'downloadAll?did='+${documentList.get(0).did}" th:download="${documentList.get(0).name}">全部下载</a></li>-->
+                    <!--</ul>-->
+                </div>
+            </div>
+    </div>
+
+
+</div>
+
+    <script type="text/javascript">
+        $("#usual1 ul").idTabs();
+    </script>
+
+    <script type="text/javascript">
+        $('.tablelist tbody tr:odd').addClass('odd');
+    </script>
+
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="H-ui/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="H-ui/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="H-ui/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="H-ui/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="H-ui/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="H-ui/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="H-ui/lib/laypage/1.2/laypage.js"></script>
+</body>
+<script type="text/javascript">
+    function deldte_document(obj,did){
+        layer.confirm('确认要删除吗？',function(index){
+            var itemType='[[${itemType}]]';
+            $.ajax({
+                type: 'POST',
+                data:{"did":did,"itemType":itemType},
+                url: 'ajax-document-delete',
+                dataType: 'json',
+                success: function(data){
+                    if(data.msg=="删除成功！"){
+                        $(obj).parents("li").remove();
+                        layer.msg(data.msg,{icon:1,time:1500});
+                    }else {
+                        layer.msg(data.msg,{icon:2,time:1500});
+                    }
+                },
+                error:function(data) {
+                    layer.msg('发生未知错误',{icon:2,time:1500});
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+</script>
+</html>

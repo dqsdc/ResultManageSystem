@@ -24,4 +24,11 @@ public class UserItemServiceImpl implements UserItemService {
         example.createCriteria().andUidEqualTo(uid).andItemTypeEqualTo(itemType);
         return userItemMapper.selectByExample(example);
     }
+
+    @Override
+    public void deleteUserItemByItemId(String itemId) {
+        UserItemExample example=new UserItemExample();
+        example.createCriteria().andItemIdEqualTo(itemId);
+        userItemMapper.deleteByExample(example);
+    }
 }

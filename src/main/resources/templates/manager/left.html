@@ -51,15 +51,15 @@ $(function(){
                 </div>
                 <ul class="menuson" >
                     <li><cite></cite><a href="project-overview" target="rightFrame">项目总览</a><i></i></li>
-                    <li><cite></cite><a href="#" target="rightFrame">论文总览</a><i></i></li>
-                    <li><cite></cite><a href="#" target="rightFrame">奖励总览</a><i></i></li>
+                    <li><cite></cite><a href="thesis-overview" target="rightFrame">论文总览</a><i></i></li>
+                    <li><cite></cite><a href="reward-overview" target="rightFrame">奖励总览</a><i></i></li>
                     <li><cite></cite><a href="project-upload" target="rightFrame">上传成果</a><i></i></li>
                 </ul>
             </dd>
             <dd th:if="${power}!=0">
-                <div class="title"><span><img src="mis/images/leftico03.png" /></span>审核模块</div>
+                <div class="title"><span><img src="mis/images/leftico03.png" /></span>成果审核</div>
                 <ul class="menuson" >
-                    <li th:each="major:${majorList}"><cite></cite><a  target="rightFrame" href="#" th:text="${major.Name}">信息审核</a><i></i></li>
+                    <li th:each="major:${majorList}"><cite></cite><a style=" white-space:nowrap; " target="rightFrame"  th:href="'check?mid='+${major.mid}" href="check" th:text="${major.Name}">信息审核</a><i></i></li>
                 </ul>
             </dd>
     </dl>
