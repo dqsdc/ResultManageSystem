@@ -17,4 +17,8 @@ public interface ProjectService {
     void updateProject(Project project);
     /**通过 专业mid  与审核状态state 查找项目记录*/
     List<Project>   findProjectByMid(Integer mid);
+    /**通过 专业id 返回查询到的数量*/
+    int countProjectByMid(Integer mid);
+    /**通过 专业id、状态  返回查询到的数量*/
+    int countProjectByMidState(Integer mid,String state);
 }

@@ -7,6 +7,8 @@ import com.qilinxx.rms.service.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RewardServiceImpl implements RewardService {
     @Autowired
@@ -36,5 +38,27 @@ public class RewardServiceImpl implements RewardService {
     @Override
     public void updateReward(Reward reward) {
         rewardMapper.updateByPrimaryKeySelective(reward);
+    }
+
+    @Override
+    public List<Reward> findRewardByMid(Integer mid) {
+        RewardExample example=new RewardExample();
+        example.createCriteria().andMidEqualTo(mid);
+        example.setOrderByClause("state ASC ,create_time DESC");
+        return rewardMapper.selectByExample(example);
+    }
+
+    @Override
+    public int countRewardByMid(Integer mid) {
+        RewardExample example=new RewardExample();
+        example.createCriteria().andMidEqualTo(mid);
+        return rewardMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countRewardByMidState(Integer mid, String state) {
+        RewardExample example=new RewardExample();
+        example.createCriteria().andMidEqualTo(mid).andStateEqualTo(state);
+        return rewardMapper.selectCountByExample(example);
     }
 }

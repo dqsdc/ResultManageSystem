@@ -5,7 +5,21 @@
 <title>无标题文档</title>
 <link href="mis/css/style.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript" src="mis/js/jquery.js"></script>
-
+    <style type="text/css">
+        .red-point{
+            position: relative;
+        }
+        .red-point::before{
+            content: " ";
+            border: 3px solid red;
+            border-radius: 145px;
+            position: absolute;
+            z-index: 1000;
+            right: 13px;
+            margin-right: 148px;
+            margin-top: 10px;
+        }
+    </style>
 <script type="text/javascript">
 $(function(){	
 	//导航切换
@@ -32,7 +46,7 @@ $(function(){
 <body style="background:#f0f9fd;">
 	<div class="lefttop"><span></span>功能面板</div>
     
-    <dl class="leftmenu">
+    <dl class="leftmenu" style=" white-space:nowrap; ">
 
             <dd>
                 <div class="title">
@@ -45,7 +59,7 @@ $(function(){
                     <li><cite></cite><a href="password-change" target="rightFrame">修改密码</a><i></i></li>
                 </ul>
             </dd>
-            <dd >
+            <dd th:if="${achievementDisplay}==true">
                 <div class="title">
                 <span><img src="mis/images/leftico02.png" /></span>成果展示
                 </div>
@@ -56,10 +70,13 @@ $(function(){
                     <li><cite></cite><a href="project-upload" target="rightFrame">上传成果</a><i></i></li>
                 </ul>
             </dd>
-            <dd th:if="${power}!=0">
+            <dd th:if="${checkDisplay}==true" >
                 <div class="title"><span><img src="mis/images/leftico03.png" /></span>成果审核</div>
                 <ul class="menuson" >
-                    <li th:each="major:${majorList}"><cite></cite><a style=" white-space:nowrap; " target="rightFrame"  th:href="'check?mid='+${major.mid}" href="check" th:text="${major.Name}">信息审核</a><i></i></li>
+                    <li th:each="major:${majorList}"><cite></cite>
+                        <a th:if="${majorMap.get(major.mid)!=0}" class="red-point" target="rightFrame"  th:href="'check?mid='+${major.mid}" href="check" th:text="${major.Name}">信息审核</a>
+                        <a th:if="${majorMap.get(major.mid)==0}" target="rightFrame"  th:href="'check?mid='+${major.mid}" href="check" th:text="${major.Name}">信息审核</a>
+                        <i></i></li>
                 </ul>
             </dd>
     </dl>

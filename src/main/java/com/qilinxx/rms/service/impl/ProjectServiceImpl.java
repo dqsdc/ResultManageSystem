@@ -45,8 +45,22 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> findProjectByMid(Integer mid) {
         ProjectExample example=new ProjectExample();
         example.createCriteria().andMidEqualTo(mid);
-        example.setOrderByClause("'state' ASC,'create_time' DESC");
+        example.setOrderByClause("state ASC ,create_time DESC");
         return projectMapper.selectByExample(example);
+    }
+
+    @Override
+    public int countProjectByMid(Integer mid) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andMidEqualTo(mid);
+        return projectMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countProjectByMidState(Integer mid, String state) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andMidEqualTo(mid).andStateEqualTo(state);
+        return projectMapper.selectCountByExample(example);
     }
 
 }

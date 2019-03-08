@@ -44,9 +44,9 @@
 			</tr>
 			<tr>
 				<td >账号状态:</td>
-				<td><span th:if="${user.state}==0" style="color: burlywood">账号初次使用</span>
-					<span th:if="${user.state}==1" style="color: red">账号不可用</span>
-					<span th:if="${user.state}==2" style="color: green">账号待审核</span>
+				<td><span th:if="${user.state}==0" ><span style="color: burlywood">账号初次使用</span>(建议修改密码激活账号)</span>
+					<span th:if="${user.state}==1" ><span style="color: red">账号不可用</span>(建议修正个人信息以激活账号)</span>
+					<span th:if="${user.state}==2" ><span style="color: green">账号待审核</span>(审核期间功能不可用)</span>
 					<span th:if="${user.state}==3" >账号正常使用</span>
 				</td>
 			</tr>

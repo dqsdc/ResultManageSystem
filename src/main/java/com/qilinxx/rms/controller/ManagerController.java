@@ -65,15 +65,31 @@ public class ManagerController {
      */
     @GetMapping("left")
     public String left(HttpSession session, Model model){
+        boolean achievementDisplay=false; boolean checkDisplay=false;
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
         List<UserMajor> userMajorList = userMajorService.findAllUserMajorByUid((Integer) session.getAttribute("uid"));
+        Map<Integer,Integer> majorMap=new HashMap<>();
         if(userMajorList.size()!=0){
             List<Major> majorList=new ArrayList<>();
             for (UserMajor um:userMajorList) {
                 majorList.add(majorService.findMajorBymid(um.getMid()));
             }
             model.addAttribute("majorList",majorList);
+            for (Major major:majorList) {
+                int i = projectService.countProjectByMidState(major.getMid(),"0")+thesisService.countThesisByMidState(major.getMid(),"0")+rewardService.countRewardByMidState(major.getMid(),"0");
+                majorMap.put(major.getMid(),i);
+            }
+            model.addAttribute("majorMap",majorMap);
         }
-        model.addAttribute("power",userMajorList.size());
+        if(user.getState().equals("3")){
+            achievementDisplay=true;
+            if(userMajorList.size()!=0){
+                checkDisplay=true;
+            }
+        }
+        model.addAttribute("achievementDisplay",achievementDisplay);
+        model.addAttribute("checkDisplay",checkDisplay);
+        model.addAttribute("user",user);
         return "manager/left";
     }
 
@@ -162,6 +178,15 @@ public class ManagerController {
         }
         if(user.getPassword().equals(password3)){
             json.put("msg","新旧密码不能相同！");
+            return json;
+        }
+        user.setUid(dbUser.getUid());
+        //若是账号第一次使用，通过修改密码激活账号
+        if(dbUser.getState().equals("0")){
+            user.setState("3");
+            user.setUpdateTime(DateKit.getUnixTimeLong());
+            userInfoService.modifyUser(user);
+            json.put("msg","密码修改成功,激活账号！");
             return json;
         }
         user.setUpdateTime(DateKit.getUnixTimeLong());
@@ -885,18 +910,100 @@ public class ManagerController {
         return json;
     }
 
+    /**
+     * @param mid   项目的 专业分类
+     * @return  来到项目、论文、奖励审核页面
+     */
     @GetMapping("check")
     public String check(Integer mid,Model model){
         Map<Integer,UserInfo> createrMap=new HashMap<>();
         List<Project> projectList = projectService.findProjectByMid(mid);
-        for (Project project:projectList) {
-            createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+        int projectNum=0,thesisNum=0,rewardNum=0;
+        if(projectList.size()!=0){
+            for (Project project:projectList) {
+                createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+                if(project.getState().equals("0")){
+                    projectNum++;
+                }
+            }
         }
-        System.out.println(projectList.size());
+        List<Thesis> thesisList = thesisService.findThesisByMid(mid);
+        if(thesisList.size()!=0){
+            for(Thesis thesis:thesisList){
+                createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));
+                if(thesis.getState().equals("0")){
+                    thesisNum++;
+                }
+            }
+        }
+        List<Reward> rewardList = rewardService.findRewardByMid(mid);
+       if(rewardList.size()!=0){
+           for(Reward reward:rewardList){
+               createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
+               if(reward.getState().equals("0")){
+                   rewardNum++;
+               }
+           }
+       }
+       model.addAttribute("projectNum",projectNum);
+       model.addAttribute("thesisNum",thesisNum);
+       model.addAttribute("rewardNum",rewardNum);
+        model.addAttribute("thesisList",thesisList);
+        model.addAttribute("rewardList",rewardList);
         model.addAttribute("projectList",projectList);
         model.addAttribute("createrMap",createrMap);
         model.addAttribute("dateKit",new DateKit());
         return "manager/check/check";
+    }
+
+    @PostMapping("ajax-item-start")
+    @ResponseBody
+    public JSONObject  ajaxItemStart(String itemType,String id){
+        JSONObject json=new JSONObject();
+        switch(itemType){
+            case "project":
+                Project project=new Project();
+                project.setPid(id);project.setState("2");project.setUpdateTime(DateKit.getUnixTimeLong());
+                projectService.updateProject(project);
+                break;
+            case "thesis":
+                Thesis thesis=new Thesis();
+                thesis.setTid(id);thesis.setState("2");thesis.setUpdateTime(DateKit.getUnixTimeLong());
+                thesisService.updateThesis(thesis);
+                break;
+            case "reward":
+                Reward reward=new Reward();
+                reward.setRid(id);reward.setState("2");reward.setUpdateTime(DateKit.getUnixTimeLong());
+                rewardService.updateReward(reward);
+                break;
+        }
+        json.put("msg","项目通过审核");
+        return json;
+    }
+
+    @PostMapping("ajax-item-stop")
+    @ResponseBody
+    public JSONObject  ajaxItemStop(String itemType,String id){
+        JSONObject json=new JSONObject();
+        switch(itemType){
+            case "project":
+                Project project=new Project();
+                project.setPid(id);project.setState("1");project.setUpdateTime(DateKit.getUnixTimeLong());
+                projectService.updateProject(project);
+                break;
+            case "thesis":
+                Thesis thesis=new Thesis();
+                thesis.setTid(id);thesis.setState("1");thesis.setUpdateTime(DateKit.getUnixTimeLong());
+                thesisService.updateThesis(thesis);
+                break;
+            case "reward":
+                Reward reward=new Reward();
+                reward.setRid(id);reward.setState("1");reward.setUpdateTime(DateKit.getUnixTimeLong());
+                rewardService.updateReward(reward);
+                break;
+        }
+        json.put("msg","项目为通过审核");
+        return json;
     }
 
 }

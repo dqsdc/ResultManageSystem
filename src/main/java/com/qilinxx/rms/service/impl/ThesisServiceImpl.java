@@ -7,6 +7,8 @@ import com.qilinxx.rms.service.ThesisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ThesisServiceImpl implements ThesisService {
     @Autowired
@@ -36,5 +38,27 @@ public class ThesisServiceImpl implements ThesisService {
     @Override
     public void updateThesis(Thesis thesis) {
         thesisMapper.updateByPrimaryKeySelective(thesis);
+    }
+
+    @Override
+    public List<Thesis> findThesisByMid(Integer mid) {
+        ThesisExample example=new ThesisExample();
+        example.createCriteria().andMidEqualTo(mid);
+        example.setOrderByClause("state ASC ,create_time DESC");
+        return thesisMapper.selectByExample(example);
+    }
+
+    @Override
+    public int countThesisByMid(Integer mid) {
+        ThesisExample example=new ThesisExample();
+        example.createCriteria().andMidEqualTo(mid);
+        return thesisMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countThesisByMidState(Integer mid, String state) {
+        ThesisExample example=new ThesisExample();
+        example.createCriteria().andMidEqualTo(mid).andStateEqualTo(state);
+        return thesisMapper.selectCountByExample(example);
     }
 }
