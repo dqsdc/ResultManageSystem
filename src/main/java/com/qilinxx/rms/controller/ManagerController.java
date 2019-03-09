@@ -42,10 +42,10 @@ public class ManagerController {
     /**
      * @return  来到教师成果管理系统页面
      */
-    @GetMapping({"1","main"})
+    @GetMapping({"main"})
     public String main(HttpSession session){
         //以下代码项目完成修改
-        session.setAttribute("uid",2013001);
+        //session.setAttribute("uid",2013001);
         //以上代码项目完成时修改
         return "manager/main";
     }
