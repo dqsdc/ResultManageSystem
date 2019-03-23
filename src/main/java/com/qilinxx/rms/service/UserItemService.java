@@ -11,4 +11,6 @@ public interface UserItemService {
     List<UserItem> findUserItemByUidItemType(Integer uid,String itemType);
     /**通过项目itemId删除 项目和用户关系*/
     void deleteUserItemByItemId(String itemId);
+
+    List<UserItem> findAllUserItemByUserType(String itemType);
 }

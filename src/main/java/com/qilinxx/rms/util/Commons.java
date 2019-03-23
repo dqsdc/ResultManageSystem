@@ -1,7 +1,11 @@
 package com.qilinxx.rms.util;
 
+import com.qilinxx.rms.domain.model.Major;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class Commons {
@@ -28,4 +32,20 @@ public class Commons {
         }
         return "";
     }
+
+    /***
+     * 匹配
+     * @param mid List<UserMajor>中取出的单个值
+     * @param majors 所有的major
+     * @return
+     */
+    public static boolean contains(String mid,List<Major> majors){
+        System.out.println(majors);
+        List<Integer> ids = new ArrayList<>();
+        for(Major m: majors){
+            ids.add(m.getMid());
+        }
+        return (ids.contains(mid));
+    }
+
 }

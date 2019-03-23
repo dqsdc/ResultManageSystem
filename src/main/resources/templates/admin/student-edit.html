@@ -1,0 +1,206 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5shiv.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>修改资料</title>
+</head>
+<body>
+<article class="page-container">
+	<form th:action="editStudent" method="post" class="form form-horizontal Huiform" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>工号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" th:value="${student.uid}" placeholder="" id="id" name="uid">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" th:value="${student.name}" placeholder="" id="name" name="name">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input th:value="男" name="sex" type="radio" id="sex-1" checked>
+					<label for="sex-1">男</label>
+				</div>
+				<div class="radio-box">
+					<input th:value="女" type="radio" id="sex-2" name="sex">
+					<label for="sex-2">女</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>职称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" th:value="${student.title}" placeholder="" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>职称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="计算机科学与技术学院" placeholder="" id="belong" name="belong">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">所属专业：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="mid">
+					<option selected>请选择所属专业</option>
+					<option value="1" id="option-1">计算机科学与技术（师范）</option>
+					<option value="2" id="option-2">计算机科学与技术</option>
+					<option value="3" id="option-3">网络工程</option>
+					<option value="4" id="option-4">信息安全</option>
+					<option value="5" id="option-5">数字媒体技术</option>
+					<option value="6" id="option-6">信息管理与信息系统</option>
+					<option value="7" id="option-7">大数据采集与管理专业</option>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input value=0 name="state" type="radio" id="state-1" checked>
+					<label for="state-1">启用</label>
+				</div>
+				<div class="radio-box">
+					<input th:value=1 type="radio" id="state-2" name="state">
+					<label for="state-2">禁用</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">简介：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="profile" cols="" rows="" class="textarea" th:text="${student.profile}" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript"  th:inline="javascript">
+
+    $(function(){
+
+        var sex = [[${student.sex}]];
+        var state=[[${student.state}]];
+		var mid=[[${student.mid}]];
+        if(sex=="女"){
+            $("#sex-2").attr("checked","checked");
+		}else {
+            $("#sex-1").attr("checked","checked");
+		}
+		switch (mid) {
+			case 1: $("#option-1").attr("selected","selected");break;
+            case 2: $("#option-2").attr("selected","selected");break;
+            case 3: $("#option-3").attr("selected","selected");break;
+            case 4: $("#option-4").attr("selected","selected");break;
+            case 5: $("#option-5").attr("selected","selected");break;
+            case 6: $("#option-6").attr("selected","selected");break;
+            case 7: $("#option-7").attr("selected","selected");break;
+        }
+
+        if(state){
+            $("#state-1").attr("checked","checked");
+        }else {
+            $("#state-2").attr("checked","checked");
+        }
+
+
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-member-add").validate({
+            rules:{
+                sName:{
+                    required:true,
+                    minlength:2,
+                    maxlength:16
+                },
+                sPassword:{
+                    required:true,
+                },
+                sAccount:{
+                    required:true,
+                    isMobile:true,
+                },
+                sEmail:{
+                    required:true,
+                    email:true,
+                },
+
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                $("form").ajaxSubmit(function(data){
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.$('#btn-refresh').click();
+                    parent.layer.close(index);
+
+                });
+
+
+               // var index = parent.layer.getFrameIndex(window.name);
+              //  parent.$('#btn-refresh').click();
+                //$("#btn-refresh ").trigger('click');
+
+              //  parent.layer.close(index);
+              // window.location.replace(location.href);
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

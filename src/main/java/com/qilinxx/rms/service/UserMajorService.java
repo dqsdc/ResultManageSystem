@@ -7,4 +7,6 @@ import java.util.List;
 public interface UserMajorService {
     /**通过用户uid得到所有的权限mid*/
     List<UserMajor> findAllUserMajorByUid(Integer uid);
+
+    int updatePermission(int uid,int permission[]);
 }

@@ -796,7 +796,7 @@ public class ManagerController {
                 break;
             case "thesis":
                 Thesis thesis = thesisService.findThesisByTid(id);
-                if (thesis.getState().equals("2")||!thesis.getCreateId().equals(user.getUid())){
+                if (thesis.getState().equals("2")){//||!thesis.getCreateId().equals(user.getUid())
                     display=false;
                 }
                 createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));

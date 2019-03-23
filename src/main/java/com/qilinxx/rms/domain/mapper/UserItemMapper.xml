@@ -68,4 +68,7 @@
   <sql id="Base_Column_List">
     uid, item_id, item_type, remake
   </sql>
+  <select id="selectAllByItemType" resultMap="BaseResultMap">
+    select * from user_item WHERE item_type=#{type} group by item_id
+  </select>
 </mapper>

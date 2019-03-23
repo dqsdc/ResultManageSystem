@@ -1,0 +1,68 @@
+
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>酷丁后台管理系统登录</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" content="酷丁后台管理系统登录界面"/>
+	<link rel="Bookmark" href="/favicon.ico">
+	<link rel="Shortcut Icon" href="/favicon.ico"/>
+	<link rel="stylesheet" href="static/h-ui/css/style.css" type="text/css" media="all" />
+	<link href="//fonts.googleapis.com/css?family=Cuprum:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext,vietnamese"
+	    rel="stylesheet">
+	<!-- //web-fonts -->
+</head>
+
+<body>
+	<h1>
+		<span>Login</span>
+		<span>Kuding</span>
+		<span></span>
+	</h1>
+	<!-- content -->
+	<div class="sub-main-w3"  >
+		<form validate="true" th:action="loginSure" method="post" id="form-article-add">
+			<div class="form-group">
+				<label for="adminNameId">管理员姓名</label>
+				<input type="text" class="form-control" name="adminName" id="adminNameId" placeholder="Enter Name" required>
+			</div>
+
+			
+			<div class="form-group">
+				<label for="passwordId">密码</label>
+				<input  type="password" name="password" class="form-control" id="passwordId" placeholder="Password" required>
+			</div>
+			<div th:text="${msg}"></div>
+		
+			<button type="submit" class="btn btn-primary ">登录</button>
+		</form>
+	</div>
+	<!-- //content -->
+	<!---728x90--->
+
+	<!-- copyright -->
+	<div class="footer">
+		<p>&copy; 2018 了解学员端信息 | 酷丁首页
+			<a href="#">kuding.com</a>
+		</p>
+	</div>
+	<!-- //copyright -->
+	<!---728x90--->
+
+
+	<!-- Jquery -->
+	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js" ></script>
+	<!-- //Jquery -->
+	<!-- Jquery -->
+
+
+	<script type="text/javascript" src="lib/Validform_v5.3.2_min.js"></script>
+	<!-- //Jquery -->
+
+
+</body>
+
+</html>

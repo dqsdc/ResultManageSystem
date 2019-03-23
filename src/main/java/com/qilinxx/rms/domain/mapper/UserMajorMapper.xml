@@ -67,4 +67,7 @@
   <sql id="Base_Column_List">
     uid, mid, remake
   </sql>
+  <select id="selectAllByUid" resultMap="BaseResultMap">
+    SELECT * from user_major WHERE uid=#{uid}
+  </select>
 </mapper>
