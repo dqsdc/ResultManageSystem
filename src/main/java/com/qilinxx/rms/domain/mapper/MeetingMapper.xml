@@ -12,6 +12,8 @@
     <result column="organizer" jdbcType="VARCHAR" property="organizer" />
     <result column="meeting_time" jdbcType="BIGINT" property="meetingTime" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="remake" jdbcType="VARCHAR" property="remake" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -82,6 +84,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, people, sponsor, organizer, meeting_time, profile, remake
+    id, name, people, sponsor, organizer, meeting_time, profile, create_time, update_time,
+    remake
   </sql>
 </mapper>

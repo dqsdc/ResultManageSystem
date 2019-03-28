@@ -12,6 +12,8 @@
     <result column="publish_time" jdbcType="BIGINT" property="publishTime" />
     <result column="ISBN" jdbcType="VARCHAR" property="isbn" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="remake" jdbcType="VARCHAR" property="remake" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -82,6 +84,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, people, press, publish_time, ISBN, profile, remake
+    id, name, people, press, publish_time, ISBN, profile, create_time, update_time, remake
   </sql>
 </mapper>

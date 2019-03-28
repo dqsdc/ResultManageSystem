@@ -546,7 +546,6 @@ public class ManagerController {
 
     /**
      * ajax提交奖励，保存附件
-     * @param getTimeDate    研究开始时间
      * @throws IOException
      */
     @PostMapping("ajax-reward-form")
@@ -643,6 +642,9 @@ public class ManagerController {
         return json;
     }
 
+
+
+    //教材的上传与附件保存
     /**
      * @return 来到教材的上传页面
      */
@@ -654,7 +656,56 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//textbook"));
         return "manager/upload/textbook-upload";
     }
+    /**
+     * ajax 提交教材的附件
+     * @param file  教材附件
+     * @throws IOException
+     */
+    @PostMapping("ajax-textbook-file")
+    @ResponseBody
+    public JSONObject ajaxTextbookFile(MultipartFile file, HttpSession session) throws IOException {
+        JSONObject json=new JSONObject();
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        List<MultipartFile> textbookFileList=FileKit.getTextbookFileList();
+        //手动去重
+        int i=0;
+        if(textbookFileList.size()!=0){
+            for (MultipartFile multipartFile:textbookFileList) {
+                if(multipartFile.getOriginalFilename().equals(file.getOriginalFilename())){
+                    i++;
+                }
+            }
+        }
+        if (i==0){
+            textbookFileList.add(file);
+            FileKit.setTextbookFileList(textbookFileList);
 
+            String path = UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//textbook";//存储的根路径 临时文件目录
+            File dirFile=new File(path);
+            dirFile.mkdirs();
+            String fileName = file.getOriginalFilename();//原文件名
+            File targetFile = new File(path, fileName);
+            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
+        }
+        return json;
+    }
+
+    /**
+     * ajax提交项目，保存附件
+     * @throws IOException
+     */
+    @PostMapping("ajax-textbook-form")
+    @ResponseBody
+    public JSONObject ajaxProjectForm(HttpSession session,Textbook textbook,StringBuffer publishTimeDate) throws IOException {
+        JSONObject json=new JSONObject();
+        System.out.println(textbook);
+        System.out.println(publishTimeDate);
+        json.put("msg","提交成功待审核！");
+        return json;
+    }
+
+
+    //会议的上传与附件保存
     /**
      * @return 来到会议上传页面
      */
@@ -666,11 +717,42 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//meeting"));
         return "manager/upload/meeting-upload";
     }
+    /**
+     * ajax 提交会议的附件
+     * @param file  会议附件
+     * @throws IOException
+     */
+    @PostMapping("ajax-meeting-file")
+    @ResponseBody
+    public JSONObject ajaxMeetingFile(MultipartFile file, HttpSession session) throws IOException {
+        JSONObject json=new JSONObject();
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        List<MultipartFile> meetingFileList=FileKit.getMeetingFileList();
+        //手动去重
+        int i=0;
+        if(meetingFileList.size()!=0){
+            for (MultipartFile multipartFile:meetingFileList) {
+                if(multipartFile.getOriginalFilename().equals(file.getOriginalFilename())){
+                    i++;
+                }
+            }
+        }
+        if (i==0){
+            meetingFileList.add(file);
+            FileKit.setMeetingFileList(meetingFileList);
+
+            String path = UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//meeting";//存储的根路径 临时文件目录
+            File dirFile=new File(path);
+            dirFile.mkdirs();
+            String fileName = file.getOriginalFilename();//原文件名
+            File targetFile = new File(path, fileName);
+            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
+        }
+        return json;
+    }
 
 
-
-
-
+    //项目、论文、奖励、教材、会议的总览页面
     /**
      * @return  来到项目总览页面
      */
@@ -718,7 +800,7 @@ public class ManagerController {
         return "manager/overview/thesis-overview";
     }
     /**
-     * @return  来到论文总览页面
+     * @return  来到奖励总览页面
      */
     @GetMapping("reward-overview")
     public String rewardOverview(HttpSession session,Model model){
@@ -746,7 +828,7 @@ public class ManagerController {
 
 
 
-    //item公共用方法
+    //item公共使用方法
     /**
      * ajax删除所传id  的item
      * @param itemType     为item类别

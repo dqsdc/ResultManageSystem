@@ -27,6 +27,12 @@ public class Meeting {
     @Column(name = "profile")
     private String profile;
 
+    @Column(name = "create_time")
+    private Long createTime;
+
+    @Column(name = "update_time")
+    private Long updateTime;
+
     @Column(name = "remake")
     private String remake;
 
@@ -169,6 +175,41 @@ public class Meeting {
     public void setRemake(String remake) {
         this.remake = remake == null ? null : remake.trim();
     }
+    /**
+     * 获取创建时间
+     *
+     * @return create_time - 创建时间
+     */
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * 获取更新时间
+     *
+     * @return update_time - 更新时间
+     */
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * 设置更新时间
+     *
+     * @param updateTime 更新时间
+     */
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
 
     @Override
     public String toString() {
@@ -183,6 +224,8 @@ public class Meeting {
         sb.append(", organizer=").append(organizer);
         sb.append(", meetingTime=").append(meetingTime);
         sb.append(", profile=").append(profile);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", remake=").append(remake);
         sb.append("]");
         return sb.toString();
