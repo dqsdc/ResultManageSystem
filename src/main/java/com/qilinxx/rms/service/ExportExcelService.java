@@ -1,0 +1,13 @@
+package com.qilinxx.rms.service;
+
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @Auther: dqsdc
+ * @Date: 2019-03-25 16:07
+ * @Description:
+ */
+public interface ExportExcelService {
+    void exportUserInfo(int[] ids,HttpServletResponse response);
+}

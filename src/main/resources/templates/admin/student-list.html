@@ -36,7 +36,7 @@
 		<!--<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>-->
 	<!--</div>-->
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
-		<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="member_add('添加','admin-student-add','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a></span> <span class="r">共有数据：<strong th:text="${userInfoList.size()}">88</strong> 条</span> </div>
+		<a href="javascript:;" onclick="excel()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6e2;</i> 生成excel</a> <a href="javascript:;" onclick="member_add('添加','admin-student-add','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a></span> <span class="r">共有数据：<strong th:text="${userInfoList.size()}">88</strong> 条</span> </div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
 		<thead>
@@ -54,7 +54,7 @@
 		</thead>
 		<tbody>
 			<tr class="text-c" th:each="userInfo,interStart:${userInfoList}">
-				<td><input type="checkbox" value="{}" name=""></td>
+				<td><input type="checkbox" th:value="${userInfo.uid}" name="cb"></td>
 				<td th:text="${userInfo.uid}">1</td>
 				<td th:text="${userInfo.name}">张三</td>
 				<td th:text="${userInfo.sex}" >女</td>
@@ -208,9 +208,82 @@ function member_del(uid){
 			},
 		});
 	});
-
-
 }
+</script>
+<script>
+    function getSelectLine() {
+        var nTrs = table.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr
+        for ( var i = 0; i < nTrs.length; i++) {
+            if($(nTrs[i]).hasClass('selected')){//相当于$(tr)
+                var selectLine = table.fnGetData(nTrs[i]);
+                alert(selectLine[4]);//获取一行第4列数据
+            }
+        }
+    }
+
+</script>
+<script type="text/JavaScript">
+    function downLoad(strUrl) {
+
+
+    }
+</script>
+<script>
+    /*生成excel*/
+    function excel() {
+        var cb=document.getElementsByName("cb");
+        var a=0;
+        var arr=new Array();
+        //循环判断有没有选择,如果有就a++
+        for(var i=0;i<cb.length;i++){
+            if(cb[i].checked){
+                //因为删除会改变数组下标,所以把对象拿出来放到一个数组中
+                arr[a]=cb[i].parentNode.parentNode;
+                a++;
+            }
+        }
+        //判断如果标识符等于0就没有选中的
+        if(a==0){
+            alert("请至少选择一行");
+        }else{
+            var chk = [];
+            $('input[name="cb"]:checked').each(function () {
+                //var method =  $("#" + $(this).val()).val();
+                chk.push($(this).val());
+                console.log(chk);
+            });
+            var form = $("<form>");   //定义一个form表单
+            form.attr('style', 'display:none');   //在form表单中添加查询参数
+            form.attr('target', '');
+            form.attr('method', 'post');
+            form.attr('action', '/testTable?chk='+chk);
+
+            var input1 = $('<input>');
+            input1.attr('type', 'hidden');
+            input1.attr('name', 'strUrl');
+            $('body').append(form);  //将表单放置在web中 
+            form.append(input1);   //将查询参数控件提交到表单上
+            form.submit();
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/testTable?chk='+chk,
+            //     data:null,
+            //     success: function(data){
+            //        console.log(data);
+            //
+            //     },
+            //     error:function(data) {
+            //         alert("发生错误");
+            //         console.log(data.msg);
+            //     },
+            // });
+            //循环自己定义的数组,删除选中的TR
+            // for(var c=0;c<arr.length;c++){
+            //  console.log(arr[c]);
+            //     arr[c].remove();
+            // }
+        }
+    }
 </script>
 <script>
 
