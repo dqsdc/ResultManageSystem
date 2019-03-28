@@ -36,6 +36,15 @@ public class Textbook {
     @Column(name ="remake")
     private String remake;
 
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "create_id")
+    private Integer createId;
+
+    @Column(name = "mid")
+    private Integer mid;
+
     /**
      * @return id
      */
@@ -159,23 +168,6 @@ public class Textbook {
     }
 
     /**
-     * 获取备用字段
-     *
-     * @return remake - 备用字段
-     */
-    public String getRemake() {
-        return remake;
-    }
-
-    /**
-     * 设置备用字段
-     *
-     * @param remake 备用字段
-     */
-    public void setRemake(String remake) {
-        this.remake = remake == null ? null : remake.trim();
-    }
-    /**
      * 获取创建时间
      *
      * @return create_time - 创建时间
@@ -211,6 +203,78 @@ public class Textbook {
         this.updateTime = updateTime;
     }
 
+    /**
+     * 获取备用字段
+     *
+     * @return remake - 备用字段
+     */
+    public String getRemake() {
+        return remake;
+    }
+
+    /**
+     * 设置备用字段
+     *
+     * @param remake 备用字段
+     */
+    public void setRemake(String remake) {
+        this.remake = remake == null ? null : remake.trim();
+    }
+
+    /**
+     * 获取0为待审核，1为审核未通过，2为通过审核
+     *
+     * @return state - 0为待审核，1为审核未通过，2为通过审核
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * 设置0为待审核，1为审核未通过，2为通过审核
+     *
+     * @param state 0为待审核，1为审核未通过，2为通过审核
+     */
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
+    }
+
+    /**
+     * 获取发布人的id
+     *
+     * @return create_id - 发布人的id
+     */
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    /**
+     * 设置发布人的id
+     *
+     * @param createId 发布人的id
+     */
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
+
+    /**
+     * 获取专业的id
+     *
+     * @return mid - 专业的id
+     */
+    public Integer getMid() {
+        return mid;
+    }
+
+    /**
+     * 设置专业的id
+     *
+     * @param mid 专业的id
+     */
+    public void setMid(Integer mid) {
+        this.mid = mid;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -227,6 +291,9 @@ public class Textbook {
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", remake=").append(remake);
+        sb.append(", state=").append(state);
+        sb.append(", createId=").append(createId);
+        sb.append(", mid=").append(mid);
         sb.append("]");
         return sb.toString();
     }

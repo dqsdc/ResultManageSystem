@@ -38,6 +38,8 @@ public class ManagerController {
     ThesisService thesisService;
     @Autowired
     RewardService rewardService;
+    @Autowired
+    TextbookService textbookService;
 
     /**
      * @return  来到教师成果管理系统页面
@@ -696,10 +698,95 @@ public class ManagerController {
      */
     @PostMapping("ajax-textbook-form")
     @ResponseBody
-    public JSONObject ajaxProjectForm(HttpSession session,Textbook textbook,StringBuffer publishTimeDate) throws IOException {
+    public JSONObject ajaxProjectForm(HttpSession session,Textbook textbook,String publishTimeDate) throws IOException {
         JSONObject json=new JSONObject();
         System.out.println(textbook);
         System.out.println(publishTimeDate);
+
+        //以下三种种错误
+        Integer textBookNum = textbookService.findTextBookByISBN(textbook.getIsbn());
+        if(textBookNum!=0){
+            json.put("msg","该项目已被提交！");
+            return json;
+        }
+        List<MultipartFile> textbookFileList = FileKit.getTextbookFileList();
+        if(textbookFileList.size()==0){
+            json.put("msg","请先上传附件！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names=textbook.getPeople().replace("，",",").replace("、",",").replace(" ","").split(",");
+        Map<String,String> nameMap=new HashMap<>();
+        String people="";
+        for (String name:names) {
+            if(!name.equals("")){
+                nameMap.put(name,"");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people=people+(String)entry.getKey()+",";
+        }
+        if(!nameMap.containsKey(user.getName())){
+            json.put("msg","此教材与本账号用户无关！");
+            return json;
+        }
+        textbook.setPeople(people.substring(0,people.lastIndexOf(",")));
+        /**
+         * 新建项目记录
+         */
+
+        //将日期转化为时间戳
+        publishTimeDate+="-00 00:00:00";
+        textbook.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
+        textbook.setId(UUID.randomUUID().toString().replace("-",""));
+        //project.setState("0");
+        //project.setCreateId(user.getUid());
+        //project.setMid(user.getMid());
+        //project.setCreateTime(DateKit.getUnixTimeLong());
+        //projectService.createProject(project);
+        ///**
+        // * 新建用户与项目的关系记录
+        // */
+        //UserItem userItem=new UserItem();
+        //userItem.setItemId(project.getPid());
+        //userItem.setItemType("project");
+        //Iterator iterator2 = nameMap.entrySet().iterator();
+        //while (iterator2.hasNext()) {
+        //    Map.Entry entry = (Map.Entry) iterator2.next();
+        //    List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
+        //    if(userInfoList.size()!=0){
+        //        userItem.setUid(userInfoList.get(0).getUid());
+        //        userItemService.createUserItem(userItem);
+        //    }
+        //}
+        ///**
+        // * 新建附件记录
+        // */
+        //Document document=new Document();
+        //document.setItemId(project.getPid());
+        //document.setItemType("project");
+        //String fileName="";
+        //for (MultipartFile file:projectFileList) {
+        //    fileName=file.getOriginalFilename();
+        //    document.setName(fileName);
+        //    document.setType(fileName.substring(fileName.lastIndexOf(".")));
+        //    document.setPath("upload\\"+user.getUid()+"\\project\\"+project.getCreateTime()+"\\"+fileName);
+        //    documentService.createDocument(document);
+        //    //文件拷贝与删除
+        //    File tempFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//project",fileName);
+        //    File targetFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//project//"+project.getCreateTime(),fileName);
+        //    File pathFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//project//"+project.getCreateTime());
+        //    pathFile.mkdirs();
+        //    FileCopyUtils.copy(tempFile,targetFile);
+        //    FileKit.deleteFile(tempFile);
+        //}
+        //FileKit.setProjectFileList(FileKit.clearOrInitList(projectFileList));
+        //File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project");
+        //FileKit.deleteFile(dirFile);
+
         json.put("msg","提交成功待审核！");
         return json;
     }
