@@ -7,10 +7,12 @@ import com.qilinxx.rms.util.Commons;
 import com.qilinxx.rms.util.DateKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -43,10 +45,27 @@ public class AdminController extends BaseController {
     @Autowired
     RewardService rewardService;
 
+    @Autowired
+    ExportExcelService exportExcelService;
+
     @RequestMapping("/adminIndex")
     public String showIndex(HttpServletRequest request) {
         logService.insertLog("管理员登录", "admin", userIp(request));
         return "admin/index";
+    }
+
+    @Transactional
+    @RequestMapping("/testTable")
+    @ResponseBody
+    public void test(int[] chk,HttpServletResponse response){
+//        response.setContentType("application/octet-stream");
+//        response.setContentType("application/OCTET-STREAM;charset=UTF-8");
+        //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
+        System.out.println(Arrays.toString(chk));
+        exportExcelService.exportUserInfo(chk,response);
+        //return String.valueOf(chk.length);
     }
 
     @RequestMapping("/welcome")
@@ -65,7 +84,6 @@ public class AdminController extends BaseController {
     @RequestMapping("grant-list.html")
     public String showGrantList(Model model) {
         List<UserInfoVo> infoList = userInfoService.findAllUser();
-
         model.addAttribute("userInfoList", infoList);
         model.addAttribute("commons", new Commons());
         return "admin/grant-list";
