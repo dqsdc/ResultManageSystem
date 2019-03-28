@@ -2,14 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qilinxx.rms.domain.mapper.MeetingMapper">
   <resultMap id="BaseResultMap" type="com.qilinxx.rms.domain.model.Meeting">
-    <result column="id" jdbcType="VARCHAR" property="id" />
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="member" jdbcType="VARCHAR" property="member" />
+    <result column="people" jdbcType="VARCHAR" property="people" />
     <result column="sponsor" jdbcType="VARCHAR" property="sponsor" />
     <result column="organizer" jdbcType="VARCHAR" property="organizer" />
-    <result column="time" jdbcType="BIGINT" property="time" />
+    <result column="meeting_time" jdbcType="BIGINT" property="meetingTime" />
+    <result column="profile" jdbcType="VARCHAR" property="profile" />
+    <result column="remake" jdbcType="VARCHAR" property="remake" />
   </resultMap>
   <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -39,6 +47,9 @@
     </where>
   </sql>
   <sql id="Update_By_Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -68,6 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, member, sponsor, organizer, time
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, name, people, sponsor, organizer, meeting_time, profile, remake
   </sql>
 </mapper>

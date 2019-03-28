@@ -30,17 +30,17 @@
     <span >位置：</span>
     <ul class="placeul" >
         <li><a href="index">首页</a></li>
-        <li><a href="reward-upload">上传成果</a></li>
+        <li><a href="project">上传成果</a></li>
     </ul>
 </div>
 <div class="formbody">
     <div id="usual1" class="usual">
         <div class="itab">
             <ul>
-                <li><a id="a1" href="project-upload"  >发布项目</a></li>
+                <li><a id="a1" href="project-upload" >发布项目</a></li>
                 <li><a id="a2" href="thesis-upload" >发布论文</a></li>
-                <li><a id="a3" href="reward-upload" class="selected">发布奖励</a></li>
-                <li><a id="a4" href="textbook-upload" >发布教材</a></li>
+                <li><a id="a3" href="reward-upload" >发布奖励</a></li>
+                <li><a id="a4" href="textbook-upload" class="selected">发布教材</a></li>
                 <li><a id="a5" href="meeting-upload" >发布会议</a></li>
             </ul>
         </div>
@@ -54,29 +54,32 @@
         </div>
 
         <div id="tab3" class="tabson" >
-            <form  class="form form-horizontal" id="reward-form" method="post">
+
+        </div>
+        <div id="tab4" class="tabson" >
+            <form  class="form form-horizontal" id="textbook-form" method="post">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【奖励名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材名称】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" class="input-text"  id="name" name="name">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖人】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材主编】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" name="people" id="people" placeholder="若为多名获奖人，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                        <input type="text" name="chief" id="chief" placeholder="若为多名主编，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖时间】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版年月】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="getTimeDate" id="getTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【授奖单位】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【ISBN】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text"  id="company" name="company">
+                        <input type="text" class="input-text"  id="projectSource" name="projectSource">
                     </div>
                 </div>
                 <div class="row cl">
@@ -400,7 +403,7 @@
                 swf: 'H-ui/lib/webuploader/0.1.5/Uploader.swf',
                 chunked: false,
                 chunkSize: 512 * 1024,
-                server: 'ajax-reward-file',
+                server: 'ajax-textbook-file',
                 // runtimeOrder: 'flash',
 
                 // accept: {
@@ -811,22 +814,43 @@
             increaseArea: '20%'
         });
 
-        $("#reward-form").validate({
+        $("#textbook-form").validate({
             rules:{
                 name :{
                     required:true,
                     maxlength:250
                 },
-                 people:{
-                    required:true,
-                     maxlength:290
-                },
-                getTimeDate:{
-                    required:true
-                },
-                company:{
+                host :{
                     required:true,
                     maxlength:250
+                },
+                people:{
+                    required:true,
+                    maxlength:290
+                },
+                startTimeDate:{
+                    required:true
+                },
+                endTimeDate:{
+                    required:true
+                },
+                projectSource:{
+                    required:true,
+                    maxlength:250
+                },
+                money:{
+                    required:true,
+                    number:true,
+                    maxlength:9
+                },
+                rank:{
+                    required:true
+                },
+                setTimeDate:{
+                    required:true
+                },
+                type:{
+                    required:true
                 },
                 profile:{
                     maxlength:200
@@ -839,7 +863,7 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    url: "/ajax-reward-form" ,
+                    url: "/ajax-textbook-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
@@ -862,7 +886,7 @@
     $(function () {
         $("#tab1").css("display","none");
         $("#tab2").css("display","none");
-        $("#tab4").css("display","none");
+        $("#tab3").css("display","none");
         $("#tab5").css("display","none");
     });
     $("#a1").click(function () {

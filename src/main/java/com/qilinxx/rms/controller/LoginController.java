@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 
 /**
@@ -32,7 +34,7 @@ public class LoginController {
 
 
     @PostMapping("login")
-    public String login(Integer account, String password , Model model, HttpSession session) {
+    public String login(Integer account, String password , Model model, HttpSession session, HttpServletResponse response) throws IOException {
         //下面的账号密码验证可以用shiro代替
         UserInfo user = userInfoService.findUserByUid(account);
         if (user == null) {
@@ -47,6 +49,7 @@ public class LoginController {
             return "login";
         }
         session.setAttribute("uid", account);
-        return "redirect:/main";
+        response.sendRedirect("/main");
+        return null;
     }
 }

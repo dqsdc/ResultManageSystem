@@ -42,10 +42,10 @@ public class ManagerController {
     /**
      * @return  来到教师成果管理系统页面
      */
-    @GetMapping({"main"})
+    @GetMapping({"main","1"})
     public String main(HttpSession session){
         //以下代码项目完成修改
-        //session.setAttribute("uid",2013001);
+        session.setAttribute("uid",2013001);
         //以上代码项目完成时修改
         return "manager/main";
     }
@@ -643,9 +643,29 @@ public class ManagerController {
         return json;
     }
 
+    /**
+     * @return 来到教材的上传页面
+     */
+    @GetMapping("textbook-upload")
+    public String textbook(HttpSession session){
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //清空或者初始化fileList
+        FileKit.setTextbookFileList(FileKit.clearOrInitList(FileKit.getTextbookFileList()));
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//textbook"));
+        return "manager/upload/textbook-upload";
+    }
 
-
-
+    /**
+     * @return 来到会议上传页面
+     */
+    @GetMapping("meeting-upload")
+    public String meeting(HttpSession session){
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //清空或者初始化fileList
+        FileKit.setMeetingFileList(FileKit.clearOrInitList(FileKit.getMeetingFileList()));
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//meeting"));
+        return "manager/upload/meeting-upload";
+    }
 
 
 
@@ -948,6 +968,7 @@ public class ManagerController {
        model.addAttribute("projectNum",projectNum);
        model.addAttribute("thesisNum",thesisNum);
        model.addAttribute("rewardNum",rewardNum);
+        System.out.println(projectNum+" "+thesisNum+" "+rewardNum);
         model.addAttribute("thesisList",thesisList);
         model.addAttribute("rewardList",rewardList);
         model.addAttribute("projectList",projectList);
@@ -956,6 +977,10 @@ public class ManagerController {
         return "manager/check/check";
     }
 
+    /** 审核通过
+     * @param itemType  item类别
+     * @param id    itemId
+     */
     @PostMapping("ajax-item-start")
     @ResponseBody
     public JSONObject  ajaxItemStart(String itemType,String id){
@@ -981,6 +1006,10 @@ public class ManagerController {
         return json;
     }
 
+    /** 审核不通过
+     * @param itemType  item类别
+     * @param id    itemId
+     */
     @PostMapping("ajax-item-stop")
     @ResponseBody
     public JSONObject  ajaxItemStop(String itemType,String id){

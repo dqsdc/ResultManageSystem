@@ -40,10 +40,16 @@
                 <li><a id="a1" href="project-upload"  >发布项目</a></li>
                 <li><a id="a2" href="thesis-upload" class="selected">发布论文</a></li>
                 <li><a id="a3" href="reward-upload" >发布奖励</a></li>
+                <li><a id="a4" href="textbook-upload" >发布教材</a></li>
+                <li><a id="a5" href="meeting-upload" >发布会议</a></li>
             </ul>
         </div>
 
         <div id="tab1" class="tabson">
+
+        </div>
+
+        <div id="tab2" class="tabson" >
             <form  class="form form-horizontal" id="thesis-form" method="post">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【论文名称】：</label>
@@ -142,10 +148,6 @@
                     </div>
                 </div>
             </form>
-        </div>
-
-        <div id="tab2" class="tabson" >
-
         </div>
 
         <div id="tab3" class="tabson" >
@@ -928,8 +930,10 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        $("#tab2").css("display","none");
+        $("#tab1").css("display","none");
         $("#tab3").css("display","none");
+        $("#tab4").css("display","none");
+        $("#tab5").css("display","none");
     });
     $("#a1").click(function () {
         if($("#a1").hasClass("selected")){
@@ -937,6 +941,8 @@
             $("#tab1").css("display","block");$("#a1").addClass("selected");
             $("#tab2").css("display","none");$("#a2").removeClass("selected");
             $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
         }
     });
     $("#a2").click(function () {
@@ -945,6 +951,8 @@
             $("#tab1").css("display","none");$("#a1").removeClass("selected");
             $("#tab2").css("display","block");$("#a2").addClass("selected");
             $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
         }
     });
     $("#a3").click(function () {
@@ -953,6 +961,28 @@
             $("#tab1").css("display","none");$("#a1").removeClass("selected");
             $("#tab2").css("display","none");$("#a2").removeClass("selected");
             $("#tab3").css("display","block");$("#a3").addClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
+        }
+    });
+    $("#a4").click(function () {
+        if($("#a4").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","none");$("#a1").removeClass("selected");
+            $("#tab2").css("display","none");$("#a2").removeClass("selected");
+            $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","block");$("#a4").addClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
+        }
+    });
+    $("#a5").click(function () {
+        if($("#a5").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","none");$("#a1").removeClass("selected");
+            $("#tab2").css("display","none");$("#a2").removeClass("selected");
+            $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","block");$("#a5").addClass("selected");
         }
     });
 </script>

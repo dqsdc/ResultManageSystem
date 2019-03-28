@@ -14,6 +14,9 @@ public class FileKit {
     private static List<MultipartFile> projectFileList; //项目附件集合
     private static List<MultipartFile> thesisFileList;  //论文附件集合
     private static List<MultipartFile> rewardFileList;  //奖励附件集合
+    private static List<MultipartFile> textbookFileList;    //教材附件的集合
+    private static List<MultipartFile> meetingFileList;     //会议附件的集合
+
 
     /**
      * 清除或初始化list
@@ -47,6 +50,21 @@ public class FileKit {
         return dirFile.delete();
     }
 
+    public static List<MultipartFile> getTextbookFileList() {
+        return textbookFileList;
+    }
+
+    public static void setTextbookFileList(List<MultipartFile> textbookFileList) {
+        FileKit.textbookFileList = textbookFileList;
+    }
+
+    public static List<MultipartFile> getMeetingFileList() {
+        return meetingFileList;
+    }
+
+    public static void setMeetingFileList(List<MultipartFile> meetingFileList) {
+        FileKit.meetingFileList = meetingFileList;
+    }
 
     public static List<MultipartFile> getProjectFileList() {
         return projectFileList;

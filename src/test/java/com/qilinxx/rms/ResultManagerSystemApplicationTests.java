@@ -1,5 +1,9 @@
 package com.qilinxx.rms;
 
+import com.qilinxx.rms.domain.mapper.MeetingMapper;
+import com.qilinxx.rms.domain.mapper.TextbookMapper;
+import com.qilinxx.rms.domain.model.Meeting;
+import com.qilinxx.rms.domain.model.Textbook;
 import com.qilinxx.rms.service.DocumentService;
 import com.qilinxx.rms.service.ProjectService;
 import com.qilinxx.rms.service.RewardService;
@@ -21,6 +25,10 @@ public class ResultManagerSystemApplicationTests {
 	DocumentService documentService;
 	@Autowired
 	ThesisService thesisService;
+	@Autowired
+	TextbookMapper textbookMapper;
+	@Autowired
+	MeetingMapper meetingMapper;
 	@Test
 	public void testProjectService() {
 		//int projectByNameHostFrom = projectService.findProjectByNameHostFrom("", "", "");
@@ -32,6 +40,13 @@ public class ResultManagerSystemApplicationTests {
 	public void testDocumentService(){
 		thesisService.deleteThesisByTid("dfdf359244524c9284c958b2e282a927");
 
+	}
+	@Test
+	public void testMapper(){
+		Textbook textbook = textbookMapper.selectByPrimaryKey("1");
+		System.out.println(textbook);
+		Meeting meeting = meetingMapper.selectByPrimaryKey("1");
+		System.out.println(meeting);
 	}
 
 }
