@@ -5,6 +5,12 @@
 <title>无标题文档</title>
 <link href="mis/css/style.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript" src="mis/js/jquery.js"></script>
+    <style type="text/css">
+        .topleft img {
+            margin-top: -10px;
+            margin-left: 10px;
+        }
+    </style>
 <script type="text/javascript">
 $(function(){	
 	//顶部导航切换
@@ -22,7 +28,7 @@ $(function(){
    
     <div class="topright">    
     <ul>
-    <li><a href="login" target="_parent">退出</a></li>
+    <li><a href="login?clearSession=true" target="_parent">退出</a></li>
     </ul>
    
     <div class="user">

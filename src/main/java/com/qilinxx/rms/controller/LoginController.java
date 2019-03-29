@@ -28,7 +28,11 @@ public class LoginController {
      * @return 跳转登录页面
      */
     @GetMapping("login")
-    public String login(){
+    public String login(boolean clearSession,HttpSession session){
+            if(clearSession==true){
+                //清空session
+                session.removeAttribute("uid");
+            }
         return "login";
     }
 

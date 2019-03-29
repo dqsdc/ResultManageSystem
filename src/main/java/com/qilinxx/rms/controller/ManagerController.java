@@ -40,6 +40,8 @@ public class ManagerController {
     RewardService rewardService;
     @Autowired
     TextbookService textbookService;
+    @Autowired
+    MeetingService meetingService;
 
     /**
      * @return  来到教师成果管理系统页面
@@ -47,7 +49,7 @@ public class ManagerController {
     @GetMapping({"main","1"})
     public String main(HttpSession session){
         //以下代码项目完成修改
-        session.setAttribute("uid",2013001);
+        //session.setAttribute("uid",2013001);
         //以上代码项目完成时修改
         return "manager/main";
     }
@@ -78,7 +80,7 @@ public class ManagerController {
             }
             model.addAttribute("majorList",majorList);
             for (Major major:majorList) {
-                int i = projectService.countProjectByMidState(major.getMid(),"0")+thesisService.countThesisByMidState(major.getMid(),"0")+rewardService.countRewardByMidState(major.getMid(),"0");
+                int i = projectService.countProjectByMidState(major.getMid(),"0")+thesisService.countThesisByMidState(major.getMid(),"0")+rewardService.countRewardByMidState(major.getMid(),"0")+textbookService.countTextbookByMidState(major.getMid(),"0")+meetingService.countMeetingByMidState(major.getMid(),"0");
                 majorMap.put(major.getMid(),i);
             }
             model.addAttribute("majorMap",majorMap);
@@ -99,7 +101,10 @@ public class ManagerController {
      * @return 显示主页
      */
     @GetMapping("index")
-    public String index(){
+    public String index(HttpSession session,Model model){
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        model.addAttribute("user",user);
+        model.addAttribute("dateKit",new DateKit());
         return "manager/index";
     }
 
@@ -693,20 +698,17 @@ public class ManagerController {
     }
 
     /**
-     * ajax提交项目，保存附件
+     * ajax提交教材，保存附件
      * @throws IOException
      */
     @PostMapping("ajax-textbook-form")
     @ResponseBody
     public JSONObject ajaxProjectForm(HttpSession session,Textbook textbook,String publishTimeDate) throws IOException {
         JSONObject json=new JSONObject();
-        System.out.println(textbook);
-        System.out.println(publishTimeDate);
-
         //以下三种种错误
         Integer textBookNum = textbookService.findTextBookByISBN(textbook.getIsbn());
         if(textBookNum!=0){
-            json.put("msg","该项目已被提交！");
+            json.put("msg","该教材已被提交！");
             return json;
         }
         List<MultipartFile> textbookFileList = FileKit.getTextbookFileList();
@@ -742,50 +744,50 @@ public class ManagerController {
         publishTimeDate+="-00 00:00:00";
         textbook.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
         textbook.setId(UUID.randomUUID().toString().replace("-",""));
-        //project.setState("0");
-        //project.setCreateId(user.getUid());
-        //project.setMid(user.getMid());
-        //project.setCreateTime(DateKit.getUnixTimeLong());
-        //projectService.createProject(project);
-        ///**
-        // * 新建用户与项目的关系记录
-        // */
-        //UserItem userItem=new UserItem();
-        //userItem.setItemId(project.getPid());
-        //userItem.setItemType("project");
-        //Iterator iterator2 = nameMap.entrySet().iterator();
-        //while (iterator2.hasNext()) {
-        //    Map.Entry entry = (Map.Entry) iterator2.next();
-        //    List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
-        //    if(userInfoList.size()!=0){
-        //        userItem.setUid(userInfoList.get(0).getUid());
-        //        userItemService.createUserItem(userItem);
-        //    }
-        //}
-        ///**
-        // * 新建附件记录
-        // */
-        //Document document=new Document();
-        //document.setItemId(project.getPid());
-        //document.setItemType("project");
-        //String fileName="";
-        //for (MultipartFile file:projectFileList) {
-        //    fileName=file.getOriginalFilename();
-        //    document.setName(fileName);
-        //    document.setType(fileName.substring(fileName.lastIndexOf(".")));
-        //    document.setPath("upload\\"+user.getUid()+"\\project\\"+project.getCreateTime()+"\\"+fileName);
-        //    documentService.createDocument(document);
-        //    //文件拷贝与删除
-        //    File tempFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//project",fileName);
-        //    File targetFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//project//"+project.getCreateTime(),fileName);
-        //    File pathFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//project//"+project.getCreateTime());
-        //    pathFile.mkdirs();
-        //    FileCopyUtils.copy(tempFile,targetFile);
-        //    FileKit.deleteFile(tempFile);
-        //}
-        //FileKit.setProjectFileList(FileKit.clearOrInitList(projectFileList));
-        //File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project");
-        //FileKit.deleteFile(dirFile);
+        textbook.setState("0");
+        textbook.setCreateId(user.getUid());
+        textbook.setMid(user.getMid());
+        textbook.setCreateTime(DateKit.getUnixTimeLong());
+        textbookService.createTextbook(textbook);
+        /**
+         * 新建用户与项目的关系记录
+         */
+        UserItem userItem=new UserItem();
+        userItem.setItemId(textbook.getId());
+        userItem.setItemType("textbook");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
+            if(userInfoList.size()!=0){
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        /**
+         * 新建附件记录
+         */
+        Document document=new Document();
+        document.setItemId(textbook.getId());
+        document.setItemType("textbook");
+        String fileName="";
+        for (MultipartFile file:textbookFileList) {
+            fileName=file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\"+user.getUid()+"\\textbook\\"+textbook.getCreateTime()+"\\"+fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//textbook",fileName);
+            File targetFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//textbook//"+textbook.getCreateTime(),fileName);
+            File pathFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//textbook//"+textbook.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile,targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setTextbookFileList(FileKit.clearOrInitList(textbookFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook");
+        FileKit.deleteFile(dirFile);
 
         json.put("msg","提交成功待审核！");
         return json;
@@ -835,6 +837,101 @@ public class ManagerController {
             File targetFile = new File(path, fileName);
             FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
         }
+        return json;
+    }
+
+    /**
+     * ajax提交会议，保存附件
+     * @throws IOException
+     */
+    @PostMapping("ajax-meeting-form")
+    @ResponseBody
+    public JSONObject ajaxMeetingForm(HttpSession session,Meeting meeting,String meetingTimeDate) throws IOException {
+        JSONObject json=new JSONObject();
+        //以下三种种错误
+        meetingTimeDate+=" 00:00:00";
+        meeting.setMeetingTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(meetingTimeDate)))));
+        Integer meetingNum = meetingService.findMeetingByNameMeetingTime(meeting.getName(),meeting.getMeetingTime());
+        if(meetingNum!=0){
+            json.put("msg","该会议已被提交！");
+            return json;
+        }
+        List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
+        if(meetingFileList.size()==0){
+            json.put("msg","请先上传附件！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names=meeting.getPeople().replace("，",",").replace("、",",").replace(" ","").split(",");
+        Map<String,String> nameMap=new HashMap<>();
+        String people="";
+        for (String name:names) {
+            if(!name.equals("")){
+                nameMap.put(name,"");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people=people+(String)entry.getKey()+",";
+        }
+        if(!nameMap.containsKey(user.getName())){
+            json.put("msg","此会议与本账号用户无关！");
+            return json;
+        }
+        meeting.setPeople(people.substring(0,people.lastIndexOf(",")));
+        /**
+         * 新建项目记录
+         */
+
+        //保存会议信息
+        meeting.setId(UUID.randomUUID().toString().replace("-",""));
+        meeting.setState("0");
+        meeting.setCreateId(user.getUid());
+        meeting.setMid(user.getMid());
+        meeting.setCreateTime(DateKit.getUnixTimeLong());
+        meetingService.createMeeting(meeting);
+        /**
+         * 新建用户与项目的关系记录
+         */
+        UserItem userItem=new UserItem();
+        userItem.setItemId(meeting.getId());
+        userItem.setItemType("meeting");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String)entry.getKey());
+            if(userInfoList.size()!=0){
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        /**
+         * 新建附件记录
+         */
+        Document document=new Document();
+        document.setItemId(meeting.getId());
+        document.setItemType("meeting");
+        String fileName="";
+        for (MultipartFile file:meetingFileList) {
+            fileName=file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\"+user.getUid()+"\\meeting\\"+meeting.getCreateTime()+"\\"+fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//temp//meeting",fileName);
+            File targetFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//meeting//"+meeting.getCreateTime(),fileName);
+            File pathFile=new File(UploadUtil.getUploadFilePath() + "/upload//"+user.getUid()+"//meeting//"+meeting.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile,targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setMeetingFileList(FileKit.clearOrInitList(meetingFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting");
+        FileKit.deleteFile(dirFile);
+        json.put("msg","提交成功待审核！");
         return json;
     }
 
@@ -909,6 +1006,52 @@ public class ManagerController {
         model.addAttribute("dateKit",new DateKit());
         return "manager/overview/reward-overview";
     }
+    /**
+     * @return  来到教材总览页面
+     */
+    @GetMapping("textbook-overview")
+    public String textbookOverview(HttpSession session,Model model){
+        Integer uid=(Integer) session.getAttribute("uid");
+        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "textbook");
+        List<Textbook> textbookList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        for (UserItem userItem:userItemList) {
+            textbookList.add(textbookService.findTextbookById(userItem.getItemId()));
+        }
+        for (Textbook textbook:textbookList) {
+            createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+        }
+        //将projectList倒序
+        Collections.reverse(textbookList);
+        model.addAttribute("uid",uid);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("textbookList",textbookList);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/overview/textbook-overview";
+    }
+    /**
+     * @return  来到会议总览页面
+     */
+    @GetMapping("meeting-overview")
+    public String meetingOverview(HttpSession session,Model model){
+        Integer uid=(Integer) session.getAttribute("uid");
+        List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "meeting");
+        List<Meeting> meetingList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        for (UserItem userItem:userItemList) {
+            meetingList.add(meetingService.findMeetingById(userItem.getItemId()));
+        }
+        for (Meeting meeting:meetingList) {
+            createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+        }
+        //将projectList倒序
+        Collections.reverse(meetingList);
+        model.addAttribute("uid",uid);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("meetingList",meetingList);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/overview/meeting-overview";
+    }
 
 
 
@@ -953,6 +1096,24 @@ public class ManagerController {
                 }
                 documentService.deleteDocumentByItemId(id);
                 break;
+            case "textbook":
+                textbookService.deleteTextbookById(id);
+                userItemService.deleteUserItemByItemId(id);
+                List<Document> documentList4 = documentService.findDocumentByItemId(id);
+                if(documentList4.size()!=0){
+                    FileKit.deleteFile(new File(UploadUtil.getUploadFilePath()+"//"+documentList4.get(0).getPath()).getParentFile());
+                }
+                documentService.deleteDocumentByItemId(id);
+                break;
+            case "meeting":
+                meetingService.deleteMeetingByid(id);
+                userItemService.deleteUserItemByItemId(id);
+                List<Document> documentList5 = documentService.findDocumentByItemId(id);
+                if(documentList5.size()!=0){
+                    FileKit.deleteFile(new File(UploadUtil.getUploadFilePath()+"//"+documentList5.get(0).getPath()).getParentFile());
+                }
+                documentService.deleteDocumentByItemId(id);
+                break;
             default:
                 json.put("msg","删除失败！");
                 return json;
@@ -964,10 +1125,10 @@ public class ManagerController {
     /**
      * @param id    itemId
      * @param itemType  item的类别
-     * @return      来到item的详情页面
+     * @return      来到item的详情页面，以项目详情为主要页面
      */
     @GetMapping("item-detail")
-    public String projectDetail(String id,String itemType,Model model,HttpSession session,String from){
+    public String itemDetail(String id,String itemType,Model model,HttpSession session,String from){
         UserInfo user=userInfoService.findUserByUid((Integer)session.getAttribute("uid"));
         boolean display=true;
         if(!from.equals("user")){
@@ -999,6 +1160,22 @@ public class ManagerController {
                 createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
                 model.addAttribute("reward",reward);
                 break;
+            case "textbook":
+                Textbook textbook = textbookService.findTextbookById(id);
+                if (textbook.getState().equals("2")||!textbook.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+                model.addAttribute("textbook",textbook);
+                break;
+            case "meeting":
+                Meeting meeting = meetingService.findMeetingById(id);
+                if (meeting.getState().equals("2")||!meeting.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+                model.addAttribute("meeting",meeting);
+                break;
         }
 
         List<Document> documentList = documentService.findDocumentByItemId(id);
@@ -1008,6 +1185,72 @@ public class ManagerController {
         model.addAttribute("createrMap",createrMap);
         model.addAttribute("dateKit",new DateKit());
         return "manager/detail/item-detail";
+    }
+
+
+    /**
+     * @param id    itemId
+     * @param itemType  item的类别
+     * @return      来到item的详情页面,以附件面为主要页面
+     */
+    @GetMapping("item-detail-file")
+    public String itemDetailFile(String id,String itemType,Model model,HttpSession session,String from){
+        UserInfo user=userInfoService.findUserByUid((Integer)session.getAttribute("uid"));
+        boolean display=true;
+        if(!from.equals("user")){
+            display=false;
+        }
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        switch(itemType){
+            case "project":
+                Project project = projectService.findProjectByPid(id);
+                if (project.getState().equals("2")||!project.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+                model.addAttribute("project",project);
+                break;
+            case "thesis":
+                Thesis thesis = thesisService.findThesisByTid(id);
+                if (thesis.getState().equals("2")){//||!thesis.getCreateId().equals(user.getUid())
+                    display=false;
+                }
+                createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));
+                model.addAttribute("thesis",thesis);
+                break;
+            case "reward":
+                Reward reward = rewardService.findRewardByRid(id);
+                if (reward.getState().equals("2")||!reward.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
+                model.addAttribute("reward",reward);
+                break;
+            case "textbook":
+                Textbook textbook = textbookService.findTextbookById(id);
+                if (textbook.getState().equals("2")||!textbook.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+                model.addAttribute("textbook",textbook);
+                break;
+            case "meeting":
+                Meeting meeting = meetingService.findMeetingById(id);
+                if (meeting.getState().equals("2")||!meeting.getCreateId().equals(user.getUid())){
+                    display=false;
+                }
+                createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+                model.addAttribute("meeting",meeting);
+                break;
+        }
+
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("display",display);
+        model.addAttribute("documentList",documentList);
+        model.addAttribute("itemType",itemType);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/detail/item-detail-file";
     }
 
     /**
@@ -1094,6 +1337,16 @@ public class ManagerController {
                 Reward reward=new Reward();
                 reward.setRid(document.getItemId());reward.setState("0");reward.setUpdateTime(DateKit.getUnixTimeLong());
                 rewardService.updateReward(reward);
+            case "textbook":
+                Textbook textbook = new Textbook();
+                textbook.setId(document.getItemId());textbook.setState("0");textbook.setUpdateTime(DateKit.getUnixTimeLong());
+                textbookService.updateTextbook(textbook);
+                break;
+            case "meeting":
+                Meeting meeting = new Meeting();
+                meeting.setId(document.getItemId());meeting.setState("0");meeting.setUpdateTime(DateKit.getUnixTimeLong());
+                meetingService.updateMeeting(meeting);
+                break;
         }
         json.put("msg","删除成功！");
         return json;
@@ -1107,7 +1360,7 @@ public class ManagerController {
     public String check(Integer mid,Model model){
         Map<Integer,UserInfo> createrMap=new HashMap<>();
         List<Project> projectList = projectService.findProjectByMid(mid);
-        int projectNum=0,thesisNum=0,rewardNum=0;
+        int projectNum=0,thesisNum=0,rewardNum=0,textbookNum=0,meetingNum=0;
         if(projectList.size()!=0){
             for (Project project:projectList) {
                 createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
@@ -1134,13 +1387,37 @@ public class ManagerController {
                }
            }
        }
+        List<Textbook> textbookList = textbookService.findTextbookByMid(mid);
+        if(textbookList.size()!=0){
+            for(Textbook textbook:textbookList){
+                createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+                if(textbook.getState().equals("0")){
+                    textbookNum++;
+                }
+            }
+        }
+        List<Meeting> meetingList = meetingService.findMeetingByMid(mid);
+        if(meetingList.size()!=0){
+            for(Meeting meeting:meetingList){
+                createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+                if(meeting.getState().equals("0")){
+                    meetingNum++;
+                }
+            }
+        }
+
        model.addAttribute("projectNum",projectNum);
        model.addAttribute("thesisNum",thesisNum);
        model.addAttribute("rewardNum",rewardNum);
-        System.out.println(projectNum+" "+thesisNum+" "+rewardNum);
+        model.addAttribute("textbookNum",textbookNum);
+        model.addAttribute("meetingNum",meetingNum);
+
         model.addAttribute("thesisList",thesisList);
         model.addAttribute("rewardList",rewardList);
         model.addAttribute("projectList",projectList);
+        model.addAttribute("textbookList",textbookList);
+        model.addAttribute("meetingList",meetingList);
+
         model.addAttribute("createrMap",createrMap);
         model.addAttribute("dateKit",new DateKit());
         return "manager/check/check";
@@ -1169,6 +1446,16 @@ public class ManagerController {
                 Reward reward=new Reward();
                 reward.setRid(id);reward.setState("2");reward.setUpdateTime(DateKit.getUnixTimeLong());
                 rewardService.updateReward(reward);
+                break;
+            case "textbook":
+                Textbook textbook = new Textbook();
+                textbook.setId(id);textbook.setState("2");textbook.setUpdateTime(DateKit.getUnixTimeLong());
+                textbookService.updateTextbook(textbook);
+                break;
+            case "meeting":
+                Meeting meeting = new Meeting();
+                meeting.setId(id);meeting.setState("2");meeting.setUpdateTime(DateKit.getUnixTimeLong());
+                meetingService.updateMeeting(meeting);
                 break;
         }
         json.put("msg","项目通过审核");
@@ -1199,8 +1486,18 @@ public class ManagerController {
                 reward.setRid(id);reward.setState("1");reward.setUpdateTime(DateKit.getUnixTimeLong());
                 rewardService.updateReward(reward);
                 break;
+            case "textbook":
+                Textbook textbook = new Textbook();
+                textbook.setId(id);textbook.setState("1");textbook.setUpdateTime(DateKit.getUnixTimeLong());
+                textbookService.updateTextbook(textbook);
+                break;
+            case "meeting":
+                Meeting meeting = new Meeting();
+                meeting.setId(id);meeting.setState("1");meeting.setUpdateTime(DateKit.getUnixTimeLong());
+                meetingService.updateMeeting(meeting);
+                break;
         }
-        json.put("msg","项目为通过审核");
+        json.put("msg","项目未通过审核");
         return json;
     }
 
