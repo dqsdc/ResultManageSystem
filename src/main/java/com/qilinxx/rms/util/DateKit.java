@@ -53,6 +53,10 @@ public class DateKit {
         return dateFormat(new Date(unixTime * 1000L),"yyyy-MM-dd HH:mm:ss");
     }
 
+    public static String formatDateByUnixTimeAndType(long unixTime,String type){
+        return dateFormat(new Date(unixTime * 1000L),type);
+    }
+
     public static long DaysBetween(Date date1, Date date2) {
         if(date2 == null) {
             date2 = new Date();

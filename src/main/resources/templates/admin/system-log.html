@@ -58,10 +58,8 @@
 				<td th:text="${commons.fmtdate(log.createTime)}">2018-9-21 11:11:42</td>
 				<td class="td-status">
 					<div th:switch="${log.state}">
-						<span th:case="0" class="label label-danger radius" th:text="未读"></span>
-						<span th:case="1" class="label label-default radius" th:text="老师已读"></span>
-						<span th:case="2" class="label label-default radius" th:text="学生已读"></span>
-						<span th:case="3" class="label label-success radius" th:text="已读"></span>
+						<span th:case="0" class="label label-success radius" th:text="正常"></span>
+						<span th:case="1" class="label label-danger radius" th:text="异常"></span>
 					</div>
 				</td>
 				<!--<td class="td-manage">-->

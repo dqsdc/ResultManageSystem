@@ -5,6 +5,7 @@ import com.qilinxx.rms.domain.model.vo.UserInfoVo;
 import com.qilinxx.rms.service.*;
 import com.qilinxx.rms.util.Commons;
 import com.qilinxx.rms.util.DateKit;
+import com.qilinxx.rms.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -40,6 +42,15 @@ public class AdminController extends BaseController {
     ThesisService thesisService;
 
     @Autowired
+    TextbookService textbookService;
+
+    @Autowired
+    MeetingService meetingService;
+
+    @Autowired
+    DocumentService documentService;
+
+    @Autowired
     LogService logService;
 
     @Autowired
@@ -53,6 +64,180 @@ public class AdminController extends BaseController {
         logService.insertLog("管理员登录", "admin", userIp(request));
         return "admin/index";
     }
+
+    /**
+     * @return  来到教材总览页面
+     */
+    @GetMapping("admin-textbook-overview")
+    public String textbookOverview(HttpSession session, Model model){
+        List<UserItem> userItemList = userItemService.findAllUserItemByUserType("textbook");
+        List<Textbook> textbookList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        for (UserItem userItem:userItemList) {
+            textbookList.add(textbookService.findTextbookById(userItem.getItemId()));
+        }
+        for (Textbook textbook:textbookList) {
+            createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+        }
+        //将projectList倒序
+        Collections.reverse(textbookList);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("textbookList",textbookList);
+        model.addAttribute("dateKit",new DateKit());
+        return "admin/textbook-overview";
+    }
+    /**
+     * @return  来到会议总览页面
+     */
+    @GetMapping("admin-meeting-overview")
+    public String meetingOverview(HttpSession session,Model model){
+        List<UserItem> userItemList = userItemService.findAllUserItemByUserType("meeting");
+        List<Meeting> meetingList=new ArrayList<>();
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        for (UserItem userItem:userItemList) {
+            meetingList.add(meetingService.findMeetingById(userItem.getItemId()));
+        }
+        for (Meeting meeting:meetingList) {
+            createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+        }
+        //将projectList倒序
+        Collections.reverse(meetingList);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("meetingList",meetingList);
+        model.addAttribute("dateKit",new DateKit());
+        return "admin/meeting-overview";
+    }
+
+    /**
+     * @param id    itemId
+     * @param itemType  item的类别
+     * @return      来到item的详情页面，以项目详情为主要页面
+     */
+    @GetMapping("admin-item-detail")
+    public String itemDetail(String id,String itemType,Model model,HttpSession session,String from){
+        boolean display=true;
+        if(!from.equals("user")){
+            display=false;
+        }
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        switch(itemType){
+            case "project":
+                Project project = projectService.findProjectByPid(id);
+                if (project.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+                model.addAttribute("project",project);
+                break;
+            case "thesis":
+                Thesis thesis = thesisService.findThesisByTid(id);
+                if (thesis.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));
+                model.addAttribute("thesis",thesis);
+                break;
+            case "reward":
+                Reward reward = rewardService.findRewardByRid(id);
+                if (reward.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
+                model.addAttribute("reward",reward);
+                break;
+            case "textbook":
+                Textbook textbook = textbookService.findTextbookById(id);
+                if (textbook.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+                model.addAttribute("textbook",textbook);
+                break;
+            case "meeting":
+                Meeting meeting = meetingService.findMeetingById(id);
+                if (meeting.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+                model.addAttribute("meeting",meeting);
+                break;
+        }
+
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("display",display);
+        model.addAttribute("documentList",documentList);
+        model.addAttribute("itemType",itemType);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/detail/item-detail";
+    }
+
+
+    /**
+     * @param id    itemId
+     * @param itemType  item的类别
+     * @return      来到item的详情页面,以附件面为主要页面
+     */
+    @GetMapping("admin-item-detail-file")
+    public String itemDetailFile(String id,String itemType,Model model,HttpSession session,String from){
+        boolean display=true;
+        if(!from.equals("user")){
+            display=false;
+        }
+        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        switch(itemType){
+            case "project":
+                Project project = projectService.findProjectByPid(id);
+                if (project.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(project.getCreateId(),userInfoService.findUserByUid(project.getCreateId()));
+                model.addAttribute("project",project);
+                break;
+            case "thesis":
+                Thesis thesis = thesisService.findThesisByTid(id);
+                if (thesis.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(thesis.getCreateId(),userInfoService.findUserByUid(thesis.getCreateId()));
+                model.addAttribute("thesis",thesis);
+                break;
+            case "reward":
+                Reward reward = rewardService.findRewardByRid(id);
+                if (reward.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(reward.getCreateId(),userInfoService.findUserByUid(reward.getCreateId()));
+                model.addAttribute("reward",reward);
+                break;
+            case "textbook":
+                Textbook textbook = textbookService.findTextbookById(id);
+                if (textbook.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(textbook.getCreateId(),userInfoService.findUserByUid(textbook.getCreateId()));
+                model.addAttribute("textbook",textbook);
+                break;
+            case "meeting":
+                Meeting meeting = meetingService.findMeetingById(id);
+                if (meeting.getState().equals("2")){
+                    display=false;
+                }
+                createrMap.put(meeting.getCreateId(),userInfoService.findUserByUid(meeting.getCreateId()));
+                model.addAttribute("meeting",meeting);
+                break;
+        }
+
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("display",display);
+        model.addAttribute("documentList",documentList);
+        model.addAttribute("itemType",itemType);
+        model.addAttribute("createrMap",createrMap);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/detail/item-detail-file";
+    }
+
+
 
     @Transactional
     @RequestMapping("/testTable")
@@ -114,7 +299,7 @@ public class AdminController extends BaseController {
     @RequestMapping("/addStudent")
     public String addStudent(UserInfo userInfo, HttpServletRequest request) {
         System.out.println(userInfo);
-        userInfo.setPassword(String.valueOf(userInfo.getUid()));
+        userInfo.setPassword(String.valueOf(UUID.UU32().substring(0,6)));
         userInfo.setCreateTime(DateKit.getUnixTimeLong());
 
         Integer i = userInfoService.insert(userInfo);
@@ -137,10 +322,10 @@ public class AdminController extends BaseController {
         Integer i = userInfoService.deleteStudentById(uid);
 
         if (i > 0) {
-            logService.insertLog("成功删除一个学生" + name, userId(request), request.getRemoteAddr());
+            logService.insertLog("成功删除一个学生" + name, "admin", request.getRemoteAddr());
             return "删除成功";
         } else {
-            logService.insertLog("删除一个学生" + name + "失败", userId(request), request.getRemoteAddr());
+            logService.insertLog("删除一个学生" + name + "失败", "admin", request.getRemoteAddr());
             return "删除失败";
         }
 
