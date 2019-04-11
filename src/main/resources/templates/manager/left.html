@@ -73,7 +73,7 @@ $(function(){
                 </ul>
             </dd>
             <dd th:if="${checkDisplay}==true" >
-                <div class="title"><span><img src="mis/images/leftico03.png" /></span>成果审核</div>
+                <div class="title"><span><img src="mis/images/leftico03.png" /></span>成果查看/审核</div>
                 <ul class="menuson" >
                     <li th:each="major:${majorList}"><cite></cite>
                         <a th:if="${majorMap.get(major.mid)!=0}" class="red-point" target="rightFrame"  th:href="'check?mid='+${major.mid}" href="check" th:text="${major.Name}">信息审核</a>

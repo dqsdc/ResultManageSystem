@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MeetingService {
     /**查找重复的个数*/
-    Integer findMeetingByNameMeetingTime(String name,long meetingTime);
+    Integer findMeetingByNameMeetingTime(String name,long startTime);
     /**插入一条记录*/
     void createMeeting(Meeting meeting);
     /**通过id查询记录*/

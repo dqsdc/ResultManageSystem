@@ -21,9 +21,6 @@ public class Meeting {
     @Column(name = "organizer")
     private String organizer;
 
-    @Column(name = "meeting_time")
-    private Long meetingTime;
-
     @Column(name = "profile")
     private String profile;
 
@@ -44,6 +41,12 @@ public class Meeting {
 
     @Column(name = "mid")
     private Integer mid;
+
+    @Column(name = "start_time")
+    private Long startTime;
+
+    @Column(name = "end_time")
+    private Long endTime;
 
     /**
      * @return id
@@ -132,21 +135,39 @@ public class Meeting {
     }
 
     /**
-     * 获取会议时间
+     * 获取会议开始时间
      *
-     * @return meeting_time - 会议时间
+     * @return start_time - 会议开始时间
      */
-    public Long getMeetingTime() {
-        return meetingTime;
+    public Long getStartTime() {
+        return startTime;
     }
 
     /**
-     * 设置会议时间
+     * 设置会议开始时间
      *
-     * @param meetingTime 会议时间
+     * @param startTime 会议开始时间
      */
-    public void setMeetingTime(Long meetingTime) {
-        this.meetingTime = meetingTime;
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * 获取会议结束时间
+     *
+     * @return end_time - 会议结束时间
+     */
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * 设置会议结束时间
+     *
+     * @param endTime 会议结束时间
+     */
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 
     /**
@@ -286,7 +307,8 @@ public class Meeting {
         sb.append(", people=").append(people);
         sb.append(", sponsor=").append(sponsor);
         sb.append(", organizer=").append(organizer);
-        sb.append(", meetingTime=").append(meetingTime);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
         sb.append(", profile=").append(profile);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);

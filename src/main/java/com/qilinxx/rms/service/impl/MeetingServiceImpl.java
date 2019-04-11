@@ -14,9 +14,9 @@ public class MeetingServiceImpl implements MeetingService {
     @Autowired
     MeetingMapper meetingMapper;
     @Override
-    public Integer findMeetingByNameMeetingTime(String name, long meetingTime) {
+    public Integer findMeetingByNameMeetingTime(String name, long startTime) {
         MeetingExample example=new MeetingExample();
-        example.createCriteria().andNameEqualTo(name).andMeetingTimeEqualTo(meetingTime);
+        example.createCriteria().andNameEqualTo(name).andStartTimeEqualTo(startTime);
         return meetingMapper.selectCountByExample(example);
     }
 

@@ -57,26 +57,38 @@
                     </tr>
                     <tr>
                         <td>研究开始时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.startTime,'YYYY-MM-DD')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.startTime,'YYYY-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>研究结束时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.endTime,'YYYY-MM-DD')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.endTime,'YYYY-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>立项时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.setTime,'YYYY-MM-DD')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.setTime,'YYYY-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>项目经费:</td>
                         <td th:text="${project.money}+'万元'">80</td>
                     </tr>
                     <tr>
+                        <td>项目来源:</td>
+                        <td th:text="${project.projectSource}">80</td>
+                    </tr>
+                    <tr th:if="${project.number!=null}">
+                        <td>项目编号:</td>
+                        <td th:text="${project.number}">80</td>
+                    </tr>
+                    <tr>
+                        <td>项目等级:</td>
+                        <td th:text="${project.level}">80</td>
+                    </tr>
+                    <tr>
                         <td>项目级别:</td>
                         <td th:text="${project.rank}">80</td>
                     </tr>
                     <tr>
-                        <td>项目类别:</td>
+                        <td>项目类型:</td>
                         <td th:text="${project.type}">80</td>
                     </tr>
                     <tr>
@@ -84,11 +96,11 @@
                         <td th:text="${project.profile}">80</td>
                     </tr>
                     <tr>
-                        <td>发布人:</td>
+                        <td>上传人:</td>
                         <td th:text="${createrMap.get(project.createId).name}">80</td>
                     </tr>
                     <tr>
-                        <td>发布时间:</td>
+                        <td>上传时间:</td>
                         <td th:text="${dateKit.formatDateByUnixTime(project.createTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:if="${project.updateTime}!=null">
@@ -96,7 +108,7 @@
                     <td th:text="${dateKit.formatDateByUnixTime(project.updateTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:switch="${project.state}">
-                        <td>发布状态：</td>
+                        <td>上传状态：</td>
                         <td style="color: #7d7d7d" th:case="0" >待审核</td>
                         <td style="color: red" th:case="1" >未通过</td>
                         <td style="color: green" th:case="2" >已审核</td>
@@ -140,15 +152,15 @@
                         <td th:text="${thesis.type}">80</td>
                     </tr>
                     <tr>
-                        <td>备注:</td>
+                        <td>论文摘要:</td>
                         <td th:text="${thesis.profile}">80</td>
                     </tr>
                     <tr>
-                        <td>发布人:</td>
+                        <td>上传人:</td>
                         <td th:text="${createrMap.get(thesis.createId).name}">80</td>
                     </tr>
                     <tr>
-                        <td>发布时间:</td>
+                        <td>上传时间:</td>
                         <td th:text="${dateKit.formatDateByUnixTime(thesis.createTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:if="${thesis.updateTime}!=null">
@@ -156,7 +168,7 @@
                         <td th:text="${dateKit.formatDateByUnixTime(thesis.updateTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:switch="${thesis.state}">
-                        <td>发布状态：</td>
+                        <td>上传状态：</td>
                         <td style="color: #7d7d7d" th:case="0" >待审核</td>
                         <td style="color: red" th:case="1" >未通过</td>
                         <td style="color: green" th:case="2" >已审核</td>
@@ -185,18 +197,18 @@
                     </tr>
                     <tr>
                         <td>获奖时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-DD')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-dd')}">80</td>
                     </tr>
                     <tr>
-                        <td>备注:</td>
+                        <td>奖励简介:</td>
                         <td th:text="${reward.profile}">80</td>
                     </tr>
                     <tr>
-                        <td>发布人:</td>
+                        <td>上传者:</td>
                         <td th:text="${createrMap.get(reward.createId).name}">80</td>
                     </tr>
                     <tr>
-                        <td>发布时间:</td>
+                        <td>上传时间:</td>
                         <td th:text="${dateKit.formatDateByUnixTime(reward.createTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:if="${reward.updateTime}!=null">
@@ -204,7 +216,7 @@
                         <td th:text="${dateKit.formatDateByUnixTime(reward.updateTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:switch="${reward.state}">
-                        <td>发布状态：</td>
+                        <td>审核状态：</td>
                         <td style="color: #7d7d7d" th:case="0" >待审核</td>
                         <td style="color: red" th:case="1" >未通过</td>
                         <td style="color: green" th:case="2" >已审核</td>
@@ -236,15 +248,15 @@
                         <td th:text="${dateKit.formatDateByUnixTime(textbook.publishTime,'YYYY-MM')}">80</td>
                     </tr>
                     <tr>
-                        <td>备注:</td>
+                        <td>教材简介:</td>
                         <td th:text="${textbook.profile}">80</td>
                     </tr>
                     <tr>
-                        <td>发布人:</td>
+                        <td>上传人:</td>
                         <td th:text="${createrMap.get(textbook.createId).name}">80</td>
                     </tr>
                     <tr>
-                        <td>发布时间:</td>
+                        <td>上传时间:</td>
                         <td th:text="${dateKit.formatDateByUnixTime(textbook.createTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:if="${textbook.updateTime}!=null">
@@ -252,7 +264,7 @@
                         <td th:text="${dateKit.formatDateByUnixTime(textbook.updateTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:switch="${textbook.state}">
-                        <td>发布状态：</td>
+                        <td>上传状态：</td>
                         <td style="color: #7d7d7d" th:case="0" >待审核</td>
                         <td style="color: red" th:case="1" >未通过</td>
                         <td style="color: green" th:case="2" >已审核</td>
@@ -284,19 +296,23 @@
                         <td th:text="${meeting.organizer}">80</td>
                     </tr>
                     <tr>
-                        <td>会议时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(meeting.meetingTime,'YYYY-MM-DD')}">80</td>
+                        <td>会议开始时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'YYYY-MM-dd HH:mm')}">80</td>
                     </tr>
                     <tr>
-                        <td>备注:</td>
+                        <td>会议结束时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(meeting.endTime,'YYYY-MM-dd HH:mm')}">80</td>
+                    </tr>
+                    <tr>
+                        <td>会议简介:</td>
                         <td th:text="${meeting.profile}">80</td>
                     </tr>
                     <tr>
-                        <td>发布人:</td>
+                        <td>上传人:</td>
                         <td th:text="${createrMap.get(meeting.createId).name}">80</td>
                     </tr>
                     <tr>
-                        <td>发布时间:</td>
+                        <td>上传时间:</td>
                         <td th:text="${dateKit.formatDateByUnixTime(meeting.createTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:if="${meeting.updateTime}!=null">
@@ -304,7 +320,7 @@
                         <td th:text="${dateKit.formatDateByUnixTime(meeting.updateTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:switch="${meeting.state}">
-                        <td>发布状态：</td>
+                        <td>上传状态：</td>
                         <td style="color: #7d7d7d" th:case="0" >待审核</td>
                         <td style="color: red" th:case="1" >未通过</td>
                         <td style="color: green" th:case="2" >已审核</td>

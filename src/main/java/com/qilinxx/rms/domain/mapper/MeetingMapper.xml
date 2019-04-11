@@ -10,7 +10,8 @@
     <result column="people" jdbcType="VARCHAR" property="people" />
     <result column="sponsor" jdbcType="VARCHAR" property="sponsor" />
     <result column="organizer" jdbcType="VARCHAR" property="organizer" />
-    <result column="meeting_time" jdbcType="BIGINT" property="meetingTime" />
+    <result column="start_time" jdbcType="BIGINT" property="startTime" />
+    <result column="end_time" jdbcType="BIGINT" property="endTime" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
@@ -87,7 +88,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, people, sponsor, organizer, meeting_time, profile, create_time, update_time,
-    remake, state, create_id, mid
+    id, name, people, sponsor, organizer, start_time, end_time, profile, create_time,
+    update_time, remake, state, create_id, mid
   </sql>
 </mapper>

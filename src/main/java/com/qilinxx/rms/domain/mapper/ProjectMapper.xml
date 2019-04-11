@@ -13,6 +13,8 @@
     <result column="end_time" jdbcType="BIGINT" property="endTime" />
     <result column="project_source" jdbcType="VARCHAR" property="projectSource" />
     <result column="money" jdbcType="INTEGER" property="money" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="rank" jdbcType="VARCHAR" property="rank" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="set_time" jdbcType="BIGINT" property="setTime" />
@@ -92,7 +94,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    pid, host, people, name, start_time, end_time, project_source, money, rank, type,
-    set_time, profile, state, create_id, create_time, update_time, mid, remake
+    pid, host, people, name, start_time, end_time, project_source, money, number, level,
+    rank, type, set_time, profile, state, create_id, create_time, update_time, mid, remake
   </sql>
 </mapper>

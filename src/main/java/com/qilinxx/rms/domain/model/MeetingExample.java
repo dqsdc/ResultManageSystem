@@ -454,63 +454,123 @@ public class MeetingExample {
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeIsNull() {
-            addCriterion("meeting_time is null");
+        public Criteria andStartTimeIsNull() {
+            addCriterion("start_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeIsNotNull() {
-            addCriterion("meeting_time is not null");
+        public Criteria andStartTimeIsNotNull() {
+            addCriterion("start_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeEqualTo(Long value) {
-            addCriterion("meeting_time =", value, "meetingTime");
+        public Criteria andStartTimeEqualTo(Long value) {
+            addCriterion("start_time =", value, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeNotEqualTo(Long value) {
-            addCriterion("meeting_time <>", value, "meetingTime");
+        public Criteria andStartTimeNotEqualTo(Long value) {
+            addCriterion("start_time <>", value, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeGreaterThan(Long value) {
-            addCriterion("meeting_time >", value, "meetingTime");
+        public Criteria andStartTimeGreaterThan(Long value) {
+            addCriterion("start_time >", value, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeGreaterThanOrEqualTo(Long value) {
-            addCriterion("meeting_time >=", value, "meetingTime");
+        public Criteria andStartTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("start_time >=", value, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeLessThan(Long value) {
-            addCriterion("meeting_time <", value, "meetingTime");
+        public Criteria andStartTimeLessThan(Long value) {
+            addCriterion("start_time <", value, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeLessThanOrEqualTo(Long value) {
-            addCriterion("meeting_time <=", value, "meetingTime");
+        public Criteria andStartTimeLessThanOrEqualTo(Long value) {
+            addCriterion("start_time <=", value, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeIn(List<Long> values) {
-            addCriterion("meeting_time in", values, "meetingTime");
+        public Criteria andStartTimeIn(List<Long> values) {
+            addCriterion("start_time in", values, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeNotIn(List<Long> values) {
-            addCriterion("meeting_time not in", values, "meetingTime");
+        public Criteria andStartTimeNotIn(List<Long> values) {
+            addCriterion("start_time not in", values, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeBetween(Long value1, Long value2) {
-            addCriterion("meeting_time between", value1, value2, "meetingTime");
+        public Criteria andStartTimeBetween(Long value1, Long value2) {
+            addCriterion("start_time between", value1, value2, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andMeetingTimeNotBetween(Long value1, Long value2) {
-            addCriterion("meeting_time not between", value1, value2, "meetingTime");
+        public Criteria andStartTimeNotBetween(Long value1, Long value2) {
+            addCriterion("start_time not between", value1, value2, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeIsNull() {
+            addCriterion("end_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeIsNotNull() {
+            addCriterion("end_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeEqualTo(Long value) {
+            addCriterion("end_time =", value, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeNotEqualTo(Long value) {
+            addCriterion("end_time <>", value, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeGreaterThan(Long value) {
+            addCriterion("end_time >", value, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("end_time >=", value, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeLessThan(Long value) {
+            addCriterion("end_time <", value, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeLessThanOrEqualTo(Long value) {
+            addCriterion("end_time <=", value, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeIn(List<Long> values) {
+            addCriterion("end_time in", values, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeNotIn(List<Long> values) {
+            addCriterion("end_time not in", values, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeBetween(Long value1, Long value2) {
+            addCriterion("end_time between", value1, value2, "endTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndTimeNotBetween(Long value1, Long value2) {
+            addCriterion("end_time not between", value1, value2, "endTime");
             return (Criteria) this;
         }
 

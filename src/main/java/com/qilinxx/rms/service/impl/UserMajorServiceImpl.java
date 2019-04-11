@@ -22,6 +22,13 @@ public class UserMajorServiceImpl implements UserMajorService {
     }
 
     @Override
+    public List<UserMajor> findAllUserMajorByMid(Integer mid) {
+        UserMajorExample example=new UserMajorExample();
+        example.createCriteria().andMidEqualTo(mid);
+        return userMajorMapper.selectByExample(example);
+    }
+
+    @Override
     @Transactional
     public int updatePermission(int uid,int[] permission) {
         int num=0;

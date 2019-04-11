@@ -50,7 +50,7 @@ public class ManagerController {
     @GetMapping({"main", "1"})
     public String main(HttpSession session) {
         //以下代码项目完成修改
-        //session.setAttribute("uid",2013001);
+        //session.setAttribute("uid",213003);
         //以上代码项目完成时修改
         Object o = session.getAttribute("uid");
         if (o == null)
@@ -81,10 +81,15 @@ public class ManagerController {
         Map<Integer, Integer> majorMap = new HashMap<>();
         if (userMajorList.size() != 0) {
             List<Major> majorList = new ArrayList<>();
+            List<Integer> list = new ArrayList<>();
             for (UserMajor um : userMajorList) {
-                majorList.add(majorService.findMajorBymid(um.getMid()));
+                Major major = majorService.findMajorBymid(um.getMid());
+                if(!list.contains(major.getMid())){
+                    list.add(major.getMid());
+                    majorList.add(major);
+                }
             }
-            model.addAttribute("majorList", majorList);
+            model.addAttribute(majorList);
             for (Major major : majorList) {
                 int i = projectService.countProjectByMidState(major.getMid(), "0") + thesisService.countThesisByMidState(major.getMid(), "0") + rewardService.countRewardByMidState(major.getMid(), "0") + textbookService.countTextbookByMidState(major.getMid(), "0") + meetingService.countMeetingByMidState(major.getMid(), "0");
                 majorMap.put(major.getMid(), i);
@@ -874,12 +879,13 @@ public class ManagerController {
      */
     @PostMapping("ajax-meeting-form")
     @ResponseBody
-    public JSONObject ajaxMeetingForm(HttpSession session, Meeting meeting, String meetingTimeDate) throws IOException {
+    public JSONObject ajaxMeetingForm(HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
-        meetingTimeDate += " 00:00:00";
-        meeting.setMeetingTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(meetingTimeDate)))));
-        Integer meetingNum = meetingService.findMeetingByNameMeetingTime(meeting.getName(), meeting.getMeetingTime());
+        startTimeDate += ":00"; endTimeDate += ":00";
+        meeting.setStartTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(startTimeDate)))));
+        meeting.setEndTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(endTimeDate)))));
+        Integer meetingNum = meetingService.findMeetingByNameMeetingTime(meeting.getName(), meeting.getStartTime());
         if (meetingNum != 0) {
             json.put("msg", "该会议已被提交！");
             return json;
@@ -1405,6 +1411,7 @@ public class ManagerController {
         Map<Integer, UserInfo> createrMap = new HashMap<>();
         List<Project> projectList = projectService.findProjectByMid(mid);
         int projectNum = 0, thesisNum = 0, rewardNum = 0, textbookNum = 0, meetingNum = 0;
+        boolean check=false;  boolean see=false;
         if (projectList.size() != 0) {
             for (Project project : projectList) {
                 createrMap.put(project.getCreateId(), userInfoService.findUserByUid(project.getCreateId()));
@@ -1449,6 +1456,19 @@ public class ManagerController {
                 }
             }
         }
+        List<UserMajor> userMajorList = userMajorService.findAllUserMajorByMid(mid);
+        String power="";
+        for(UserMajor um:userMajorList){
+            power+=um.getPower();
+        }
+        if(power.contains("1")){
+            check=true;
+        }
+        if (power.contains("2")){
+            see=true;
+        }
+        model.addAttribute("check",check);
+        model.addAttribute("see",see);
 
         model.addAttribute("projectNum", projectNum);
         model.addAttribute("thesisNum", thesisNum);

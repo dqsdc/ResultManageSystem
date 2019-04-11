@@ -37,18 +37,18 @@
     <div id="usual1" class="usual">
         <div class="itab">
             <ul>
-                <li><a id="a1" href="project-upload"  class="selected">发布项目</a></li>
-                <li><a id="a2" href="thesis-upload" >发布论文</a></li>
-                <li><a id="a3" href="reward-upload" >发布奖励</a></li>
-                <li><a id="a4" href="textbook-upload" >发布教材</a></li>
-                <li><a id="a5" href="meeting-upload" >发布会议</a></li>
+                <li><a id="a1" href="project-upload"  class="selected">添加项目</a></li>
+                <li><a id="a2" href="thesis-upload" >添加论文</a></li>
+                <li><a id="a3" href="reward-upload" >添加奖励</a></li>
+                <li><a id="a4" href="textbook-upload" >添加教材</a></li>
+                <li><a id="a5" href="meeting-upload" >添加会议</a></li>
             </ul>
         </div>
 
         <div id="tab1" class="tabson">
             <form  class="form form-horizontal" id="project-form" method="post">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目题目】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" class="input-text"  id="name" name="name">
                     </div>
@@ -95,6 +95,30 @@
                         <input type="text" class="input-text"  id="projectSource" name="projectSource">
                     </div>
                 </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【项目编号】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" placeholder="若有项目编号，请填写！" id="number" name="number">
+                    </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目等级】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="level" name="level" class="select">
+					<option value="">请选择</option>
+				    <option value="国家级">国家级</option>
+                    <option value="部级">部级</option>
+                    <option value="省级">省级</option>
+					<option value="厅级">厅级</option>、
+                    <option value="市级">市级</option>
+					<option value="校级">校级</option>
+                    <option value="其他">其他</option>
+				</select>
+				</span> </div>
+                </div>
+
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目级别】：</label>
                     <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
@@ -104,12 +128,13 @@
 					<option value="二类">二类</option>
 					<option value="三类">三类</option>
 					<option value="四类">四类</option>
+                    <option value="其他">其他</option>
 				</select>
 				</span> </div>
                 </div>
 
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类别】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类型】：</label>
                     <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select id="type" name="type" class="select">
 					<option value="">请选择</option>
@@ -121,7 +146,7 @@
 				</span> </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【备注】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【项目简介】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <textarea name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
                         <p class="textarea-numberbar"><em class="textarea-length"></em></p>
@@ -134,6 +159,7 @@
                             <div class="queueList">
                                 <div id="dndArea1" class="placeholder">
                                     <div id="filePicker-1"></div>
+                                    <p>项目批文、项目成员签字页等</p>
                                     <p>或将文件拖到这里，单次最多可选<span style="color: red;">20</span>个文件(单个文件大小不超过<span style="color: red;">500</span>M，所有文件大小不出超过<span style="color: red;">2</span>G)</p>
                                 </div>
                             </div>
@@ -897,12 +923,17 @@
                 },
                 rank:{
                     required:true
+                }, level:{
+                    required:true
                 },
                 setTimeDate:{
                     required:true
                 },
                 type:{
                     required:true
+                },
+                number:{
+                    maxlength:60
                 },
                 profile:{
                     maxlength:200
