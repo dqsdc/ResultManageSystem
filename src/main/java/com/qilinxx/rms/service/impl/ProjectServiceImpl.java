@@ -63,4 +63,11 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.selectCountByExample(example);
     }
 
+    @Override
+    public int countProjectByTopic(String topic) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andTopicEqualTo(topic);
+        return projectMapper.selectCountByExample(example);
+    }
+
 }

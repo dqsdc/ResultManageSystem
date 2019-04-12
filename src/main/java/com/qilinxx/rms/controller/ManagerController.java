@@ -287,10 +287,14 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxProjectForm(HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
         JSONObject json = new JSONObject();
-        //以下三种种错误
+        //以下四种种错误
         int projectNum = projectService.findProjectByNameHostFrom(project.getName(), project.getHost(), project.getProjectSource());
         if (projectNum != 0) {
             json.put("msg", "该项目已被提交！");
+            return json;
+        }
+        if(projectService.countProjectByTopic(project.getTopic())!=0){
+            json.put("msg", "该项目题目已被提交！");
             return json;
         }
         List<MultipartFile> projectFileList = FileKit.getProjectFileList();

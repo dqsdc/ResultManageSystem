@@ -48,9 +48,21 @@
         <div id="tab1" class="tabson">
             <form  class="form form-horizontal" id="project-form" method="post">
                 <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目名称】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" placeholder="示例：2018年高等学校省级质量工程项目"  id="name" name="name">
+                    </div>
+                </div>
+                <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目题目】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text"  id="name" name="name">
+                        <input type="text" class="input-text"  id="topic" name="topic">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类型】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" placeholder="示例：教学研究项目"  id="genre" name="genre">
                     </div>
                 </div>
                 <div class="row cl">
@@ -134,7 +146,7 @@
                 </div>
 
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类型】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类别】：</label>
                     <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select id="type" name="type" class="select">
 					<option value="">请选择</option>
@@ -156,10 +168,10 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【附件上传】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <div class="uploader-list-container" style="padding-left: 0px">
+                            <div>项目批文、项目成员签字页等</div>
                             <div class="queueList">
                                 <div id="dndArea1" class="placeholder">
                                     <div id="filePicker-1"></div>
-                                    <p>项目批文、项目成员签字页等</p>
                                     <p>或将文件拖到这里，单次最多可选<span style="color: red;">20</span>个文件(单个文件大小不超过<span style="color: red;">500</span>M，所有文件大小不出超过<span style="color: red;">2</span>G)</p>
                                 </div>
                             </div>
@@ -898,6 +910,10 @@
                     required:true,
                     maxlength:250
                 },
+                topic :{
+                    required:true,
+                    maxlength:250
+                },
                 host :{
                     required:true,
                     maxlength:250
@@ -933,6 +949,10 @@
                     required:true
                 },
                 number:{
+                    maxlength:60
+                },
+                genre:{
+                    required:true,
                     maxlength:60
                 },
                 profile:{

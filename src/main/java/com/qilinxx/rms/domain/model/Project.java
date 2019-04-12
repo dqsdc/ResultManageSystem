@@ -66,6 +66,12 @@ public class Project {
     @Column(name = "level")
     private String level;
 
+    @Column(name = "topic")
+    private String topic;
+
+    @Column(name = "genre")
+    private String genre;
+
     /**
      * 获取uuid
      *
@@ -121,21 +127,57 @@ public class Project {
     }
 
     /**
-     * 获取项目题目
+     * 获取项目名称
      *
-     * @return name - 项目题目
+     * @return name - 项目名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置项目题目
+     * 设置项目名称
      *
-     * @param name 项目题目
+     * @param name 项目名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取项目题目
+     *
+     * @return topic - 项目题目
+     */
+    public String getTopic() {
+        return topic;
+    }
+
+    /**
+     * 设置项目题目
+     *
+     * @param topic 项目题目
+     */
+    public void setTopic(String topic) {
+        this.topic = topic == null ? null : topic.trim();
+    }
+
+    /**
+     * 获取项目类型
+     *
+     * @return genre - 项目类型
+     */
+    public String getGenre() {
+        return genre;
+    }
+
+    /**
+     * 设置项目类型
+     *
+     * @param genre 项目类型
+     */
+    public void setGenre(String genre) {
+        this.genre = genre == null ? null : genre.trim();
     }
 
     /**
@@ -436,6 +478,8 @@ public class Project {
         sb.append(", host=").append(host);
         sb.append(", people=").append(people);
         sb.append(", name=").append(name);
+        sb.append(", topic=").append(topic);
+        sb.append(", genre=").append(genre);
         sb.append(", startTime=").append(startTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", projectSource=").append(projectSource);

@@ -9,6 +9,8 @@
     <result column="host" jdbcType="VARCHAR" property="host" />
     <result column="people" jdbcType="VARCHAR" property="people" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="topic" jdbcType="VARCHAR" property="topic" />
+    <result column="genre" jdbcType="VARCHAR" property="genre" />
     <result column="start_time" jdbcType="BIGINT" property="startTime" />
     <result column="end_time" jdbcType="BIGINT" property="endTime" />
     <result column="project_source" jdbcType="VARCHAR" property="projectSource" />
@@ -94,7 +96,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    pid, host, people, name, start_time, end_time, project_source, money, number, level,
-    rank, type, set_time, profile, state, create_id, create_time, update_time, mid, remake
+    pid, host, people, name, topic, genre, start_time, end_time, project_source, money,
+    number, level, rank, type, set_time, profile, state, create_id, create_time, update_time,
+    mid, remake
   </sql>
 </mapper>

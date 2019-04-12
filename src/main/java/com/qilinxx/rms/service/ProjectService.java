@@ -21,4 +21,6 @@ public interface ProjectService {
     int countProjectByMid(Integer mid);
     /**通过 专业id、状态  返回查询到的数量*/
     int countProjectByMidState(Integer mid,String state);
+    /**通过查询项目题目topic，返回重复个数*/
+    int countProjectByTopic(String topic);
 }
