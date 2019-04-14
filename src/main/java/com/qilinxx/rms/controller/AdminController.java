@@ -51,6 +51,9 @@ public class AdminController extends BaseController {
     DocumentService documentService;
 
     @Autowired
+    MajorService majorService;
+
+    @Autowired
     LogService logService;
 
     @Autowired
@@ -269,6 +272,8 @@ public class AdminController extends BaseController {
     @RequestMapping("grant-list.html")
     public String showGrantList(Model model) {
         List<UserInfoVo> infoList = userInfoService.findAllUser();
+        List<Major> majorList=majorService.findAllMajor();
+        model.addAttribute("majorList",majorList);
         model.addAttribute("userInfoList", infoList);
         model.addAttribute("commons", new Commons());
         return "admin/grant-list";
@@ -276,18 +281,30 @@ public class AdminController extends BaseController {
 
     @RequestMapping(value = "/updatePermission", method = RequestMethod.POST)
     @ResponseBody
-    public String updatePermission(@RequestParam("mid") int[] mid, int uid) {
+    public String updatePermission(@RequestParam("mid") int[] mid, int uid, String power) {
         System.out.println("updatePermission" + mid.length);
         System.out.println("uid:--" + uid);
-        Integer i = userMajorService.updatePermission(uid, mid);
+        System.out.println(power);
+        Integer i = userMajorService.updatePermission(uid, mid,power);
         if (i == mid.length)
             return "添加权限完成";
         else
             return "添加失败";
     }
 
+    @RequestMapping(value = "/cancelPermission", method = RequestMethod.POST)
+    @ResponseBody
+    public String cancelPermission(int uid,String power) {
+        System.out.println("uid:--" + uid);
+        Integer i=userMajorService.cancelPermission(uid,power);
+        System.out.println(i);
+        return "添加失败";
+    }
+
     @RequestMapping("/admin-student-add")
-    public String Student_add() {
+    public String Student_add(Model model) {
+        List<Major> majorList=majorService.findAllMajor();
+        model.addAttribute("majorList",majorList);
         return "admin/student-add";
     }
 
@@ -369,6 +386,8 @@ public class AdminController extends BaseController {
     @RequestMapping("student-edit.html")
     public String student_edit(String uid, Model model) {
         UserInfo student = userInfoService.findUserByUid(Integer.parseInt(uid));
+        List<Major> majors=majorService.findAllMajor();
+        model.addAttribute("majorList",majors);
         model.addAttribute("student", student);
         return "admin/student-edit";
     }

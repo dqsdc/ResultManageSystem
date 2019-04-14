@@ -2,18 +2,12 @@
         <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qilinxx.rms.domain.mapper.UserMajorMapper">
 <resultMap id="BaseResultMap" type="com.qilinxx.rms.domain.model.UserMajor">
-  <!--
-    WARNING - @mbg.generated
-  -->
   <result column="uid" jdbcType="INTEGER" property="uid" />
   <result column="mid" jdbcType="INTEGER" property="mid" />
   <result column="power" jdbcType="CHAR" property="power" />
   <result column="remake" jdbcType="VARCHAR" property="remake" />
 </resultMap>
 <sql id="Example_Where_Clause">
-  <!--
-    WARNING - @mbg.generated
-  -->
   <where>
     <foreach collection="oredCriteria" item="criteria" separator="or">
       <if test="criteria.valid">
@@ -75,9 +69,12 @@
   </where>
 </sql>
 <sql id="Base_Column_List">
-  <!--
-    WARNING - @mbg.generated
-  -->
   uid, mid, power, remake
 </sql>
+  <select id="selectAllByUid" resultMap="BaseResultMap">
+    SELECT * from user_major WHERE uid=#{uid}
+  </select>
+  <delete id="deleteByIdAndPower">
+    DELETE FROM user_major WHERE uid=#{uid} AND power=#{power}
+  </delete>
 </mapper>

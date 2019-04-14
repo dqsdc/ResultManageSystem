@@ -43,7 +43,8 @@
                 <th width="80">参会人员</th>
                 <th width="40">主办单位</th>
                 <th width="40">承办单位</th>
-                <th width="80">会议时间</th>
+                <th width="80">会议开始时间</th>
+                <th width="80">会议结束时间</th>
                 <th width="40">审核状态</th>
                 <th width="40">操作</th>
             </tr>
@@ -66,7 +67,8 @@
                 <td  th:text="${meeting.people}"></td>
                 <td th:text="${meeting.sponsor}"></td>
                 <td th:text="${meeting.organizer}"></td>
-                <td th:text="${dateKit.formatDateByUnixTime(meeting.meetingTime,'YYYY-MM-DD')}"></td>
+                <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd')}"></td>
+                <td th:text="${dateKit.formatDateByUnixTime(meeting.endTime,'yyyy-MM-dd')}"></td>
                 <td th:if="${meeting.state}==0"><span class="label label-default radius">待审核</span></td>
                 <td th:if="${meeting.state}==1"><span class="label label-danger radius">未通过</span></td>
                 <td th:if="${meeting.state}==2"><span class="label label-success radius">已审核</span></td>
@@ -92,7 +94,7 @@
         "pading":false,
         "aoColumnDefs": [
             //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-            {"orderable":false,"aTargets":[7]}// 不参与排序的列
+            {"orderable":false,"aTargets":[6]}// 不参与排序的列
         ]
     });
 
@@ -101,7 +103,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail?id="+id+"&itemType=meeting&from=user"
+            content: "admin-item-detail?id="+id+"&itemType=meeting&from=user"
         });
         layer.full(index);
     }
@@ -110,7 +112,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail-file?id="+id+"&itemType=meeting&from=user"
+            content: "admin-item-detail-file?id="+id+"&itemType=meeting&from=user"
         });
         layer.full(index);
     }

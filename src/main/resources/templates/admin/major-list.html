@@ -19,12 +19,12 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>学生管理</title>
+<title>专业管理</title>
 </head>
 <body>
 <button id="btn-refresh" style="display: none"  onclick="refresh()">刷新</button>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心
-	<span class="c-gray en">&gt;</span> 用户管理
+	<span class="c-gray en">&gt;</span> 专业管理
 	<a  id="a" class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
 		<i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
@@ -35,96 +35,52 @@
 		<!--<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">-->
 		<!--<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>-->
 	<!--</div>-->
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="r">共有数据：<strong th:text="${userInfoList.size()}">88</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+		<a href="javascript:;" onclick="member_add('添加','major-add','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a></span> <span class="r">共有数据：<strong th:text="${majorList.size()}">88</strong> 条</span> </div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
-				<th width="50">工号Id</th>
-				<th width="50">姓名</th>
-				<th width="40">职称</th>
-				<th width="100">所属专业</th>
+				<th width="80">序号</th>
+				<th width="80">专业名称</th>
+				<th width="40">专业描述</th>
+				<th width="90">更新时间</th>
 				<th width="40">状态</th>
-				<th width="190">查看权限</th>
-				<th width="30">操作</th>
-				<th width="190">审核权限</th>
-				<th width="30">操作</th>
+				<th width="100">操作</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="text-c" th:each="userInfo,interStart:${userInfoList}">
-				<td><input type="checkbox" value="{}" name=""></td>
-				<td th:text="${userInfo.uid}">1</td>
-				<td th:text="${userInfo.name}">张三</td>
-				<td th:text="${userInfo.title}">教授</td>
-				<td th:text="${userInfo.major}">admin@mail.com</td>
-				<td class="td-status" th:switch="${userInfo.state}">
+			<tr class="text-c" th:each="major,interStart:${majorList}">
+				<td><input type="checkbox" name="cb"></td>
+				<td th:text="${interStart.count}">1</td>
+				<td th:text="${major.name}">计算机</td>
+				<td th:text="${major.profile}" >简介</td>
+				<td th:if="${major.updateTime}==null" th:text="${commons.fmtdate(major.createTime)}">教授</td>
+				<td th:unless="${major.updateTime}==null" th:text="${commons.fmtdate(major.updateTime)}"></td>
+				<td class="td-status" th:switch="${major.state}">
 					<span th:case="0" class="label label-primary radius">初次使用</span>
-					<span th:case="1" class="label label-danger radius">不可用</span>
-					<span th:case="2" class="label label-warning radius">待审核</span>
-					<span th:case="3" class="label label-success radius">正常使用</span>
+					<span th:case="1" class="label label-success radius">正常使用</span>
 				</td>
-				<td >
-					<span th:if="${userInfo.readPermission}==null">无</span>
-					<span th:unless="${userInfo.readPermission}==null" th:text="${userInfo.readPermission}"></span>
-				</td>
-				<td><a data-toggle="modal" data-target="#myModal" th:data-whatever="${userInfo.name}"
-					   th:onclick="'javascript:sentUid('+${userInfo.uid}+',2'+')'">授权</a>
-					<a style="text-decoration:none"
-					   th:onclick="'javascript:member_stop('+this+',\''+${userInfo.uid}+'\',2)'"
-					   href="javascript:;" title="取消授权">取消</i></a>
-				</td>
-				<td >
-					<span th:if="${userInfo.checkPermission}==null">无</span>
-					<span th:unless="${userInfo.checkPermission}==null" th:text="${userInfo.checkPermission}"></span>
-				</td>
-				<td><a data-toggle="modal" data-target="#myModal" th:data-whatever="${userInfo.name}"
-					   th:onclick="'javascript:sentUid('+${userInfo.uid}+',1'+')'">授权</a>
-					<a style="text-decoration:none"
-					   th:onclick="'javascript:member_stop('+this+',\''+${userInfo.uid}+'\',1)'"
-					   href="javascript:;" title="取消授权">取消</i></a>
+				<td class="td-manage">
+					<a th:if="${major.state}!=1" style="text-decoration:none"
+					   th:onclick="'javascript:member_stop('+this+',\''+${major.mid}+'\')'"
+																				 href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>
+					<a  th:unless="${major.state}!=1" style="text-decoration:none" th:onclick="'javascript:member_start('+this+',\''+${major.mid}+'\')'" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>
+					<!--onclick="member_edit('编辑','student-edit.html','4','','510')"-->
+					<!--<a title="编辑" href="javascript:;"  th:onclick="'javascript:member_edit(\''+编辑+'\',\''+student-edit.html+'\',\''+${major.mid}+'\',\''+''+'\',\''+510+'\');'" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>-->
+					<!--<a style="text-decoration:none" class="ml-5" href="javascript:;"  th:onclick="'javascript:change_password(\''+修改密码+'\',\''+student-change-password.html+'\',\''+${userInfo.uid}+'\',\''+600+'\',\''+270+'\')'" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a>-->
+					<!--onClick="change_password('修改密码','change-password.html','10001','600','270')"-->
+					<a title="删除" href="javascript:;"
+					   th:onclick="'javascript:member_del(\''+${major.mid}+'\');'"
+					   class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	</div>
 </div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true" id="close">×
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					添加权限
-				</h4>
-			</div>
-			<div class="modal-body" >
-				<form id="boxRoleForm">
-					<input type="hidden" name="uid" id="updateId">
-					<input type="hidden" name="power" id="power">
-					<div th:class="checkbox" th:each="major,interStart:${majorList}">
-						<label>	<input type="checkbox" th:id="${major.mid}" name="mid" th:value="${major.mid}" th:text="${major.name}"></label>
-				    </div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn">
-					确定
-				</button>
-				<button type="button" class="btn btn-default"
-						data-dismiss="modal">关闭
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <!--_footer 作为公共模版分离出去-->
-
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -134,68 +90,18 @@
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
-
-<script>
-	function sentUid(uid,power){
-	    console.log(uid);
-	    console.log(power);
-        document.getElementById("updateId").value=uid;
-        document.getElementById("power").value=power;
-	}
-</script>
-<script>
-    $('#myModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);// 触发事件的按钮
-        var recipient = button.data('whatever'); // 解析出data-whatever内容
-        var modal = $(this);
-        modal.find('.modal-title').text('为 ' + recipient + ' 添加权限');
-    })
-</script>
-
-<script type="text/javascript">
-    /*<![CDATA[*/
-
-    $("#btn").click(function () {
-        var data = $("#boxRoleForm").serialize();
-        console.log(data);
-        submit(data);
-    });
-
-    function submit(data) {
-        $.ajax({
-            url: '/updatePermission', // ajax 请求地址
-            type: 'post',//请求方式 ’GET‘或’POST‘，默认为’GET‘。
-            data: data,
-            dataType: "text",//根据返回数据类型，可以有如下数据可选：xml html script json jsonp text
-            //请求成功后的回调函数
-            success: function (data) {
-                console.log('data ' + data);
-                alert(data);
-				window.location.reload();
-
-            },
-            //请求失败时调用此函数。有以下三个参数：XMLHttpRequest 对象、错误信息、（可选）捕获的异常对象。
-            error: function (data) {
-                console.log(data);// 打印错误信息
-            }
-        });
-
-    }
-    /*]]>*/
-</script>
-
 <script type="text/javascript" th:inline="javascript">
 $(function(){
 	$('.table-sort').dataTable({
         "aaSorting": [
             [
-                1, "desc"
+                1, "asc"
             ]
         ],//默认第几个排序
 		"bStateSave": true,//状态保存
 		"aoColumnDefs": [
 		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-		  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
+		  {"orderable":false,"aTargets":[0,6]}// 制定列不参与排序
 		]
 	});
 
@@ -215,17 +121,22 @@ function member_show(title,url,id,w,h){
 	layer_show(title,url+"?uid="+id,w,h);
 }
 /*用户-停用*/
-function member_stop(obj,id,power){
+function member_stop(obj,id){
     var basePath =[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
-	layer.confirm('确认要取消吗？',function(index){
+	layer.confirm('确认要停用吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: '/cancelPermission?uid='+id+'&power='+power,
+			url: basePath+'/stopStudent?uid='+id,
 			success: function(data){
-				layer.msg('已取消!',{icon: 5,time:1000});
+                console.log(data);
+				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none"  href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');//th:onclick="'javascript:member_start('+this+',\''+${student.sId}+'\')'"
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
+				$(obj).remove();
+				layer.msg('已停用!',{icon: 5,time:1000});
                 setTimeout(function(){
                     window.location.reload();
-                }, 500);
+                }, 1000);
+
 			},
 			error:function(data) {
 				console.log(data.msg);
@@ -278,23 +189,96 @@ function member_del(uid){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'POST',
-             url: basePath + '/deleteStudent?uid='+uid,
+             url: basePath + '/deleteMajor?uid='+uid,
 			data:null,
 			success: function(data){
 				layer.msg('已删除!',{icon:1,time:1000});
                 setTimeout(function(){
                     window.location.reload();
-                }, 1000);
+                }, 100);
 			},
 			error:function(data) {
                 alert("发生错误");
 				console.log(data.msg);
-			},
+			}
 		});
 	});
-
-
 }
+</script>
+<script>
+    function getSelectLine() {
+        var nTrs = table.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr
+        for ( var i = 0; i < nTrs.length; i++) {
+            if($(nTrs[i]).hasClass('selected')){//相当于$(tr)
+                var selectLine = table.fnGetData(nTrs[i]);
+                alert(selectLine[4]);//获取一行第4列数据
+            }
+        }
+    }
+
+</script>
+<script type="text/JavaScript">
+    function downLoad(strUrl) {
+
+
+    }
+</script>
+<script>
+    /*生成excel*/
+    function excel() {
+        var cb=document.getElementsByName("cb");
+        var a=0;
+        var arr=new Array();
+        //循环判断有没有选择,如果有就a++
+        for(var i=0;i<cb.length;i++){
+            if(cb[i].checked){
+                //因为删除会改变数组下标,所以把对象拿出来放到一个数组中
+                arr[a]=cb[i].parentNode.parentNode;
+                a++;
+            }
+        }
+        //判断如果标识符等于0就没有选中的
+        if(a==0){
+            alert("请至少选择一行");
+        }else{
+            var chk = [];
+            $('input[name="cb"]:checked').each(function () {
+                //var method =  $("#" + $(this).val()).val();
+                chk.push($(this).val());
+                console.log(chk);
+            });
+            var form = $("<form>");   //定义一个form表单
+            form.attr('style', 'display:none');   //在form表单中添加查询参数
+            form.attr('target', '');
+            form.attr('method', 'post');
+            form.attr('action', '/testTable?chk='+chk);
+
+            var input1 = $('<input>');
+            input1.attr('type', 'hidden');
+            input1.attr('name', 'strUrl');
+            $('body').append(form);  //将表单放置在web中 
+            form.append(input1);   //将查询参数控件提交到表单上
+            form.submit();
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/testTable?chk='+chk,
+            //     data:null,
+            //     success: function(data){
+            //        console.log(data);
+            //
+            //     },
+            //     error:function(data) {
+            //         alert("发生错误");
+            //         console.log(data.msg);
+            //     },
+            // });
+            //循环自己定义的数组,删除选中的TR
+            // for(var c=0;c<arr.length;c++){
+            //  console.log(arr[c]);
+            //     arr[c].remove();
+            // }
+        }
+    }
 </script>
 <script>
 

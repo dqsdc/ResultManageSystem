@@ -30,16 +30,22 @@ public class UserMajorServiceImpl implements UserMajorService {
 
     @Override
     @Transactional
-    public int updatePermission(int uid,int[] permission) {
+    public int updatePermission(int uid,int[] permission,String power) {
         int num=0;
-        userMajorMapper.deleteByPrimaryKey(uid);
+        userMajorMapper.deleteByIdAndPower(uid,power);
         for (int i: permission) {
             UserMajor major=new UserMajor();
             major.setMid(i);
             major.setUid(uid);
+            major.setPower(power);
             userMajorMapper.insert(major);
             num++;
         }
         return num;
+    }
+
+    @Override
+    public int cancelPermission(int uid,String power) {
+        return  userMajorMapper.deleteByIdAndPower(uid,power);
     }
 }

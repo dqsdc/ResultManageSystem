@@ -161,7 +161,7 @@
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${reward.name}" th:data-id="${reward.rid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'reward')" title="查看" th:text="${reward.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span  th:text="${reward.name}">资讯标题</span></td>
                     <td  th:text="${reward.people}"></td>
-                    <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-DD')}"></td>
+                    <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}"></td>
                     <td th:text="${createrMap.get(reward.createId).name}"></td>
                     <td th:text="${dateKit.formatDateByUnixTime(reward.createTime)}"></td>
                     <td th:if="${reward.state}==0" class="td-status"><span class="label label-default radius">待审核</span></td>
@@ -225,7 +225,7 @@
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${meeting.name}" th:data-id="${meeting.id}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'meeting')" title="查看" th:text="${meeting.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span th:text="${meeting.name}">资讯标题</span></td>
                     <td  th:text="${meeting.people}"></td>
-                    <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'YYYY-MM-DD')}"></td>
+                    <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd')}"></td>
                     <td th:text="${createrMap.get(meeting.createId).name}"></td>
                     <td th:text="${dateKit.formatDateByUnixTime(meeting.createTime)}"></td>
                     <td th:if="${meeting.state}==0" class="td-status"><span class="label label-default radius">待审核</span></td>

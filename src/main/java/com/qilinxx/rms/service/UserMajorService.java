@@ -10,5 +10,7 @@ public interface UserMajorService {
     /*通过mid查找记录*/
     List<UserMajor> findAllUserMajorByMid(Integer mid);
 
-    int updatePermission(int uid,int permission[]);
+    int updatePermission(int uid,int permission[],String power);
+
+    int cancelPermission(int uid,String power);
 }

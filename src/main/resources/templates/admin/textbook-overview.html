@@ -90,7 +90,7 @@
         "pading":false,
         "aoColumnDefs": [
             //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-            {"orderable":false,"aTargets":[7]}// 不参与排序的列
+            {"orderable":false,"aTargets":[6]}// 不参与排序的列
         ]
     });
 
@@ -99,7 +99,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail?id="+id+"&itemType=textbook&from=user"
+            content: "admin-item-detail?id="+id+"&itemType=textbook&from=user"
         });
         layer.full(index);
     }
@@ -108,7 +108,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail-file?id="+id+"&itemType=textbook&from=user"
+            content: "admin-item-detail-file?id="+id+"&itemType=textbook&from=user"
         });
         layer.full(index);
     }
