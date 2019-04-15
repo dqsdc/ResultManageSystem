@@ -32,7 +32,7 @@ public class MajorController {
         return "admin/major-list";
     }
 
-    @RequestMapping
+    @RequestMapping("major-add")
     public String showMajorAdd() {
         return "admin/major-add";
     }
