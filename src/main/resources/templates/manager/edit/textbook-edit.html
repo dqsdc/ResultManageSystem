@@ -26,51 +26,58 @@
     <link href="H-ui/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+
 <div class="formbody">
     <div id="usual1" class="usual">
-
-        <div id="tab5" class="tabson" >
-            <form  class="form form-horizontal" id="meeting-form" method="post">
+        <div id="tab4" class="tabson" >
+            <form  class="form form-horizontal" id="textbook-form" method="post">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材名称】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${meeting.name}"  type="text" class="input-text"  id="name" name="name">
+                        <input th:value="${textbook.name}" type="text"  class="input-text"  id="name" name="name">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【参会人员】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材主编】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${meeting.people}" type="text" name="people" id="people" placeholder="若为多名参会人员，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                        <input th:value="${textbook.people}" type="text" name="people" id="people" placeholder="若为多名主编，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【主办单位】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版社】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${meeting.sponsor}" type="text" class="input-text"  id="sponsor" name="sponsor">
+                        <input th:value="${textbook.press}" type="text" name="press" id="press"   class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【承办单位】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版年月】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${meeting.organizer}" type="text" class="input-text"  id="organizer" name="organizer">
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(textbook.publishTime,'YYYY-MM')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议开始时间】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【ISBN】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd HH:mm')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${textbook.isbn}" class="input-text"  id="isbn" name="isbn">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议结束时间】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【规划类别】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(meeting.endTime,'yyyy-MM-dd HH:mm')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${textbook.type}" placeholder="示例：普通高校教育“十一五”国家规划教材" class="input-text"  id="type" name="type">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【会议简介】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【教材获奖】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${meeting.profile}" name="profile" id="profile" class="textarea"   ></textarea>
+                        <textarea th:text="${textbook.reward}"  name="reward" id="reward" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
+                        <p class="textarea-numberbar"><em class="textarea-length"></em></p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【教材简介】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea th:text="${textbook.profile}" name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
                         <p class="textarea-numberbar"><em class="textarea-length"></em></p>
                     </div>
                 </div>
@@ -107,31 +114,34 @@
             increaseArea: '20%'
         });
 
-        $("#meeting-form").validate({
+        $("#textbook-form").validate({
             rules:{
                 name :{
                     required:true,
                     maxlength:250
                 },
+                press :{
+                    required:true,
+                    maxlength:250
+                },
+                isbn :{
+                    required:true,
+                    maxlength:19
+                },
                 people:{
                     required:true,
                     maxlength:290
                 },
-                startTimeDate:{
+                publishTimeDate:{
                     required:true
-                },
-                endTimeDate:{
-                    required:true
-                },
-                sponsor:{
-                    required:true,
-                    maxlength:250
-                },
-                organizer:{
-                    required:true,
-                    maxlength:250
                 },
                 profile:{
+                    maxlength:200
+                },
+                type:{
+                    maxlength:250
+                },
+                reward:{
                     maxlength:200
                 }
 
@@ -142,8 +152,8 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    data:{'id':'[[${meeting.id}]]'},
-                    url: "/ajax-meeting-edit-form" ,
+                    data:{'id':'[[${textbook.id}]]'},
+                    url: "/ajax-textbook-edit-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
@@ -161,64 +171,6 @@
         });
 
 
-    });
-</script>
-<script type="text/javascript">
-    $(function () {
-        $("#tab2").css("display","none");
-        $("#tab3").css("display","none");
-        $("#tab4").css("display","none");
-        $("#tab1").css("display","none");
-    });
-    $("#a1").click(function () {
-        if($("#a1").hasClass("selected")){
-        }else{
-            $("#tab1").css("display","block");$("#a1").addClass("selected");
-            $("#tab2").css("display","none");$("#a2").removeClass("selected");
-            $("#tab3").css("display","none");$("#a3").removeClass("selected");
-            $("#tab4").css("display","none");$("#a4").removeClass("selected");
-            $("#tab5").css("display","none");$("#a5").removeClass("selected");
-        }
-    });
-    $("#a2").click(function () {
-        if($("#a2").hasClass("selected")){
-        }else{
-            $("#tab1").css("display","none");$("#a1").removeClass("selected");
-            $("#tab2").css("display","block");$("#a2").addClass("selected");
-            $("#tab3").css("display","none");$("#a3").removeClass("selected");
-            $("#tab4").css("display","none");$("#a4").removeClass("selected");
-            $("#tab5").css("display","none");$("#a5").removeClass("selected");
-        }
-    });
-    $("#a3").click(function () {
-        if($("#a3").hasClass("selected")){
-        }else{
-            $("#tab1").css("display","none");$("#a1").removeClass("selected");
-            $("#tab2").css("display","none");$("#a2").removeClass("selected");
-            $("#tab3").css("display","block");$("#a3").addClass("selected");
-            $("#tab4").css("display","none");$("#a4").removeClass("selected");
-            $("#tab5").css("display","none");$("#a5").removeClass("selected");
-        }
-    });
-    $("#a4").click(function () {
-        if($("#a4").hasClass("selected")){
-        }else{
-            $("#tab1").css("display","none");$("#a1").removeClass("selected");
-            $("#tab2").css("display","none");$("#a2").removeClass("selected");
-            $("#tab3").css("display","none");$("#a3").removeClass("selected");
-            $("#tab4").css("display","block");$("#a4").addClass("selected");
-            $("#tab5").css("display","none");$("#a5").removeClass("selected");
-        }
-    });
-    $("#a5").click(function () {
-        if($("#a5").hasClass("selected")){
-        }else{
-            $("#tab1").css("display","none");$("#a1").removeClass("selected");
-            $("#tab2").css("display","none");$("#a2").removeClass("selected");
-            $("#tab3").css("display","none");$("#a3").removeClass("selected");
-            $("#tab4").css("display","none");$("#a4").removeClass("selected");
-            $("#tab5").css("display","block");$("#a5").addClass("selected");
-        }
     });
 </script>
 </body>

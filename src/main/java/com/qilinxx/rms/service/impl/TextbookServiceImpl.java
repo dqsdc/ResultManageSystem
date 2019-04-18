@@ -14,9 +14,16 @@ public class TextbookServiceImpl implements TextbookService {
     @Autowired
     TextbookMapper textbookMapper;
     @Override
-    public Integer findTextBookByISBN(String ISBN) {
+    public Integer countTextBookByISBN(String ISBN) {
         TextbookExample example=new TextbookExample();
         example.createCriteria().andIsbnEqualTo(ISBN);
+        return textbookMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public Integer countTextBookByISBNExceptId(String ISBN, String id) {
+        TextbookExample example=new TextbookExample();
+        example.createCriteria().andIsbnEqualTo(ISBN).andIdNotEqualTo(id);
         return textbookMapper.selectCountByExample(example);
     }
 

@@ -33,7 +33,7 @@ public class ResultManagerSystemApplicationTests {
 	public void testProjectService() {
 		//int projectByNameHostFrom = projectService.findProjectByNameHostFrom("", "", "");
 		//System.out.println("重复个数:"+projectByNameHostFrom);
-		int rewardNum = rewardService.findRewardByNamePeopleGetTime("", "", 123);
+		int rewardNum = rewardService.countRewardByNamePeopleGetTime("", "", 123);
 		System.out.println("重复个数："+rewardNum);
 	}
 	@Test

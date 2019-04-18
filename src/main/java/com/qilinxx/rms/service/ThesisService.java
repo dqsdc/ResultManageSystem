@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface ThesisService {
     /**根据论文作者host、论文名称查重，返回重复个数*/
-    int findThesisByHostName(String host,String name);
+    int countThesisByHostName(String host,String name);
+    /**根据论文作者host、论文名称查重，返回重复个数*/
+    int countThesisByHostNameExceptTid(String host,String name,String tid);
     /**新建一个论文记录*/
     void createThesis(Thesis thesis);
     /**通过论文tid 删除论文记录*/

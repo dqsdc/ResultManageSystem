@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="H-ui/lib/html5shiv.js"></script>
+    <script type="text/javascript" src="H-ui/lib/respond.min.js"></script>
+    <![endif]-->
+    <link href="mis/css/style.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="H-ui/static/h-ui.admin/css/style.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="H-ui/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+
+    <title>新增文件</title>
+    <link href="H-ui/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="formbody">
+    <div id="usual1" class="usual">
+        <div id="tab3" class="tabson" >
+            <form  class="form form-horizontal" id="reward-form" method="post">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【奖励名称】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${reward.name}"  class="input-text"  id="name" name="name">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖人】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${reward.people}" name="people" id="people" placeholder="若为多名获奖人，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖时间】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="getTimeDate" id="getTimeDate" class="input-text Wdate" style="width:180px;">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【授奖单位】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${reward.company}" class="input-text"  id="company" name="company">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【奖励简介】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea th:text="${reward.profile}" name="profile" id="profile" class="textarea"   ></textarea>
+                        <p class="textarea-numberbar"><em class="textarea-length"></em></p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="H-ui/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="H-ui/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="H-ui/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="H-ui/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="H-ui/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="H-ui/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="H-ui/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="H-ui/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="H-ui/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="H-ui/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="H-ui/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="H-ui/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#reward-form").validate({
+            rules:{
+                name :{
+                    required:true,
+                    maxlength:250
+                },
+                 people:{
+                    required:true,
+                     maxlength:290
+                },
+                getTimeDate:{
+                    required:true
+                },
+                company:{
+                    required:true,
+                    maxlength:250
+                },
+                profile:{
+                    maxlength:200
+                }
+
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                $(form).ajaxSubmit({
+                    type: 'post',
+                    data:{'id':'[[${reward.rid}]]'},
+                    url: "/ajax-reward-edit-form" ,
+                    dataType:"json",
+                    success: function(data){
+                        if(data.msg=="提交成功待审核！"){
+                            layer.msg(data.msg,{icon:1,time:1500});
+                            window.setTimeout("parent.layer.close(parent.layer.getFrameIndex(window.name))",2000);
+                        }else{
+                            layer.msg(data.msg,{icon:2,time:1500});
+                        }
+                    },
+                    error: function(XmlHttpRequest, textStatus, errorThrown){
+                        layer.msg('发生未知错误！',{icon:2,time:1500});
+                    }
+                });
+            }
+        });
+
+
+    });
+</script>
+</body>
+</html>

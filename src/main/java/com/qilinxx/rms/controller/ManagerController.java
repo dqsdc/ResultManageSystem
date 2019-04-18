@@ -449,7 +449,7 @@ public class ManagerController {
             json.put("msg", "期和卷至少填一处");
             return json;
         }
-        int thesisNum = thesisService.findThesisByHostName(thesis.getHost(), thesis.getName());
+        int thesisNum = thesisService.countThesisByHostName(thesis.getHost(), thesis.getName());
         if (thesisNum != 0) {
             json.put("msg", "该项目已被提交！");
             return json;
@@ -614,7 +614,7 @@ public class ManagerController {
         reward.setPeople(people.substring(0, people.lastIndexOf(",")));
 
         //以下两种错误
-        int rewardNum = rewardService.findRewardByNamePeopleGetTime(reward.getName(), reward.getPeople(), reward.getGetTime());
+        int rewardNum = rewardService.countRewardByNamePeopleGetTime(reward.getName(), reward.getPeople(), reward.getGetTime());
         if (rewardNum != 0) {
             json.put("msg", "该奖励已被提交！");
             return json;
@@ -743,7 +743,7 @@ public class ManagerController {
     public JSONObject ajaxProjectForm(HttpSession session, Textbook textbook, String publishTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
-        Integer textBookNum = textbookService.findTextBookByISBN(textbook.getIsbn());
+        Integer textBookNum = textbookService.countTextBookByISBN(textbook.getIsbn());
         if (textBookNum != 0) {
             json.put("msg", "该教材已被提交！");
             return json;
@@ -893,7 +893,7 @@ public class ManagerController {
         startTimeDate += ":00"; endTimeDate += ":00";
         meeting.setStartTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(startTimeDate)))));
         meeting.setEndTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(endTimeDate)))));
-        Integer meetingNum = meetingService.findMeetingByNameMeetingTime(meeting.getName(), meeting.getStartTime());
+        Integer meetingNum = meetingService.countMeetingByNameMeetingTime(meeting.getName(), meeting.getStartTime());
         if (meetingNum != 0) {
             json.put("msg", "该会议已被提交！");
             return json;
@@ -1598,6 +1598,10 @@ public class ManagerController {
         return json;
     }
 
+
+
+
+    //item重新编辑页面
     /**
      * @param id
      * @return  项目内容编辑页面
@@ -1620,20 +1624,57 @@ public class ManagerController {
         model.addAttribute("dateKit",new DateKit());
         return "manager/edit/thesis-edit";
     }
+    /**
+     * @param id
+     * @return  会议内容编辑页面
+     */
+    @GetMapping("meeting-edit")
+    public String meetingEdit(String id,Model model){
+        Meeting meeting = meetingService.findMeetingById(id);
+        model.addAttribute("meeting",meeting);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/edit/meeting-edit";
+    }
+    /**
+     * @param id
+     * @return  奖励内容编辑页面
+     */
+    @GetMapping("reward-edit")
+    public String rewardEdit(String id,Model model){
+        Reward reward = rewardService.findRewardByRid(id);
+        model.addAttribute("reward",reward);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/edit/reward-edit";
+    }
 
     /**
-     *  项目内容编辑提交，并保存
      * @param id
-     * @param session
-     * @param project
-     * @param startTimeDate
-     * @param endTimeDate
-     * @param setTimeDate
+     * @return  奖励内容编辑页面
+     */
+    @GetMapping("textbook-edit")
+    public String textbookEdit(String id,Model model){
+        Textbook textbook = textbookService.findTextbookById(id);
+        model.addAttribute("textbook",textbook);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/edit/textbook-edit";
+    }
+
+
+
+
+
+    //item内容编辑提交
+    /**
+     *  ajax项目内容编辑提交，并保存
+     * @param id    项目id
+     * @param startTimeDate 开始时间
+     * @param endTimeDate   结束时间
+     * @param setTimeDate   建立时间
      * @throws IOException
      */
     @PostMapping("ajax-project-edit-form")
     @ResponseBody
-    public JSONObject ajaxProjectEditForm(String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
+    public JSONObject ajaxProjectEditForm(String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate)  {
         JSONObject json = new JSONObject();
         project.setPid(id);
         //以下三种种错误
@@ -1702,4 +1743,283 @@ public class ManagerController {
         json.put("msg", "提交成功待审核！");
         return json;
     }
+
+
+    /**
+     * ajax论文内容编辑提交，并保存
+     *
+     * @param startPage 起始页码
+     * @param endPage   结束页码
+     * @throws IOException
+     */
+    @PostMapping("ajax-thesis-edit-form")
+    @ResponseBody
+    public JSONObject ajaxThesisEditForm(String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) {
+        JSONObject json = new JSONObject();
+        thesis.setTid(id);
+        //以下四种错误
+        if(thesis.getDossier()==null&&thesis.getIssue()==null){
+            json.put("msg", "期和卷至少填一处");
+            return json;
+        }
+        int thesisNum = thesisService.countThesisByHostNameExceptTid(thesis.getHost(), thesis.getName(),thesis.getTid());
+        if (thesisNum != 0) {
+            json.put("msg", "该项目已被提交！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names = thesis.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        Map<String, String> nameMap = new HashMap<>();
+        String people = "";
+        for (String name : names) {
+            if (!name.equals("")) {
+                nameMap.put(name, "");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people = people + (String) entry.getKey() + ",";
+        }
+        nameMap.put(thesis.getHost(), "");//添加主持人
+        if (!nameMap.containsKey(user.getName())) {
+            json.put("msg", "此论文与本账号用户无关！");
+            return json;
+        }
+        thesis.setPeople(people.substring(0, people.lastIndexOf(",")));
+        /**
+         * 更新论文记录
+         */
+        thesis.setPageNum(startPage + "-" + endPage);
+        thesis.setState("0");
+        thesis.setUpdateTime(DateKit.getUnixTimeLong());
+        thesisService.updateThesis(thesis);
+        /**
+         * 新建和删除用户与论文的关系记录
+         */
+        //删除之前的关系记录
+        userItemService.deleteUserItemByItemId(thesis.getTid());
+        //添加新的关系记录
+        UserItem userItem = new UserItem();
+        userItem.setItemId(thesis.getTid());
+        userItem.setItemType("thesis");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String) entry.getKey());
+            if (userInfoList.size() != 0) {
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        json.put("msg", "提交成功待审核！");
+        return json;
+    }
+
+
+    /**
+     * ajax会议内容编辑提交，并保存
+     *
+     */
+    @PostMapping("ajax-meeting-edit-form")
+    @ResponseBody
+    public JSONObject ajaxMeetingEditForm(HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate)  {
+        JSONObject json = new JSONObject();
+        //以下三种种错误
+        startTimeDate += ":00"; endTimeDate += ":00";
+        meeting.setStartTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(startTimeDate)))));
+        meeting.setEndTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(endTimeDate)))));
+        Integer meetingNum = meetingService.countMeetingByNameMeetingTimeExceptId(meeting.getName(), meeting.getStartTime(),meeting.getId());
+        if (meetingNum != 0) {
+            json.put("msg", "该会议已被提交！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names = meeting.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        Map<String, String> nameMap = new HashMap<>();
+        String people = "";
+        for (String name : names) {
+            if (!name.equals("")) {
+                nameMap.put(name, "");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people = people + (String) entry.getKey() + ",";
+        }
+        if (!nameMap.containsKey(user.getName())) {
+            json.put("msg", "此会议与本账号用户无关！");
+            return json;
+        }
+        meeting.setPeople(people.substring(0, people.lastIndexOf(",")));
+        /**
+         * 新建项目记录
+         */
+
+        //保存会议信息
+        meeting.setState("0");
+        meeting.setUpdateTime(DateKit.getUnixTimeLong());
+        meetingService.updateMeeting(meeting);
+        /**
+         * 删除和新建用户与项目的关系记录
+         */
+        //删除旧记录
+        userItemService.deleteUserItemByItemId(meeting.getId());
+        //新建新记录
+        UserItem userItem = new UserItem();
+        userItem.setItemId(meeting.getId());
+        userItem.setItemType("meeting");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String) entry.getKey());
+            if (userInfoList.size() != 0) {
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        json.put("msg", "提交成功待审核！");
+        return json;
+    }
+
+
+    /**
+     * ajax奖励编辑提交，并保存
+     */
+    @PostMapping("ajax-reward-edit-form")
+    @ResponseBody
+    public JSONObject ajaxRewardEditForm(String id,HttpSession session, Reward reward, String getTimeDate) throws IOException {
+        JSONObject json = new JSONObject();
+        reward.setRid(id);
+        //日期转化为时间戳
+        getTimeDate += " 00:00:00";
+        reward.setGetTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(getTimeDate)))));
+
+        //姓名去重，并重新排序
+        String[] names = reward.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        Map<String, String> nameMap = new HashMap<>();
+        String people = "";
+        for (String name : names) {
+            if (!name.equals("")) {
+                nameMap.put(name, "");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people = people + (String) entry.getKey() + ",";
+        }
+        reward.setPeople(people.substring(0, people.lastIndexOf(",")));
+
+        //以下两种错误
+        int rewardNum = rewardService.countRewardByNamePeopleGetTimeExceptRid(reward.getName(), reward.getPeople(), reward.getGetTime(),reward.getRid());
+        if (rewardNum != 0) {
+            json.put("msg", "该奖励已被提交！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        if (!nameMap.containsKey(user.getName())) {
+            json.put("msg", "此奖励与本账号用户无关！");
+            return json;
+        }
+        /**
+         * 更新奖励记录
+         */
+        //将日期转化为时间戳
+        reward.setGetTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(getTimeDate)))));
+        reward.setState("0");
+        reward.setUpdateTime(DateKit.getUnixTimeLong());
+        rewardService.updateReward(reward);
+        /**
+         * 新建用户与奖励的关系记录
+         */
+        //删除记录
+        userItemService.deleteUserItemByItemId(reward.getRid());
+        //新建记录
+        UserItem userItem = new UserItem();
+        userItem.setItemId(reward.getRid());
+        userItem.setItemType("reward");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String) entry.getKey());
+            if (userInfoList.size() != 0) {
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        json.put("msg", "提交成功待审核！");
+        return json;
+    }
+
+
+    /**
+     * ajax教材编辑提交，并保存
+     */
+    @PostMapping("ajax-textbook-edit-form")
+    @ResponseBody
+    public JSONObject ajaxTextbookEditForm(HttpSession session, Textbook textbook, String publishTimeDate)  {
+        JSONObject json = new JSONObject();
+        //以下2种错误
+        Integer textBookNum = textbookService.countTextBookByISBNExceptId(textbook.getIsbn(),textbook.getId());
+        if (textBookNum != 0) {
+            json.put("msg", "该教材已被提交！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names = textbook.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        Map<String, String> nameMap = new HashMap<>();
+        String people = "";
+        for (String name : names) {
+            if (!name.equals("")) {
+                nameMap.put(name, "");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people = people + (String) entry.getKey() + ",";
+        }
+        if (!nameMap.containsKey(user.getName())) {
+            json.put("msg", "此教材与本账号用户无关！");
+            return json;
+        }
+        textbook.setPeople(people.substring(0, people.lastIndexOf(",")));
+        /**
+         * 新建项目记录
+         */
+
+        //将日期转化为时间戳
+        publishTimeDate += "-00 00:00:00";
+        textbook.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
+        textbook.setState("0");
+        textbook.setUpdateTime(DateKit.getUnixTimeLong());
+        textbookService.updateTextbook(textbook);
+        /**
+         * 新建用户与项目的关系记录
+         */
+        //删除旧记录
+        userItemService.deleteUserItemByItemId(textbook.getId());
+        //添加新纪录
+        UserItem userItem = new UserItem();
+        userItem.setItemId(textbook.getId());
+        userItem.setItemType("textbook");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String) entry.getKey());
+            if (userInfoList.size() != 0) {
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        json.put("msg", "提交成功待审核！");
+        return json;
+    }
+
+
 }

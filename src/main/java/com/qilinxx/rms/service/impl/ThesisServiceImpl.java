@@ -14,9 +14,16 @@ public class ThesisServiceImpl implements ThesisService {
     @Autowired
     ThesisMapper thesisMapper;
     @Override
-    public int findThesisByHostName(String host, String name) {
+    public int countThesisByHostName(String host, String name) {
         ThesisExample example=new ThesisExample();
         example.createCriteria().andHostEqualTo(host).andNameEqualTo(name);
+        return thesisMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countThesisByHostNameExceptTid(String host, String name, String tid) {
+        ThesisExample example=new ThesisExample();
+        example.createCriteria().andHostEqualTo(host).andNameEqualTo(name).andTidNotEqualTo(tid);
         return thesisMapper.selectCountByExample(example);
     }
 

@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface TextbookService {
     /**查询重复的个数*/
-    Integer findTextBookByISBN(String ISBN);
+    Integer countTextBookByISBN(String ISBN);
+    /**查询重复的个数      除了指定id*/
+    Integer countTextBookByISBNExceptId(String ISBN,String id);
     /**插入一个新的记录*/
     void createTextbook(Textbook textbook);
     /**通过id 查询记录*/

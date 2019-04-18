@@ -71,9 +71,9 @@
                 <td th:if="${meeting.state}==1"><span class="label label-danger radius">未通过</span></td>
                 <td th:if="${meeting.state}==2"><span class="label label-success radius">已审核</span></td>
                 <td class="f-14 td-manage">
-                    <span th:if="${meeting.createId.equals(uid) && !meeting.state.equals('2')}"><a style="text-decoration:none" class="ml-5" th:data-id="${meeting.id}"  onClick="itemDelete(this,this.getAttribute('data-id'))" href="javascript:;" title="编辑内容"><i class="Hui-iconfont">&#xe6e2;</i></a></span>
-                    <span th:if="${meeting.createId.equals(uid) && !meeting.state.equals('2')}"><a style="text-decoration:none" class="ml-5" th:data-id="${meeting.id}"  onClick="itemDelete(this,this.getAttribute('data-id'))" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></span>
+                    <span th:if="${meeting.createId.equals(uid) && !meeting.state.equals('2')}"><a style="text-decoration:none" class="ml-5" th:data-id="${meeting.id}"  onClick="itemEdit(this,this.getAttribute('data-id'))" href="javascript:;" title="编辑内容"><i class="Hui-iconfont">&#xe60c;</i></a></span>
                     <span><a th:data-name="${meeting.name}" th:data-id="${meeting.id}"   onClick="item_detail_file(this.getAttribute('data-name'),this.getAttribute('data-id'))" style="text-decoration:none" class="ml-5"  href="javascript:;" title="附件详情"><i class="Hui-iconfont">&#xe687;</i></a></span>
+                    <span th:if="${meeting.createId.equals(uid) && !meeting.state.equals('2')}"><a style="text-decoration:none" class="ml-5" th:data-id="${meeting.id}"  onClick="itemDelete(this,this.getAttribute('data-id'))" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></span>
                 </td>
             </tr>
             </tbody>
@@ -115,6 +115,14 @@
             type: 2,
             title:title,
             content: "item-detail-file?id="+id+"&itemType=meeting&from=user"
+        });
+        layer.full(index);
+    }
+    function itemEdit(obj,id){
+        var index = layer.open({
+            type: 2,
+            title:'编辑内容',
+            content: "meeting-edit?id="+id
         });
         layer.full(index);
     }

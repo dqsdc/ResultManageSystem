@@ -68,7 +68,7 @@
                 <td  th:text="${thesis.people}"></td>
                 <td th:text="${thesis.book}"></td>
                 <td th:text="${thesis.rank}">80</td>
-                <td th:text="${thesis.year}+','+${thesis.dossier}+'('+${thesis.issue}+'):'+${thesis.pageNum}">80</td>
+                <td><span th:text="${thesis.year}"></span>,<span th:if="${thesis.dossier!=null}" th:text="${thesis.dossier}"></span><span th:if="${thesis.issue!=null}" th:text="'('+${thesis.issue}+')'"></span>:<span th:text="${thesis.pageNum}"></span></td>
                 <td th:if="${thesis.state}==0"><span class="label label-default radius">待审核</span></td>
                 <td th:if="${thesis.state}==1"><span class="label label-danger radius">未通过</span></td>
                 <td th:if="${thesis.state}==2"><span class="label label-success radius">已审核</span></td>

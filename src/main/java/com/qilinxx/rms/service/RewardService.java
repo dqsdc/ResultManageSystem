@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface RewardService {
     /**通过奖励名称name，获奖人people，获奖时间getTime查重，返回重复个数*/
-    int findRewardByNamePeopleGetTime(String name,String people,long getTime);
+    int countRewardByNamePeopleGetTime(String name,String people,long getTime);
+    /**通过奖励名称name，获奖人people，获奖时间getTime查重，返回重复个数*/
+    int countRewardByNamePeopleGetTimeExceptRid(String name,String people,long getTime,String rid);
     /**新建一个奖励记录*/
     void createReward(Reward reward);
     /**通过奖励rid   删除奖励*/

@@ -870,6 +870,7 @@
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
                             layer.msg(data.msg,{icon:1,time:1500});
+                            setTimeout(window.location.href='/meeting-overview',5);
                         }else{
                             layer.msg(data.msg,{icon:2,time:1500});
                         }

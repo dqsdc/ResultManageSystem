@@ -14,9 +14,16 @@ public class RewardServiceImpl implements RewardService {
     @Autowired
     RewardMapper rewardMapper;
     @Override
-    public int findRewardByNamePeopleGetTime(String name, String people, long getTime) {
+    public int countRewardByNamePeopleGetTime(String name, String people, long getTime) {
         RewardExample example=new RewardExample();
         example.createCriteria().andNameEqualTo(name).andPeopleEqualTo(people).andGetTimeEqualTo(getTime);
+        return rewardMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countRewardByNamePeopleGetTimeExceptRid(String name, String people, long getTime, String rid) {
+        RewardExample example=new RewardExample();
+        example.createCriteria().andNameEqualTo(name).andPeopleEqualTo(people).andGetTimeEqualTo(getTime).andRidNotEqualTo(rid);
         return rewardMapper.selectCountByExample(example);
     }
 

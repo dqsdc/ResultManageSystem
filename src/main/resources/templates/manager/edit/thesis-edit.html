@@ -70,7 +70,7 @@
                         ):
                         <input type="text" th:value="${thesis.pageNum.substring(0,thesis.pageNum.indexOf('-'))}" name="startPage" id="startPage" placeholder="起始页码" value="" class="input-text" style=" width:10%">
                         -
-                        <input type="text" th:value="${thesis.pageNum.substring(thesis.pageNum.indexOf('-'))+1}" name="endPage" id="endPage" placeholder="结束页码" value="" class="input-text" style=" width:10%">
+                        <input type="text" th:value="${thesis.pageNum.substring(thesis.pageNum.indexOf('-')+1)}" name="endPage" id="endPage" placeholder="结束页码" value="" class="input-text" style=" width:10%">
                         .
                     </div>
                 </div>
@@ -200,11 +200,13 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
+                    data:{'id':'[[${thesis.tid}]]'},
                     url: "/ajax-thesis-edit-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
                             layer.msg(data.msg,{icon:1,time:1500});
+                            window.setTimeout("parent.layer.close(parent.layer.getFrameIndex(window.name))",2000);
                         }else{
                             layer.msg(data.msg,{icon:2,time:1500});
                         }
