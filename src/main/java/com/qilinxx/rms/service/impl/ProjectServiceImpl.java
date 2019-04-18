@@ -15,9 +15,16 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectMapper projectMapper;
     @Override
-    public int findProjectByNameHostFrom(String name, String host, String source) {
+    public int countProjectByNameHostFrom(String name, String host, String source) {
         ProjectExample example=new ProjectExample();
         example.createCriteria().andNameEqualTo(name).andHostEqualTo(host).andProjectSourceEqualTo(source);
+        return projectMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countProjectByNameHostFromExceptPid(String name, String host, String source, String pid) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andNameEqualTo(name).andHostEqualTo(host).andProjectSourceEqualTo(source).andPidNotEqualTo(pid);
         return projectMapper.selectCountByExample(example);
     }
 
@@ -67,6 +74,13 @@ public class ProjectServiceImpl implements ProjectService {
     public int countProjectByTopic(String topic) {
         ProjectExample example=new ProjectExample();
         example.createCriteria().andTopicEqualTo(topic);
+        return projectMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countProjectByTopicExceptPid(String topic, String pid) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andTopicEqualTo(topic).andPidNotEqualTo(pid);
         return projectMapper.selectCountByExample(example);
     }
 

@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface ProjectService {
     /**通过 项目名称name、主持人host、醒目来源from 查重,返回查询重复个数*/
-    int findProjectByNameHostFrom(String name,String host,String source);
+    int countProjectByNameHostFrom(String name,String host,String source);
+    /**通过 项目名称name、主持人host、醒目来源from 查重,返回查询重复个数     除了指定的pid*/
+    int countProjectByNameHostFromExceptPid(String name,String host,String source,String pid);
     /**新建一个项目*/
     void createProject(Project project);
     /**通过项目pid查询项目*/
@@ -23,4 +25,6 @@ public interface ProjectService {
     int countProjectByMidState(Integer mid,String state);
     /**通过查询项目题目topic，返回重复个数*/
     int countProjectByTopic(String topic);
+    /**通过查询项目题目topic，返回重复个数     除了指定的pid*/
+    int countProjectByTopicExceptPid(String topic,String pid);
 }

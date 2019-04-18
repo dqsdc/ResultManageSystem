@@ -50,7 +50,7 @@ public class ManagerController {
     @GetMapping({"main", "1"})
     public String main(HttpSession session) {
         //以下代码项目完成修改
-        //session.setAttribute("uid",213003);
+        session.setAttribute("uid",213003);
         //以上代码项目完成时修改
         Object o = session.getAttribute("uid");
         if (o == null)
@@ -288,7 +288,7 @@ public class ManagerController {
     public JSONObject ajaxProjectForm(HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下四种种错误
-        int projectNum = projectService.findProjectByNameHostFrom(project.getName(), project.getHost(), project.getProjectSource());
+        int projectNum = projectService.countProjectByNameHostFrom(project.getName(), project.getHost(), project.getProjectSource());
         if (projectNum != 0) {
             json.put("msg", "该项目已被提交！");
             return json;
@@ -444,7 +444,11 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxThesisForm(Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
-        //以下三种错误
+        //以下四种错误
+        if(thesis.getDossier()==null&&thesis.getIssue()==null){
+            json.put("msg", "期和卷至少填一处");
+            return json;
+        }
         int thesisNum = thesisService.findThesisByHostName(thesis.getHost(), thesis.getName());
         if (thesisNum != 0) {
             json.put("msg", "该项目已被提交！");
@@ -1467,6 +1471,7 @@ public class ManagerController {
         }
         if(power.contains("1")){
             check=true;
+            see=true;
         }
         if (power.contains("2")){
             see=true;
@@ -1593,4 +1598,108 @@ public class ManagerController {
         return json;
     }
 
+    /**
+     * @param id
+     * @return  项目内容编辑页面
+     */
+    @GetMapping("project-edit")
+    public String projectEdit(String id,Model model){
+        Project project = projectService.findProjectByPid(id);
+        model.addAttribute("project",project);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/edit/project-edit";
+    }
+    /**
+     * @param id
+     * @return  论文内容编辑页面
+     */
+    @GetMapping("thesis-edit")
+    public String thesisEdit(String id,Model model){
+        Thesis thesis = thesisService.findThesisByTid(id);
+        model.addAttribute("thesis",thesis);
+        model.addAttribute("dateKit",new DateKit());
+        return "manager/edit/thesis-edit";
+    }
+
+    /**
+     *  项目内容编辑提交，并保存
+     * @param id
+     * @param session
+     * @param project
+     * @param startTimeDate
+     * @param endTimeDate
+     * @param setTimeDate
+     * @throws IOException
+     */
+    @PostMapping("ajax-project-edit-form")
+    @ResponseBody
+    public JSONObject ajaxProjectEditForm(String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
+        JSONObject json = new JSONObject();
+        project.setPid(id);
+        //以下三种种错误
+        int projectNum = projectService.countProjectByNameHostFromExceptPid(project.getName(), project.getHost(), project.getProjectSource(),project.getPid());
+        if (projectNum != 0) {
+            json.put("msg", "该项目已被提交！");
+            return json;
+        }
+        if(projectService.countProjectByTopicExceptPid(project.getTopic(),project.getPid())!=0){
+            json.put("msg", "该项目题目已被提交！");
+            return json;
+        }
+        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        //姓名去重，并重新排序
+        String[] names = project.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        Map<String, String> nameMap = new HashMap<>();
+        String people = "";
+        for (String name : names) {
+            if (!name.equals("")) {
+                nameMap.put(name, "");
+            }
+        }
+        Iterator iterator1 = nameMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator1.next();
+            people = people + (String) entry.getKey() + ",";
+        }
+        nameMap.put(project.getHost(), "");//添加主持人
+        if (!nameMap.containsKey(user.getName())) {
+            json.put("msg", "此项目与本账号用户无关！");
+            return json;
+        }
+        project.setPeople(people.substring(0, people.lastIndexOf(",")));
+        /**
+         * 新建项目记录
+         */
+
+        //将日期转化为时间戳
+        startTimeDate += " 00:00:00";
+        endTimeDate += " 00:00:00";
+        setTimeDate += " 00:00:00";
+        project.setStartTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(startTimeDate)))));
+        project.setEndTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(endTimeDate)))));
+        project.setSetTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(setTimeDate)))));
+        project.setState("0");
+        project.setUpdateTime(DateKit.getUnixTimeLong());
+        projectService.updateProject(project);
+        /**
+         * 新建用户与项目的关系记录
+         */
+        //删除之前用户与项目的关系记录
+        userItemService.deleteUserItemByItemId(project.getPid());
+        //建立新用户与项目的关系记录
+        UserItem userItem = new UserItem();
+        userItem.setItemId(project.getPid());
+        userItem.setItemType("project");
+        Iterator iterator2 = nameMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator2.next();
+            List<UserInfo> userInfoList = userInfoService.findUserByName((String) entry.getKey());
+            if (userInfoList.size() != 0) {
+                userItem.setUid(userInfoList.get(0).getUid());
+                userItemService.createUserItem(userItem);
+            }
+        }
+        json.put("msg", "提交成功待审核！");
+        return json;
+    }
 }

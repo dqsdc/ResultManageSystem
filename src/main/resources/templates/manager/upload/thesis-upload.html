@@ -78,7 +78,7 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【期刊详情】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" name="year" id="year" placeholder="年份" value="" class="input-text" style=" width:10%">
+                        <input class="input-text Wdate" onfocus="WdatePicker({ dateFmt:'yyyy' })" type="text" name="year" id="year" placeholder="年份" value=""  style=" width:10%">
                         ,
                         <input type="text" name="dossier" id="dossier" placeholder="卷" value="" class="input-text" style=" width:10%">
                         (
@@ -125,7 +125,7 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【附件上传】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <div class="uploader-list-container" style="padding-left: 0px">
-                            <div>论文全文、期刊封面、目录页等</div>
+                            <div>&nbsp;&nbsp;论文全文、期刊封面、目录页等</div>
                             <div class="queueList">
                                 <div id="dndArea1" class="placeholder">
                                     <div id="filePicker-1"></div>
@@ -875,12 +875,10 @@
                     maxlength:4
                 },
                 dossier:{
-                    required:true,
                     number:true,
                     maxlength:9
                 },
                 issue:{
-                    required:true,
                     number:true,
                     maxlength:9
                 },

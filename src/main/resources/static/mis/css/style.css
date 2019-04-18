@@ -244,7 +244,7 @@ h2{font-weight:normal;}
 .imglist{clear:both; overflow:hidden; margin-bottom:20px; margin-left:5px;}
 .imglist li{width:188px; border:solid 1px #fff;height:199px;float:left; margin-right:8px; margin-bottom:10px; cursor:pointer;}
 .imglist li:hover{border:solid 1px #d7e4ea;}
-.imglist li span{width:168px; height:126px; margin:8px;}
+.imglist li span{width:128px; height:128px; margin:8px;}
 .imglist li h2{text-align:center; line-height:25px;}
 .imglist li p{text-align:center; line-height:17px; background:url(../images/line1.png) center center no-repeat;}
 .imglist li p a{color:#1f7cb6;}

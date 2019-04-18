@@ -18,6 +18,15 @@
             text-align: center;
             line-height: 12px;
         }
+        a img, img {
+            margin-left: 14px;
+        }
+        .imglist li {
+            margin-right: 12px;
+        }
+        .imglist li:hover {
+            background-color: aliceblue;
+        }
     </style>
 </head>
 
@@ -149,7 +158,7 @@
                     </tr>
                     <tr>
                         <td>年卷期页码:</td>
-                        <td th:text="${thesis.year}+','+${thesis.dossier}+'('+${thesis.issue}+'):'+${thesis.pageNum}">80</td>
+                        <td><span th:text="${thesis.year}"></span>,<span th:if="${thesis.dossier!=null}" th:text="${thesis.dossier}"></span><span th:if="${thesis.issue!=null}" th:text="'('+${thesis.issue}+')'"></span>:<span th:text="${thesis.pageNum}"></span></td>
                     </tr>
                     <tr>
                         <td>论文级别:</td>
@@ -256,6 +265,14 @@
                         <td th:text="${dateKit.formatDateByUnixTime(textbook.publishTime,'YYYY-MM')}">80</td>
                     </tr>
                     <tr>
+                        <td>规划类别:</td>
+                        <td th:text="${textbook.type}">80</td>
+                    </tr>
+                    <tr>
+                        <td>教材获奖:</td>
+                        <td th:text="${textbook.reward}">80</td>
+                    </tr>
+                    <tr>
                         <td>教材简介:</td>
                         <td th:text="${textbook.profile}">80</td>
                     </tr>
@@ -341,13 +358,15 @@
 
 
         <div id="tab2" class="tabson">
-                <ul class="imglist">
-                    <li th:if="${documentList.size()}!=0" th:each="document:${documentList}">
-                        <span><img th:href="'download?did='+${document.did}" th:download="${document.name}" src="mis/images/img01.png" /></span>
-                        <h2><a th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
-                        <p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span th:if="${display}==true">&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'deldte_document(this,\''+${document.did}+'\')'">删除</a></span></p>
-                    </li>
-                </ul>
+            <ul class="imglist">
+                <li th:if="${documentList.size()}!=0" th:each="document:${documentList}">
+                        <span>
+                            <img th:href="'download?did='+${document.did}" th:download="${document.name}" th:src="'images//'+${document.getType().toLowerCase().substring(1)}+'.png'"  onerror='this.src="images//unknown.png" '  />
+                        </span>
+                    <h2><a th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
+                    <p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span th:if="${display}==true">&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'deldte_document(this,\''+${document.did}+'\')'">删除</a></span></p>
+                </li>
+            </ul>
                 <div class="pagin">
                     <div class="message">共<i class="blue" th:text="${documentList.size()}">1256</i>个文件</div>
                     <!--<ul class="paginList" style=" white-space:nowrap; ">-->

@@ -89,6 +89,19 @@
                     </div>
                 </div>
                 <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【规划类别】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" placeholder="示例：普通高校教育“十一五”国家规划教材" class="input-text"  id="type" name="type">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【教材获奖】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea name="reward" id="reward" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
+                        <p class="textarea-numberbar"><em class="textarea-length"></em></p>
+                    </div>
+                </div>
+                <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">【教材简介】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <textarea name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
@@ -99,7 +112,7 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【附件上传】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <div class="uploader-list-container" style="padding-left: 0px">
-                            <div>教材封面、版权页、前言、目录等</div>
+                            <div>&nbsp;&nbsp;教材封面、版权页、前言、目录等</div>
                             <div class="queueList">
                                 <div id="dndArea1" class="placeholder">
                                     <div id="filePicker-1"></div>
@@ -843,6 +856,12 @@
                     required:true
                 },
                 profile:{
+                    maxlength:200
+                },
+                type:{
+                    maxlength:250
+                },
+                reward:{
                     maxlength:200
                 }
 

@@ -514,6 +514,146 @@ public class TextbookExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(String value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(String value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(String value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(String value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(String value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<String> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(String value1, String value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(String value1, String value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardIsNull() {
+            addCriterion("reward is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardIsNotNull() {
+            addCriterion("reward is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardEqualTo(String value) {
+            addCriterion("reward =", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardNotEqualTo(String value) {
+            addCriterion("reward <>", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardGreaterThan(String value) {
+            addCriterion("reward >", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardGreaterThanOrEqualTo(String value) {
+            addCriterion("reward >=", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardLessThan(String value) {
+            addCriterion("reward <", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardLessThanOrEqualTo(String value) {
+            addCriterion("reward <=", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardLike(String value) {
+            addCriterion("reward like", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardNotLike(String value) {
+            addCriterion("reward not like", value, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardIn(List<String> values) {
+            addCriterion("reward in", values, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardNotIn(List<String> values) {
+            addCriterion("reward not in", values, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardBetween(String value1, String value2) {
+            addCriterion("reward between", value1, value2, "reward");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardNotBetween(String value1, String value2) {
+            addCriterion("reward not between", value1, value2, "reward");
+            return (Criteria) this;
+        }
+
         public Criteria andProfileIsNull() {
             addCriterion("profile is null");
             return (Criteria) this;

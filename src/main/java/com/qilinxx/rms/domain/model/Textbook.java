@@ -45,6 +45,12 @@ public class Textbook {
     @Column(name = "mid")
     private Integer mid;
 
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "reward")
+    private String reward;
+
     /**
      * @return id
      */
@@ -147,6 +153,42 @@ public class Textbook {
      */
     public void setIsbn(String isbn) {
         this.isbn = isbn == null ? null : isbn.trim();
+    }
+
+    /**
+     * 获取规划类别
+     *
+     * @return type - 规划类别
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置规划类别
+     *
+     * @param type 规划类别
+     */
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    /**
+     * 获取教材获奖
+     *
+     * @return reward - 教材获奖
+     */
+    public String getReward() {
+        return reward;
+    }
+
+    /**
+     * 设置教材获奖
+     *
+     * @param reward 教材获奖
+     */
+    public void setReward(String reward) {
+        this.reward = reward == null ? null : reward.trim();
     }
 
     /**
@@ -287,6 +329,8 @@ public class Textbook {
         sb.append(", press=").append(press);
         sb.append(", publishTime=").append(publishTime);
         sb.append(", isbn=").append(isbn);
+        sb.append(", type=").append(type);
+        sb.append(", reward=").append(reward);
         sb.append(", profile=").append(profile);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);

@@ -11,6 +11,8 @@
     <result column="press" jdbcType="VARCHAR" property="press" />
     <result column="publish_time" jdbcType="BIGINT" property="publishTime" />
     <result column="ISBN" jdbcType="VARCHAR" property="isbn" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="reward" jdbcType="VARCHAR" property="reward" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
@@ -87,7 +89,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, people, press, publish_time, ISBN, profile, create_time, update_time, remake,
-    state, create_id, mid
+    id, name, people, press, publish_time, ISBN, type, reward, profile, create_time,
+    update_time, remake, state, create_id, mid
   </sql>
 </mapper>
