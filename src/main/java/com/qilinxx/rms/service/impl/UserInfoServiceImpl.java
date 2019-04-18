@@ -109,11 +109,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         List<UserMajor> userMajors= userMajorMapper.selectAllByUid(info.getUid());
         if(userMajors.size()>0){
-            StringBuffer buffer=new StringBuffer();
+            StringBuffer check=new StringBuffer();
+            StringBuffer read=new StringBuffer();
             for (UserMajor userMajor:userMajors) {
-              buffer.append(majorMapper.selectByPrimaryKey(userMajor.getMid()).getName()+",");
+                if(userMajor.getPower().equals("1"))
+                    check.append(majorMapper.selectByPrimaryKey(userMajor.getMid()).getName()+",");
+                else
+                    read.append(majorMapper.selectByPrimaryKey(userMajor.getMid()).getName()+",");
             }
-            userInfoVo.setPermission(buffer.substring(0,buffer.length()-1));
+            if(check.length()>0)
+                userInfoVo.setCheckPermission(check.substring(0,check.length()-1));
+            else
+                userInfoVo.setCheckPermission(null);
+            if(read.length()>0)
+                userInfoVo.setReadPermission(read.substring(0,read.length()-1));
+            else
+                userInfoVo.setReadPermission(null);
         }
         userInfoVo.setUid(info.getUid());
         userInfoVo.setMajor(major.getName());

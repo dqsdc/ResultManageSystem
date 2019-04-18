@@ -29,7 +29,7 @@
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
-        <li><a href="index">首页</a></li>
+        <li>首页</li>
         <li><a href="project-overview">项目总览</a></li>
     </ul>
 </div>
@@ -102,7 +102,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail?id="+id+"&itemType=project&from=user"
+            content: "admin-item-detail?id="+id+"&itemType=project&from=user"
         });
         layer.full(index);
     }
@@ -110,7 +110,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail-file?id="+id+"&itemType=project&from=user"
+            content: "admin-item-detail-file?id="+id+"&itemType=project&from=user"
         });
         layer.full(index);
     }

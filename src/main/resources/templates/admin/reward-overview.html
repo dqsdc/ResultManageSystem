@@ -29,7 +29,7 @@
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
-        <li><a href="index">首页</a></li>
+        <li>首页</li>
         <li><a href="reward-overview">奖励总览</a></li>
     </ul>
 </div>
@@ -63,7 +63,7 @@
                 <td th:text="${rewardList.indexOf(reward)+1}"></td>
                 <td><u style="cursor:pointer" class="text-primary" th:data-name="${reward.name}" th:data-id="${reward.rid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${reward.name}">资讯标题</u></td>
                 <td  th:text="${reward.people}"></td>
-                <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-DD')}"></td>
+                <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}"></td>
                 <td th:text="${reward.company}"></td>
                 <td th:if="${reward.state}==0"><span class="label label-default radius">待审核</span></td>
                 <td th:if="${reward.state}==1"><span class="label label-danger radius">未通过</span></td>
@@ -98,7 +98,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail?id="+id+"&itemType=reward&from=user"
+            content: "admin-item-detail?id="+id+"&itemType=reward&from=user"
         });
         layer.full(index);
     }
@@ -107,7 +107,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail-file?id="+id+"&itemType=reward&from=user"
+            content: "admin-item-detail-file?id="+id+"&itemType=reward&from=user"
         });
         layer.full(index);
     }

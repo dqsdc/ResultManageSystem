@@ -74,15 +74,15 @@
                     </tr>
                     <tr>
                         <td>研究开始时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.startTime,'YYYY-MM-dd')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.startTime,'yyyy-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>研究结束时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.endTime,'YYYY-MM-dd')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.endTime,'yyyy-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>立项时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.setTime,'YYYY-MM-dd')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.setTime,'yyyy-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>项目经费:</td>
@@ -214,7 +214,7 @@
                     </tr>
                     <tr>
                         <td>获奖时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-dd')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}">80</td>
                     </tr>
                     <tr>
                         <td>奖励简介:</td>
@@ -322,11 +322,11 @@
                     </tr>
                     <tr>
                         <td>会议开始时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'YYYY-MM-dd HH:mm')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd HH:mm')}">80</td>
                     </tr>
                     <tr>
                         <td>会议结束时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(meeting.endTime,'YYYY-MM-dd HH:mm')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(meeting.endTime,'yyyy-MM-dd HH:mm')}">80</td>
                     </tr>
                     <tr>
                         <td>会议简介:</td>

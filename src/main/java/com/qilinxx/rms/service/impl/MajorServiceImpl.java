@@ -12,6 +12,7 @@ import java.util.List;
 public class MajorServiceImpl implements MajorService {
     @Autowired
     MajorMapper majorMapper;
+
     @Override
     public Major findMajorBymid(Integer mid) {
         return majorMapper.selectByPrimaryKey(mid);
@@ -20,5 +21,15 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public List<Major> findAllMajor() {
         return majorMapper.selectAll();
+    }
+
+    @Override
+    public int addMajor(Major major) {
+        return majorMapper.insert(major);
+    }
+
+    @Override
+    public int deleteMajor(int uid) {
+        return majorMapper.deleteByPrimaryKey(uid);
     }
 }

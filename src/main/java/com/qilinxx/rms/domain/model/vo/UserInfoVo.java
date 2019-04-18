@@ -10,7 +10,9 @@ import com.qilinxx.rms.domain.model.UserInfo;
 public class UserInfoVo extends UserInfo {
     private String major;
 
-    private String permission;
+    private String readPermission;
+
+    private String checkPermission;
 
     public String getMajor() {
         return major;
@@ -20,11 +22,19 @@ public class UserInfoVo extends UserInfo {
         this.major = major;
     }
 
-    public String getPermission() {
-        return permission;
+    public String getReadPermission() {
+        return readPermission;
     }
 
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setReadPermission(String readPermission) {
+        this.readPermission = readPermission;
+    }
+
+    public String getCheckPermission() {
+        return checkPermission;
+    }
+
+    public void setCheckPermission(String checkPermission) {
+        this.checkPermission = checkPermission;
     }
 }

@@ -29,7 +29,7 @@
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
-        <li><a href="index">首页</a></li>
+        <li>首页</li>
         <li><a href="textbook-overview">教材总览</a></li>
     </ul>
 </div>
@@ -90,7 +90,7 @@
         "pading":false,
         "aoColumnDefs": [
             //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-            {"orderable":false,"aTargets":[7]}// 不参与排序的列
+            {"orderable":false,"aTargets":[6]}// 不参与排序的列
         ]
     });
 
@@ -99,7 +99,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail?id="+id+"&itemType=textbook&from=user"
+            content: "admin-item-detail?id="+id+"&itemType=textbook&from=user"
         });
         layer.full(index);
     }
@@ -108,7 +108,7 @@
         var index = layer.open({
             type: 2,
             title:title,
-            content: "item-detail-file?id="+id+"&itemType=textbook&from=user"
+            content: "admin-item-detail-file?id="+id+"&itemType=textbook&from=user"
         });
         layer.full(index);
     }

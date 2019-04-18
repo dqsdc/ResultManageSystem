@@ -9,4 +9,8 @@ public interface MajorService {
     Major findMajorBymid(Integer mid);
     /**获得所有专业*/
     List<Major> findAllMajor();
+
+    int addMajor(Major major);
+
+    int deleteMajor(int uid);
 }
