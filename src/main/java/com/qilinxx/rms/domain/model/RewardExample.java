@@ -384,6 +384,76 @@ public class RewardExample {
             return (Criteria) this;
         }
 
+        public Criteria andLevelIsNull() {
+            addCriterion("level is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelIsNotNull() {
+            addCriterion("level is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelEqualTo(String value) {
+            addCriterion("level =", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelNotEqualTo(String value) {
+            addCriterion("level <>", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelGreaterThan(String value) {
+            addCriterion("level >", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelGreaterThanOrEqualTo(String value) {
+            addCriterion("level >=", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelLessThan(String value) {
+            addCriterion("level <", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelLessThanOrEqualTo(String value) {
+            addCriterion("level <=", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelLike(String value) {
+            addCriterion("level like", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelNotLike(String value) {
+            addCriterion("level not like", value, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelIn(List<String> values) {
+            addCriterion("level in", values, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelNotIn(List<String> values) {
+            addCriterion("level not in", values, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelBetween(String value1, String value2) {
+            addCriterion("level between", value1, value2, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelNotBetween(String value1, String value2) {
+            addCriterion("level not between", value1, value2, "level");
+            return (Criteria) this;
+        }
+
         public Criteria andGetTimeIsNull() {
             addCriterion("get_time is null");
             return (Criteria) this;

@@ -217,6 +217,10 @@
                         <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}">80</td>
                     </tr>
                     <tr>
+                        <td>奖励等级:</td>
+                        <td th:text="${reward.level}">80</td>
+                    </tr>
+                    <tr>
                         <td>奖励简介:</td>
                         <td th:text="${reward.profile}">80</td>
                     </tr>

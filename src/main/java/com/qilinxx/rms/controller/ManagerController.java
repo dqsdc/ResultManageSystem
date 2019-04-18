@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -43,20 +44,24 @@ public class ManagerController {
     TextbookService textbookService;
     @Autowired
     MeetingService meetingService;
+    @Autowired
+    LogService logService;
 
     /**
      * @return 来到教师成果管理系统页面
      */
     @GetMapping({"main", "1"})
-    public String main(HttpSession session) {
+    public String main(HttpSession session, HttpServletRequest request) {
         //以下代码项目完成修改
-        session.setAttribute("uid",213003);
+        //session.setAttribute("uid",213003);
         //以上代码项目完成时修改
         Object o = session.getAttribute("uid");
         if (o == null)
             return "redirect:/login";
-        else
+        else{
+            //logService.insertLog("管理员登录", "admin", userIp(request));
             return "manager/main";
+        }
     }
 
     /**

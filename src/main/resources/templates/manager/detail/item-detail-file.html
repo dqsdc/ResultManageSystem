@@ -214,14 +214,18 @@
                     </tr>
                     <tr>
                         <td>获奖时间:</td>
-                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'YYYY-MM-dd')}">80</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}">80</td>
+                    </tr>
+                    <tr>
+                        <td>奖励等级:</td>
+                        <td th:text="${reward.level}">80</td>
                     </tr>
                     <tr>
                         <td>奖励简介:</td>
                         <td th:text="${reward.profile}">80</td>
                     </tr>
                     <tr>
-                        <td>上传者:</td>
+                        <td>上传人:</td>
                         <td th:text="${createrMap.get(reward.createId).name}">80</td>
                     </tr>
                     <tr>
@@ -233,7 +237,7 @@
                         <td th:text="${dateKit.formatDateByUnixTime(reward.updateTime)}">Microsoft-IIS/6.0</td>
                     </tr>
                     <tr th:switch="${reward.state}">
-                        <td>审核状态：</td>
+                        <td>上传状态：</td>
                         <td style="color: #7d7d7d" th:case="0" >待审核</td>
                         <td style="color: red" th:case="1" >未通过</td>
                         <td style="color: green" th:case="2" >已审核</td>

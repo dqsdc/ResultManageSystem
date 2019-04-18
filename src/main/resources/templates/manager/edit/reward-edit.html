@@ -55,6 +55,21 @@
                     </div>
                 </div>
                 <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【奖励等级】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="level" name="level" class="select">
+					<option value="">请选择</option>
+				    <option value="国家级" th:selected="${reward.level.equals('国家级')}">国家级</option>
+                    <option value="部级" th:selected="${reward.level.equals('部级')}">部级</option>
+                    <option value="省级" th:selected="${reward.level.equals('省级')}">省级</option>
+					<option value="厅级" th:selected="${reward.level.equals('厅级')}">厅级</option>、
+                    <option value="市级" th:selected="${reward.level.equals('市级')}">市级</option>
+					<option value="校级" th:selected="${reward.level.equals('校级')}">校级</option>
+                    <option value="其他" th:selected="${reward.level.equals('其他')}">其他</option>
+				</select>
+				</span> </div>
+                </div>
+                <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">【奖励简介】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <textarea th:text="${reward.profile}" name="profile" id="profile" class="textarea"   ></textarea>

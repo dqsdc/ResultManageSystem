@@ -9,6 +9,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="people" jdbcType="VARCHAR" property="people" />
     <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="get_time" jdbcType="BIGINT" property="getTime" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
     <result column="state" jdbcType="CHAR" property="state" />
@@ -86,7 +87,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    rid, name, people, company, get_time, profile, state, create_id, create_time, update_time,
-    mid, remake
+    rid, name, people, company, level, get_time, profile, state, create_id, create_time,
+    update_time, mid, remake
   </sql>
 </mapper>
