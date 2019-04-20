@@ -32,4 +32,9 @@ public class MajorServiceImpl implements MajorService {
     public int deleteMajor(int uid) {
         return majorMapper.deleteByPrimaryKey(uid);
     }
+
+    @Override
+    public int updateMajor(Major major) {
+        return majorMapper.updateByPrimaryKeySelective(major);
+    }
 }

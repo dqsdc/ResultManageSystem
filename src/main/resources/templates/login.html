@@ -28,7 +28,7 @@
     <span  class="systemlogo"></span>
 
     <div class="loginbox">
-<form th:action="login" id="form-login" method="post" >
+<form id="form-login" method="post" >
         <ul>
             <li><input name="account" type="text" class="loginuser" id="account" th:value="${account!=null}?${account}"
                        data-easyform="length:4 16;number;real-time;"
@@ -38,7 +38,10 @@
                        data-easyform="length:6 16;real-time;"
                        data-message="密码必须为6—16位"
                        data-easytip="position:right;class:easy-red;"></li>
-            <li><input  type="submit" class="loginbtn" value="登录" /></li>
+            <li>
+                <!--<input  type="submit" class="loginbtn" value="登录" />-->
+                <button type="button" class="btn btn-primary" id="btn">确定</button>
+            </li>
         </ul>
 </form>
     </div>
@@ -46,6 +49,37 @@
 <div class="loginbm">版权所有</div>
 </body>
 <script src="easyform/js/easyform/easyform.js" type="text/javascript"></script>
+<script>
+    /*<![CDATA[*/
+
+    $("#btn").click(function () {
+        var data = $("#form-login").serialize();
+        console.log(data);
+        submit(data);
+    });
+
+    function submit(data) {
+        $.ajax({
+            url: '/loginSub', // ajax 请求地址
+            type: 'post',//请求方式 ’GET‘或’POST‘，默认为’GET‘。
+            data: data,
+            dataType: "text",//根据返回数据类型，可以有如下数据可选：xml html script json jsonp text
+            //请求成功后的回调函数
+            success: function (data) {
+                console.log(data);
+                    alert(data);
+                if(data==='登录成功')
+                    window.location.href="/main";
+            },
+            //请求失败时调用此函数。有以下三个参数：XMLHttpRequest 对象、错误信息、（可选）捕获的异常对象。
+            error: function (data) {
+                console.log(data);// 打印错误信息
+            }
+        });
+
+    }
+    /*]]>*/
+</script>
 <script >
     $(function(){
         var v = $('#form-login').easyform();
@@ -54,16 +88,6 @@
         $(window).resize(function(){
             $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
         });
-
-        var error="[[${error}]]";
-        if(error=="账号不存在"){
-            var tip=$("#account").easytip();
-            tip.show("账号不存在!");
-        }
-        if(error=="密码错误"){
-            var tip=$("#password").easytip();
-            tip.show("密码错误!");
-        }
     });
 </script>
 </html>

@@ -7,19 +7,19 @@ package com.qilinxx.rms.domain.model.eo;
  */
 public class UserInfoEo {
 //    String[] columnNames = {"工号", "姓名", "密码","性别","专业","院系"};
-    private int id;
+    private Integer uid;
     private String name;
     private String password;
     private String sex;
-    private String major;
+    private Integer mid;
     private String belong;
 
-    public int getId() {
-        return id;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -46,12 +46,12 @@ public class UserInfoEo {
         this.sex = sex;
     }
 
-    public String getMajor() {
-        return major;
+    public Integer getMid() {
+        return mid;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public void setMid(Integer mid) {
+        this.mid = mid;
     }
 
     public String getBelong() {
@@ -65,11 +65,11 @@ public class UserInfoEo {
     @Override
     public String toString() {
         return "UserInfoEo{" +
-                "id='" + id + '\'' +
+                "uid=" + uid +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", sex='" + sex + '\'' +
-                ", major='" + major + '\'' +
+                ", mid=" + mid +
                 ", belong='" + belong + '\'' +
                 '}';
     }

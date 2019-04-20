@@ -28,13 +28,6 @@
 	<a  id="a" class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
 		<i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<!--<div class="text-c"> 日期范围：-->
-		<!--<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">-->
-		<!-- - -->
-		<!--<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">-->
-		<!--<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">-->
-		<!--<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>-->
-	<!--</div>-->
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
 		<a href="javascript:;" onclick="member_add('添加','major-add','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a></span> <span class="r">共有数据：<strong th:text="${majorList.size()}">88</strong> 条</span> </div>
 	<div class="mt-20">
@@ -42,12 +35,12 @@
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
-				<th width="80">序号</th>
+				<th width="30">序号</th>
 				<th width="80">专业名称</th>
-				<th width="40">专业描述</th>
+				<th width="150">专业描述</th>
 				<th width="90">更新时间</th>
 				<th width="40">状态</th>
-				<th width="100">操作</th>
+				<th width="60">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -66,11 +59,7 @@
 					<a th:if="${major.state}!=1" style="text-decoration:none"
 					   th:onclick="'javascript:member_stop('+this+',\''+${major.mid}+'\')'"
 																				 href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>
-					<a  th:unless="${major.state}!=1" style="text-decoration:none" th:onclick="'javascript:member_start('+this+',\''+${major.mid}+'\')'" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>
-					<!--onclick="member_edit('编辑','student-edit.html','4','','510')"-->
-					<!--<a title="编辑" href="javascript:;"  th:onclick="'javascript:member_edit(\''+编辑+'\',\''+student-edit.html+'\',\''+${major.mid}+'\',\''+''+'\',\''+510+'\');'" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>-->
-					<!--<a style="text-decoration:none" class="ml-5" href="javascript:;"  th:onclick="'javascript:change_password(\''+修改密码+'\',\''+student-change-password.html+'\',\''+${userInfo.uid}+'\',\''+600+'\',\''+270+'\')'" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a>-->
-					<!--onClick="change_password('修改密码','change-password.html','10001','600','270')"-->
+					<a title="编辑" href="javascript:;"  th:onclick="'javascript:member_edit(\''+编辑+'\',\''+major-update+'\',\''+${major.mid}+'\',\''+''+'\',\''+510+'\');'" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 					<a title="删除" href="javascript:;"
 					   th:onclick="'javascript:member_del(\''+${major.mid}+'\');'"
 					   class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
@@ -175,7 +164,7 @@ function member_edit(title,url,id,w,h){
     //     content: url+"?uid="+id
     // });
     // layer.full(index);
-	layer_show(title,url+"?uid="+id,w,h);
+	layer_show(title,url+"?mid="+id,w,h);
 }
 /*密码-修改*/
 function change_password(title,url,id,w,h){

@@ -9,5 +9,15 @@ import javax.servlet.http.HttpServletResponse;
  * @Description:
  */
 public interface ExportExcelService {
-    void exportUserInfo(int[] ids,HttpServletResponse response);
+    void exportUserInfo(int[] ids, HttpServletResponse response);
+
+    void exportProject(String[] ids, HttpServletResponse response);
+
+    void exportThesis(String[] ids, HttpServletResponse response);
+
+    void exportReward (String[] ids, HttpServletResponse response);
+
+    void exportTextbook (String[] ids, HttpServletResponse response);
+
+    void exportMeeting (String[] ids, HttpServletResponse response);
 }

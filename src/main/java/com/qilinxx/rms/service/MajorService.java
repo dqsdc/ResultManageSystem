@@ -13,4 +13,6 @@ public interface MajorService {
     int addMajor(Major major);
 
     int deleteMajor(int uid);
+
+    int updateMajor(Major major);
 }

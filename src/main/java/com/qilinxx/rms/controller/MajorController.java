@@ -1,11 +1,9 @@
 package com.qilinxx.rms.controller;
 
 import com.qilinxx.rms.domain.model.Major;
-import com.qilinxx.rms.domain.model.vo.UserInfoVo;
 import com.qilinxx.rms.service.MajorService;
 import com.qilinxx.rms.util.Commons;
 import com.qilinxx.rms.util.DateKit;
-import com.qilinxx.rms.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +35,18 @@ public class MajorController {
         return "admin/major-add";
     }
 
-
+    @RequestMapping("major-update")
+    public String showMajorUpdate(Integer mid, Model model) {
+        Major major = majorService.findMajorBymid(mid);
+        model.addAttribute("major", major);
+        return "admin/major-update";
+    }
+    @RequestMapping("updateMajor")
+    @ResponseBody
+    public String updateMajor(Major major) {
+        majorService.updateMajor(major);
+        return "修改成功";
+    }
     @RequestMapping("addMajor")
     @ResponseBody
     public String addMajor(Major major) {

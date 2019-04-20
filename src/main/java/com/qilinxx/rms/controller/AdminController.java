@@ -243,9 +243,9 @@ public class AdminController extends BaseController {
 
 
     @Transactional
-    @RequestMapping("/testTable")
+    @RequestMapping("/exportUserInfo")
     @ResponseBody
-    public void test(int[] chk,HttpServletResponse response){
+    public void exportUserInfo(int[] chk,HttpServletResponse response){
 //        response.setContentType("application/octet-stream");
 //        response.setContentType("application/OCTET-STREAM;charset=UTF-8");
         //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
@@ -253,9 +253,56 @@ public class AdminController extends BaseController {
         response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
         System.out.println(Arrays.toString(chk));
         exportExcelService.exportUserInfo(chk,response);
-        //return String.valueOf(chk.length);
+    }
+    @Transactional
+    @RequestMapping("/exportProject")
+    @ResponseBody
+    public void exportProject(String[] chk,HttpServletResponse response){
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
+        System.out.println(Arrays.toString(chk));
+        exportExcelService.exportProject(chk,response);
     }
 
+    @Transactional
+    @RequestMapping("/exportThesis")
+    @ResponseBody
+    public void exportThesis(String[] chk,HttpServletResponse response){
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
+        System.out.println(Arrays.toString(chk));
+        exportExcelService.exportThesis(chk,response);
+    }
+
+    @Transactional
+    @RequestMapping("/exportReward")
+    @ResponseBody
+    public void exportReward(String[] chk,HttpServletResponse response){
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
+        System.out.println(Arrays.toString(chk));
+        exportExcelService.exportReward(chk,response);
+    }
+
+    @Transactional
+    @RequestMapping("/exportTextbook")
+    @ResponseBody
+    public void exportTextbook(String[] chk,HttpServletResponse response){
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
+        System.out.println(Arrays.toString(chk));
+        exportExcelService.exportTextbook(chk,response);
+    }
+
+    @Transactional
+    @RequestMapping("/exportMeeting")
+    @ResponseBody
+    public void exportMeeting(String[] chk,HttpServletResponse response){
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" +System.currentTimeMillis()+".xlsx");
+        System.out.println(Arrays.toString(chk));
+        exportExcelService.exportMeeting(chk,response);
+    }
     @RequestMapping("/welcome")
     public String showWelcome() {
         return "admin/welcome";
