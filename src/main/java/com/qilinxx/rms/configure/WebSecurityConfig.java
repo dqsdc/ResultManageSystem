@@ -32,7 +32,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         addInterceptor.excludePathPatterns("/image");
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/login**/**");
-        // addInterceptor.excludePathPatterns("/**/**");
         addInterceptor.excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
         // addInterceptor.excludePathPatterns("/captcha");//排除验证码
         //拦截配置
@@ -52,15 +51,17 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             }
             Integer uid= (Integer) session.getAttribute("uid");
             String sessionId= (String) session.getAttribute("sessionId");
-//            System.out.println(loginMap.size());
-//            System.out.println(uid+"      "+sessionId);
             String saveId= (String) loginMap.get(uid);
-            if (saveId!=null && saveId.equals(sessionId)) return true;
+            if (uid!=null&&saveId!=null && saveId.equals(sessionId)) return true;
             String url ;
             if (sessionId==null){
+                if (uid==null){
+                    url="/loginLose?msg=1";
+                }else{
                 url = "/login";
+                }
             }else{
-                url="/loginLose";
+                url="/loginLose?msg=2";
             }
             //跳转到登录页
             response.sendRedirect(url);

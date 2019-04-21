@@ -64,6 +64,13 @@ public class AdminController extends BaseController {
 
     @RequestMapping("/adminIndex")
     public String showIndex(HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        Integer i= (Integer) session.getAttribute("uid");
+        UserInfo login=userInfoService.findUserByUid(i);
+        if (login.getRemake()==null||!login.getRemake().equals("admin")) {
+            session.invalidate();
+            return "redirect:/login";
+        }
         logService.insertLog("管理员登录", "admin", userIp(request));
         return "admin/index";
     }

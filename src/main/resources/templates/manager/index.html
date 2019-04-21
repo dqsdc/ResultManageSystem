@@ -14,30 +14,30 @@
     <li><a href="index">首页</a></li>
     </ul>
     </div>
-    
+
     <div class="mainindex">
-    
-    
+
+
     <div class="welinfo">
     <span><img src="mis/images/sun.png" alt="天气" /></span>
     <b th:text="${user.name}+' 您好，欢迎使用教师成就管理系统'">Admin早上好，欢迎使用信息管理系统</b>
     <a href="/info">帐号详情</a>
     </div>
-    
+
     <div class="welinfo">
     <span><img src="mis/images/time.png" alt="账号" /></span>
     <i th:text="'账号更新时间：'+${user.updateTime==null?dateKit.formatDateByUnixTime(user.createTime):dateKit.formatDateByUnixTime(user.updateTime)}">您上次登录的时间：2013-10-09 15:22</i> （不是您登录的？<a href="/password-change">请点这里</a>）
     </div>
-    
+
     <div class="xline"></div>
 
     <div class="box"></div>
-    
+
     <div class="welinfo">
     <span><img src="mis/images/dp.png" alt="查看" /></span>
     <b>教师成就信息查看</b>
     </div>
-    
+
     <ul class="infolist">
     <li><span>您可以快速进行项目查看</span><a href="/project-overview" class="ibtn">管理项目</a></li>
     <li><span>您可以快速进行论文查看</span><a href="/thesis-overview" class="ibtn">管理论文</a></li>
@@ -45,11 +45,11 @@
     <li><span>您可以快速进行教材查看</span><a href="/textbook-overview" class="ibtn">管理教材</a></li>
     <li><span>您可以快速进行会议查看</span><a href="/meeting-overview" class="ibtn">管理会议</a></li>
     </ul>
-    
+
     <div class="xline"></div>
-    
+
     <div class="info"><b>教师成就上传</b>
-    
+
     <ul class="umlist">
     <li><a href="/project-upload">发布项目</a></li>
     <li><a href="/thesis-upload">发布论文</a></li>
@@ -59,5 +59,13 @@
     </ul>
 
     </div>
+    </div>
 </body>
+<script th:inline="javascript">
+    var state = [[${user.state}]];
+    if (state==='0')
+        alert("请先核对个人信息，并修改登录密码后开始使用本系统！");
+    console.log(state);
+
+</script>
 </html>

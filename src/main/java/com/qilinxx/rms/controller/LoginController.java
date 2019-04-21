@@ -14,6 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -28,49 +29,47 @@ public class LoginController {
     UserInfoService userInfoService;
 
     @RequestMapping("loginLose")
-    public String loginLose(HttpSession session){
-        session.removeAttribute("uid");
-        session.removeAttribute("sessionId");
+    public String loginLose(HttpSession session, Model model, String msg) {
+        System.out.println(msg);
+        session.invalidate();
+        model.addAttribute("msg", msg.equals("1") ? "请登录" : "异地登录");
         return "error/wrong";
     }
-        /**
-         * 来到登录页面
-         * @return 跳转登录页面
-         */
+
+    /**
+     * 来到登录页面
+     *
+     * @return 跳转登录页面
+     */
     @GetMapping("login")
-    public String login(boolean clearSession,HttpSession session){
-            if(clearSession){
-                //清空session
-                session.removeAttribute("uid");
-                session.removeAttribute("sessionId");
-            }
+    public String login(boolean clearSession, HttpSession session) {
+
+        ServletContext servletContext = session.getServletContext();
+        @SuppressWarnings("unchecked")
+        Map<Integer, Object> loginMap = (Map<Integer, Object>) servletContext.getAttribute("loginMap");
+        if (loginMap == null) {
+            loginMap = new HashMap<>();
+            servletContext.setAttribute("loginMap", loginMap);
+        }
+        if (clearSession) {
+            Integer uid = (Integer) session.getAttribute("uid");
+            //清空session
+            session.invalidate();
+            loginMap.remove(uid);
+            servletContext.setAttribute("loginMap", loginMap);
+        }
         return "login";
     }
 
-
-    @PostMapping("login")
-    public String login(Integer account, String password , Model model, HttpSession session, HttpServletResponse response) throws IOException {
-        //下面的账号密码验证可以用shiro代替
-        UserInfo user = userInfoService.findUserByUid(account);
-        if (user == null) {
-            model.addAttribute("error", "账号不存在");
-            model.addAttribute("account", account);
-            model.addAttribute("password", password);
-            return "login";
-        }
-        if (!user.getPassword().equals(password)) {
-            model.addAttribute("error", "密码错误");
-            model.addAttribute("account", account);
-            return "login";
-        }
-        session.setAttribute("uid", account);
-        response.sendRedirect("/main");
-        return null;
-    }
     @ResponseBody
     @RequestMapping("/loginSub")
-    public String login(HttpSession session,String password,int account) {
+    public String login(HttpSession session, String password, int account) {
+        System.out.println(password + "  " + account);
+        Integer uid = (Integer) session.getAttribute("uid");
         UserInfo user = userInfoService.findUserByUid(account);
+        if (uid != null) {
+            return "您已有账号登录！";
+        }
         if (user == null) {
             return "账号不存在";
         }
@@ -82,7 +81,7 @@ public class LoginController {
         @SuppressWarnings("unchecked")
         Map<Integer, Object> loginMap = (Map<Integer, Object>) application.getAttribute("loginMap");
         for (Integer key : loginMap.keySet()) {
-            if (account==key) {
+            if (account == key) {
                 if (session.getId().equals(loginMap.get(key))) {
                     return "在同一地点重复登录";
                 } else {
@@ -96,10 +95,13 @@ public class LoginController {
         application.setAttribute("loginMap", loginMap);
         // 将用户保存在session当中
         session.setAttribute("uid", account);
-        session.setAttribute("sessionId",loginMap.get(account));
+        session.setAttribute("sessionId", loginMap.get(account));
         // session 销毁时间
-        session.setMaxInactiveInterval(10 * 60);
-        return "登录成功";
+        session.setMaxInactiveInterval(15 * 60);
+        if (user.getRemake() != null && user.getRemake().equals("admin")) {
+            return "admin";
+        } else
+            return "登录成功";
     }
 
 }

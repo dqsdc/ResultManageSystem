@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -25,12 +25,13 @@
 	<p class="error-title"><i class="Hui-iconfont va-m" style="font-size:80px">&#xe688;</i>
 		<!--<span class="va-m"> 404</span>-->
 	</p>
-	<p class="error-description">异地登录！</p>
+	<p id="msg" class="error-description" th:value="msg" th:text="msg"></p>
 </section>
 </body>
-<script>
+<script th:inline="javascript">
     $().ready(function(){
-        alert("异地登录");
+        var msg = [[${msg}]];
+        alert(msg);
         top.location.href="/login";
     })
 </script>
