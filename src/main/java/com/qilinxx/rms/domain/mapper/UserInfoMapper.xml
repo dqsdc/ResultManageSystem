@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qilinxx.rms.domain.mapper.UserInfoMapper">
   <resultMap id="BaseResultMap" type="com.qilinxx.rms.domain.model.UserInfo">
-    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />

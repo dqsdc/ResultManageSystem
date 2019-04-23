@@ -15,7 +15,7 @@ public class UserMajorServiceImpl implements UserMajorService {
     @Autowired
     UserMajorMapper userMajorMapper;
     @Override
-    public List<UserMajor> findAllUserMajorByUid(Integer uid) {
+    public List<UserMajor> findAllUserMajorByUid(String uid) {
         UserMajorExample example=new UserMajorExample();
         example.createCriteria().andUidEqualTo(uid);
         return userMajorMapper.selectByExample(example);
@@ -30,7 +30,7 @@ public class UserMajorServiceImpl implements UserMajorService {
 
     @Override
     @Transactional
-    public int updatePermission(int uid,int[] permission,String power) {
+    public int updatePermission(String uid,int[] permission,String power) {
         int num=0;
         userMajorMapper.deleteByIdAndPower(uid,power);
         for (int i: permission) {
@@ -45,7 +45,7 @@ public class UserMajorServiceImpl implements UserMajorService {
     }
 
     @Override
-    public int cancelPermission(int uid,String power) {
+    public int cancelPermission(String uid,String power) {
         return  userMajorMapper.deleteByIdAndPower(uid,power);
     }
 }

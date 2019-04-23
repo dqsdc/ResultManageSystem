@@ -5,15 +5,11 @@ import com.qilinxx.rms.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,18 +37,18 @@ public class LoginController {
      *
      * @return 跳转登录页面
      */
-    @GetMapping("login")
+    @RequestMapping("login")
     public String login(boolean clearSession, HttpSession session) {
 
         ServletContext servletContext = session.getServletContext();
         @SuppressWarnings("unchecked")
-        Map<Integer, Object> loginMap = (Map<Integer, Object>) servletContext.getAttribute("loginMap");
+        Map<String, Object> loginMap = (Map<String, Object>) servletContext.getAttribute("loginMap");
         if (loginMap == null) {
             loginMap = new HashMap<>();
             servletContext.setAttribute("loginMap", loginMap);
         }
         if (clearSession) {
-            Integer uid = (Integer) session.getAttribute("uid");
+            String uid = (String) session.getAttribute("uid");
             //清空session
             session.invalidate();
             loginMap.remove(uid);
@@ -63,9 +59,9 @@ public class LoginController {
 
     @ResponseBody
     @RequestMapping("/loginSub")
-    public String login(HttpSession session, String password, int account) {
+    public String login(HttpSession session, String password, String account) {
         System.out.println(password + "  " + account);
-        Integer uid = (Integer) session.getAttribute("uid");
+        String uid = (String) session.getAttribute("uid");
         UserInfo user = userInfoService.findUserByUid(account);
         if (uid != null) {
             return "您已有账号登录！";
@@ -79,9 +75,9 @@ public class LoginController {
         ServletContext application = session.getServletContext();
         //key 姓名  object sessionId
         @SuppressWarnings("unchecked")
-        Map<Integer, Object> loginMap = (Map<Integer, Object>) application.getAttribute("loginMap");
-        for (Integer key : loginMap.keySet()) {
-            if (account == key) {
+        Map<String, Object> loginMap = (Map<String, Object>) application.getAttribute("loginMap");
+        for (String key : loginMap.keySet()) {
+            if (account .equals(key)) {
                 if (session.getId().equals(loginMap.get(key))) {
                     return "在同一地点重复登录";
                 } else {

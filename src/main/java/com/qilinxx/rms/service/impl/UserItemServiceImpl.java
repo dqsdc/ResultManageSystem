@@ -19,7 +19,7 @@ public class UserItemServiceImpl implements UserItemService {
     }
 
     @Override
-    public List<UserItem> findUserItemByUidItemType(Integer uid, String itemType) {
+    public List<UserItem> findUserItemByUidItemType(String uid, String itemType) {
         UserItemExample example=new UserItemExample();
         example.createCriteria().andUidEqualTo(uid).andItemTypeEqualTo(itemType);
         return userItemMapper.selectByExample(example);

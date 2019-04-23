@@ -18,7 +18,7 @@
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="remake" jdbcType="VARCHAR" property="remake" />
     <result column="state" jdbcType="CHAR" property="state" />
-    <result column="create_id" jdbcType="INTEGER" property="createId" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
     <result column="mid" jdbcType="INTEGER" property="mid" />
   </resultMap>
   <sql id="Example_Where_Clause">

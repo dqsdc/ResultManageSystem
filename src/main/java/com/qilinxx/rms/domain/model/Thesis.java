@@ -46,7 +46,7 @@ public class Thesis {
     private String state;
 
     @Column(name = "create_id")
-    private Integer createId;
+    private String createId;
 
     @Column(name = "create_time")
     private Long createTime;
@@ -164,11 +164,11 @@ public class Thesis {
         this.state = state == null ? null : state.trim();
     }
 
-    public Integer getCreateId() {
+    public String getCreateId() {
         return createId;
     }
 
-    public void setCreateId(Integer createId) {
+    public void setCreateId(String createId) {
         this.createId = createId;
     }
 

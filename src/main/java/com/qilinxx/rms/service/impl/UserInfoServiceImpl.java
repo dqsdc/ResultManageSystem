@@ -28,7 +28,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     UserMajorMapper userMajorMapper;
 
     @Override
-    public UserInfo findUserByUid(Integer uid) {
+    public UserInfo findUserByUid(String uid) {
         return userInfoMapper.selectByPrimaryKey(uid);
     }
 
@@ -68,17 +68,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Integer deleteStudentById(String uid) {
-        return userInfoMapper.deleteByPrimaryKey(Integer.parseInt(uid));
+        return userInfoMapper.deleteByPrimaryKey(uid);
     }
 
     @Override
     public String selectNameById(String uId) {
-        return userInfoMapper.selectByPrimaryKey(Integer.parseInt(uId)).getName();
+        return userInfoMapper.selectByPrimaryKey(uId).getName();
     }
 
     @Override
     public Integer stopStudent(String uid) {
-        UserInfo user=userInfoMapper.selectByPrimaryKey(Integer.parseInt(uid));
+        UserInfo user=userInfoMapper.selectByPrimaryKey(uid);
         user.setState("1");
         return  userInfoMapper.updateByPrimaryKeySelective(user);
 
@@ -86,7 +86,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Integer startStudent(String uid) {
-        UserInfo user=userInfoMapper.selectByPrimaryKey(Integer.parseInt(uid));
+        UserInfo user=userInfoMapper.selectByPrimaryKey(uid);
         user.setState("0");
         return  userInfoMapper.updateByPrimaryKeySelective(user);
 

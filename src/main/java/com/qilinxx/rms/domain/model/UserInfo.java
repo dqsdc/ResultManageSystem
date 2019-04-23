@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Table(name = "userinfo")
 public class UserInfo {
     @Id
-    private Integer uid;
+    private String uid;
 
     @Column(name = "password")
     private String password;
@@ -42,11 +42,11 @@ public class UserInfo {
     @Column(name = "remake")
     private String remake;
 
-    public Integer getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

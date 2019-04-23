@@ -1,5 +1,6 @@
 package com.qilinxx.rms.controller;
 
+import com.qilinxx.rms.configure.WebConst;
 import com.qilinxx.rms.domain.model.*;
 import com.qilinxx.rms.domain.model.vo.UserInfoVo;
 import com.qilinxx.rms.service.*;
@@ -65,7 +66,7 @@ public class AdminController extends BaseController {
     @RequestMapping("/adminIndex")
     public String showIndex(HttpServletRequest request) {
         HttpSession session=request.getSession();
-        Integer i= (Integer) session.getAttribute("uid");
+        String i= (String) session.getAttribute("uid");
         UserInfo login=userInfoService.findUserByUid(i);
         if (login.getRemake()==null||!login.getRemake().equals("admin")) {
             session.invalidate();
@@ -82,7 +83,7 @@ public class AdminController extends BaseController {
     public String textbookOverview(HttpSession session, Model model){
         List<UserItem> userItemList = userItemService.findAllUserItemByUserType("textbook");
         List<Textbook> textbookList=new ArrayList<>();
-        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        Map<String,UserInfo> createrMap=new HashMap<>();
         for (UserItem userItem:userItemList) {
             textbookList.add(textbookService.findTextbookById(userItem.getItemId()));
         }
@@ -103,7 +104,7 @@ public class AdminController extends BaseController {
     public String meetingOverview(HttpSession session,Model model){
         List<UserItem> userItemList = userItemService.findAllUserItemByUserType("meeting");
         List<Meeting> meetingList=new ArrayList<>();
-        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        Map<String,UserInfo> createrMap=new HashMap<>();
         for (UserItem userItem:userItemList) {
             meetingList.add(meetingService.findMeetingById(userItem.getItemId()));
         }
@@ -129,7 +130,7 @@ public class AdminController extends BaseController {
         if(!from.equals("user")){
             display=false;
         }
-        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        Map<String,UserInfo> createrMap=new HashMap<>();
         switch(itemType){
             case "project":
                 Project project = projectService.findProjectByPid(id);
@@ -194,7 +195,7 @@ public class AdminController extends BaseController {
         if(!from.equals("user")){
             display=false;
         }
-        Map<Integer,UserInfo> createrMap=new HashMap<>();
+        Map<String,UserInfo> createrMap=new HashMap<>();
         switch(itemType){
             case "project":
                 Project project = projectService.findProjectByPid(id);
@@ -252,7 +253,7 @@ public class AdminController extends BaseController {
     @Transactional
     @RequestMapping("/exportUserInfo")
     @ResponseBody
-    public void exportUserInfo(int[] chk,HttpServletResponse response){
+    public void exportUserInfo(String[] chk,HttpServletResponse response){
 //        response.setContentType("application/octet-stream");
 //        response.setContentType("application/OCTET-STREAM;charset=UTF-8");
         //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
@@ -335,7 +336,7 @@ public class AdminController extends BaseController {
 
     @RequestMapping(value = "/updatePermission", method = RequestMethod.POST)
     @ResponseBody
-    public String updatePermission(@RequestParam("mid") int[] mid, int uid, String power) {
+    public String updatePermission(@RequestParam("mid") int[] mid, String uid, String power) {
         System.out.println("updatePermission" + mid.length);
         System.out.println("uid:--" + uid);
         System.out.println(power);
@@ -348,7 +349,7 @@ public class AdminController extends BaseController {
 
     @RequestMapping(value = "/cancelPermission", method = RequestMethod.POST)
     @ResponseBody
-    public String cancelPermission(int uid,String power) {
+    public String cancelPermission(String uid,String power) {
         System.out.println("uid:--" + uid);
         Integer i=userMajorService.cancelPermission(uid,power);
         System.out.println(i);
@@ -439,7 +440,7 @@ public class AdminController extends BaseController {
      */
     @RequestMapping("student-edit.html")
     public String student_edit(String uid, Model model) {
-        UserInfo student = userInfoService.findUserByUid(Integer.parseInt(uid));
+        UserInfo student = userInfoService.findUserByUid(uid);
         List<Major> majors=majorService.findAllMajor();
         model.addAttribute("majorList",majors);
         model.addAttribute("student", student);
@@ -465,7 +466,7 @@ public class AdminController extends BaseController {
     public String projectOverview(Model model) {
         List<UserItem> userItemList = userItemService.findAllUserItemByUserType("project");
         List<Project> projectList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             projectList.add(projectService.findProjectByPid(userItem.getItemId()));
         }
@@ -485,7 +486,7 @@ public class AdminController extends BaseController {
     public String thesisOverview(Model model) {
         List<UserItem> userItemList = userItemService.findAllUserItemByUserType("thesis");
         List<Thesis> thesisList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             thesisList.add(thesisService.findThesisByTid(userItem.getItemId()));
         }
@@ -505,7 +506,7 @@ public class AdminController extends BaseController {
     public String rewardOverview(Model model) {
         List<UserItem> userItemList = userItemService.findAllUserItemByUserType("reward");
         List<Reward> rewardList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             rewardList.add(rewardService.findRewardByRid(userItem.getItemId()));
         }

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Table(name = "user_major")
 public class UserMajor {
     @Id
-    private Integer uid;
+    private String uid;
 
     @Column(name = "mid")
     private Integer mid;
@@ -23,7 +23,7 @@ public class UserMajor {
      *
      * @return uid - 外键
      */
-    public Integer getUid() {
+    public String getUid() {
         return uid;
     }
 
@@ -32,7 +32,7 @@ public class UserMajor {
      *
      * @param uid 外键
      */
-    public void setUid(Integer uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

@@ -44,9 +44,9 @@ public class ExportExcelServiceImpl implements ExportExcelService {
     MajorMapper majorMapper;
 
     @Override
-    public void exportUserInfo(int[] ids,HttpServletResponse response) {
+    public void exportUserInfo(String[] ids,HttpServletResponse response) {
         ArrayList<UserInfoEo> eos = new ArrayList<>();
-        for (int id : ids) {
+        for (String id : ids) {
             UserInfo eo = userInfoMapper.selectByPrimaryKey(id);
             eos.add((UserInfoEo) pojo2Eo(eo,new UserInfoEo()));
         }

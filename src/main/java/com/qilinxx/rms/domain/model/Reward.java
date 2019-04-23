@@ -28,7 +28,7 @@ public class Reward {
     private String state;
 
     @Column(name = "create_id")
-    private Integer createId;
+    private String createId;
 
     @Column(name = "create_time")
     private Long createTime;
@@ -194,7 +194,7 @@ public class Reward {
      *
      * @return create_id - 发布人的id
      */
-    public Integer getCreateId() {
+    public String getCreateId() {
         return createId;
     }
 
@@ -203,7 +203,7 @@ public class Reward {
      *
      * @param createId 发布人的id
      */
-    public void setCreateId(Integer createId) {
+    public void setCreateId(String createId) {
         this.createId = createId;
     }
 

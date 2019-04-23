@@ -40,7 +40,7 @@ public class Textbook {
     private String state;
 
     @Column(name = "create_id")
-    private Integer createId;
+    private String createId;
 
     @Column(name = "mid")
     private Integer mid;
@@ -286,7 +286,7 @@ public class Textbook {
      *
      * @return create_id - 发布人的id
      */
-    public Integer getCreateId() {
+    public String getCreateId() {
         return createId;
     }
 
@@ -295,7 +295,7 @@ public class Textbook {
      *
      * @param createId 发布人的id
      */
-    public void setCreateId(Integer createId) {
+    public void setCreateId(String createId) {
         this.createId = createId;
     }
 

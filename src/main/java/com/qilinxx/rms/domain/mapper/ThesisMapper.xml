@@ -15,7 +15,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
     <result column="state" jdbcType="CHAR" property="state" />
-    <result column="create_id" jdbcType="INTEGER" property="createId" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="mid" jdbcType="INTEGER" property="mid" />

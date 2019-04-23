@@ -28,13 +28,6 @@
 	<a  id="a" class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
 		<i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<!--<div class="text-c"> 日期范围：-->
-		<!--<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">-->
-		<!-- - -->
-		<!--<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">-->
-		<!--<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">-->
-		<!--<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>-->
-	<!--</div>-->
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="r">共有数据：<strong th:text="${userInfoList.size()}">88</strong> 条</span> </div>
 	<div class="mt-20">
@@ -71,20 +64,20 @@
 					<span th:unless="${userInfo.readPermission}==null" th:text="${userInfo.readPermission}"></span>
 				</td>
 				<td><a data-toggle="modal" data-target="#myModal" th:data-whatever="${userInfo.name}"
-					   th:onclick="'javascript:sentUid('+${userInfo.uid}+',2'+')'">授权</a>
+					   th:data-id="${userInfo.uid}" onclick="sentUid(this.getAttribute('data-id'),2)">授权</a>
 					<a style="text-decoration:none"
-					   th:onclick="'javascript:member_stop('+this+',\''+${userInfo.uid}+'\',2)'"
-					   href="javascript:;" title="取消授权">取消</i></a>
+					   th:data-id="${userInfo.uid}" onclick="member_stop(this,this.getAttribute('data-id'),2)"
+					   title="取消授权">取消</i></a>
 				</td>
 				<td >
 					<span th:if="${userInfo.checkPermission}==null">无</span>
 					<span th:unless="${userInfo.checkPermission}==null" th:text="${userInfo.checkPermission}"></span>
 				</td>
 				<td><a data-toggle="modal" data-target="#myModal" th:data-whatever="${userInfo.name}"
-					   th:onclick="'javascript:sentUid('+${userInfo.uid}+',1'+')'">授权</a>
+					   th:data-id="${userInfo.uid}" onclick="sentUid(this.getAttribute('data-id'),1)">授权</a>
 					<a style="text-decoration:none"
-					   th:onclick="'javascript:member_stop('+this+',\''+${userInfo.uid}+'\',1)'"
-					   href="javascript:;" title="取消授权">取消</i></a>
+					   th:data-id="${userInfo.uid}" onclick="member_stop(this,this.getAttribute('data-id'),1)"
+					   title="取消授权">取消</i></a>
 				</td>
 			</tr>
 		</tbody>

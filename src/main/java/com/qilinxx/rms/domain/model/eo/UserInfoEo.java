@@ -7,18 +7,18 @@ package com.qilinxx.rms.domain.model.eo;
  */
 public class UserInfoEo {
 //    String[] columnNames = {"工号", "姓名", "密码","性别","专业","院系"};
-    private Integer uid;
+    private String uid;
     private String name;
     private String password;
     private String sex;
     private Integer mid;
     private String belong;
 
-    public Integer getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

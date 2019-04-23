@@ -44,12 +44,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             HttpSession session = request.getSession();
             ServletContext servletContext=session.getServletContext();
             @SuppressWarnings("unchecked")
-            Map<Integer, Object> loginMap = (Map<Integer, Object>) servletContext.getAttribute("loginMap");
+            Map<String, Object> loginMap = (Map<String, Object>) servletContext.getAttribute("loginMap");
             if (loginMap == null) {
                 loginMap = new HashMap<>();
                 servletContext.setAttribute("loginMap", loginMap);
             }
-            Integer uid= (Integer) session.getAttribute("uid");
+            String uid= (String) session.getAttribute("uid");
             String sessionId= (String) session.getAttribute("sessionId");
             String saveId= (String) loginMap.get(uid);
             if (uid!=null&&saveId!=null && saveId.equals(sessionId)) return true;

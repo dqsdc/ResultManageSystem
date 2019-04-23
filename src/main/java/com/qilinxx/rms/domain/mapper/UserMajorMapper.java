@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface UserMajorMapper extends Mapper<UserMajor>{
-    List<UserMajor> selectAllByUid(@Param("uid") int uid);
-    int deleteByIdAndPower(@Param("uid") int uid,@Param("power") String power);
+    List<UserMajor> selectAllByUid(@Param("uid") String uid);
+    int deleteByIdAndPower(@Param("uid") String uid,@Param("power") String power);
 }

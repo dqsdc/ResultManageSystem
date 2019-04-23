@@ -30,14 +30,16 @@
     <div class="loginbox">
 <form id="form-login" method="post" >
         <ul>
-            <li><input name="account" type="text" class="loginuser" id="account"
-                       data-easyform="length:4 16;number;real-time;"
-                       data-message="账号必须为4—16位的数字"
-                       data-easytip="position:right;class:easy-red;" oninput = "value=value.replace(/[^\d]/g,'')" /></li>
-            <li><input name="password" type="password" class="loginpwd" id="password"
-                       data-easyform="length:6 16;real-time;"
-                       data-message="密码必须为6—16位"
-                       data-easytip="position:right;class:easy-red;"></li>
+            <li><input name="account" type="text" class="loginuser" id="account"/>
+                       <!--data-easyform="length:4 16;number;real-time;"-->
+                       <!--data-message="账号必须为4—16位的数字"-->
+                       <!--data-easytip="position:right;class:easy-red;" -->
+                      </li>
+            <li><input name="password" type="password" class="loginpwd" id="password">
+                       <!--data-easyform="length:6 16;real-time;"-->
+                       <!--data-message="密码必须为6—16位"-->
+                       <!--data-easytip="position:right;class:easy-red;">-->
+            </li>
             <li>
                 <!--<input  type="submit" class="loginbtn" value="登录" />-->
                 <button type="button" class="btn btn-primary" id="btn">确定</button>
@@ -67,15 +69,15 @@
             //请求成功后的回调函数
             success: function (data) {
                 console.log(data);
-                if(data==='登录成功'){
-                    alert(data);
-                        window.location.href="/main";
-                }
-                else if (data==='admin'){
+                if(data==='admin'){
                     alert("管理员登录成功");
                     window.location.href="/adminIndex";
+                }else {
+                    alert(data);
+                    if (data==='登录成功'){
+                        window.location.href="/main";
+                    }
                 }
-
             },
             //请求失败时调用此函数。有以下三个参数：XMLHttpRequest 对象、错误信息、（可选）捕获的异常对象。
             error: function (data) {

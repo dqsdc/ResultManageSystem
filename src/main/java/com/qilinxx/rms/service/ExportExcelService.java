@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Description:
  */
 public interface ExportExcelService {
-    void exportUserInfo(int[] ids, HttpServletResponse response);
+    void exportUserInfo(String[] ids, HttpServletResponse response);
 
     void exportProject(String[] ids, HttpServletResponse response);
 

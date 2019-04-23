@@ -69,7 +69,7 @@ public class ManagerController {
      */
     @GetMapping("top")
     public String top(HttpSession session, Model model) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         model.addAttribute("name", user.getName());
         return "manager/top";
     }
@@ -81,8 +81,8 @@ public class ManagerController {
     public String left(HttpSession session, Model model) {
         boolean achievementDisplay = false;
         boolean checkDisplay = false;
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
-        List<UserMajor> userMajorList = userMajorService.findAllUserMajorByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
+        List<UserMajor> userMajorList = userMajorService.findAllUserMajorByUid((String) session.getAttribute("uid"));
         Map<Integer, Integer> majorMap = new HashMap<>();
         if (userMajorList.size() != 0) {
             List<Major> majorList = new ArrayList<>();
@@ -118,7 +118,7 @@ public class ManagerController {
      */
     @GetMapping("index")
     public String index(HttpSession session, Model model) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         model.addAttribute("user", user);
         model.addAttribute("dateKit", new DateKit());
         return "manager/index";
@@ -131,7 +131,7 @@ public class ManagerController {
      */
     @GetMapping("info")
     public String info(HttpSession session, Model model) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         Major major = majorService.findMajorBymid(user.getMid());
         model.addAttribute("majorName", major.getName());
         model.addAttribute("user", user);
@@ -146,7 +146,7 @@ public class ManagerController {
      */
     @GetMapping("info-change")
     public String infoChange(HttpSession session, Model model) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         Major major = majorService.findMajorBymid(user.getMid());
         List<Major> majorList = majorService.findAllMajor();
         model.addAttribute("majorList", majorList);
@@ -165,7 +165,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxInfoChange(UserInfo user, HttpSession session) {
         JSONObject json = new JSONObject();
-        UserInfo dbUser = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo dbUser = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         boolean same = true;
         if (!user.getName().equals(dbUser.getName()) || !user.getSex().equals(dbUser.getSex()) || !user.getTitle().equals(dbUser.getTitle()) || !user.getBelong().equals(dbUser.getBelong()) || !user.getMid().equals(dbUser.getMid()) || !user.getProfile().equals(dbUser.getProfile())) {
             same = false;
@@ -201,7 +201,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxInfoChange(UserInfo user, String password3, HttpSession session) {
         JSONObject json = new JSONObject();
-        UserInfo dbUser = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo dbUser = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         if (!dbUser.getPassword().equals(password3)) {
             json.put("msg", "旧密码错误！");
             return json;
@@ -238,7 +238,7 @@ public class ManagerController {
      */
     @GetMapping("project-upload")
     public String project(HttpSession session) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setProjectFileList(FileKit.clearOrInitList(FileKit.getProjectFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project"));
@@ -255,7 +255,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxProjectFile(MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> projectFileList = FileKit.getProjectFileList();
         //手动去重
         int i = 0;
@@ -307,7 +307,7 @@ public class ManagerController {
             json.put("msg", "请先上传附件！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = project.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -396,7 +396,7 @@ public class ManagerController {
      */
     @GetMapping("thesis-upload")
     public String thesis(HttpSession session) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setThesisFileList(FileKit.clearOrInitList(FileKit.getThesisFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis"));
@@ -413,7 +413,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxThesisFile(MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> thesisFileList = FileKit.getThesisFileList();
         //手动去重
         int i = 0;
@@ -464,7 +464,7 @@ public class ManagerController {
             json.put("msg", "请先上传附件！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = thesis.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -547,7 +547,7 @@ public class ManagerController {
      */
     @GetMapping("reward-upload")
     public String reward(HttpSession session) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setRewardFileList(FileKit.clearOrInitList(FileKit.getRewardFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward"));
@@ -564,7 +564,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxRewardFile(MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> rewardFileList = FileKit.getRewardFileList();
         //手动去重
         int i = 0;
@@ -629,7 +629,7 @@ public class ManagerController {
             json.put("msg", "请先上传附件！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         if (!nameMap.containsKey(user.getName())) {
             json.put("msg", "此奖励与本账号用户无关！");
             return json;
@@ -696,7 +696,7 @@ public class ManagerController {
      */
     @GetMapping("textbook-upload")
     public String textbook(HttpSession session) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setTextbookFileList(FileKit.clearOrInitList(FileKit.getTextbookFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook"));
@@ -713,7 +713,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxTextbookFile(MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> textbookFileList = FileKit.getTextbookFileList();
         //手动去重
         int i = 0;
@@ -758,7 +758,7 @@ public class ManagerController {
             json.put("msg", "请先上传附件！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = textbook.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -843,7 +843,7 @@ public class ManagerController {
      */
     @GetMapping("meeting-upload")
     public String meeting(HttpSession session) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //清空或者初始化fileList
         FileKit.setMeetingFileList(FileKit.clearOrInitList(FileKit.getMeetingFileList()));
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting"));
@@ -860,7 +860,7 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxMeetingFile(MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
         //手动去重
         int i = 0;
@@ -908,7 +908,7 @@ public class ManagerController {
             json.put("msg", "请先上传附件！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = meeting.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -990,10 +990,10 @@ public class ManagerController {
      */
     @GetMapping("project-overview")
     public String projectOverview(HttpSession session, Model model) {
-        Integer uid = (Integer) session.getAttribute("uid");
+        String uid = (String) session.getAttribute("uid");
         List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "project");
         List<Project> projectList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             projectList.add(projectService.findProjectByPid(userItem.getItemId()));
         }
@@ -1014,10 +1014,10 @@ public class ManagerController {
      */
     @GetMapping("thesis-overview")
     public String thesisOverview(HttpSession session, Model model) {
-        Integer uid = (Integer) session.getAttribute("uid");
+        String uid = (String) session.getAttribute("uid");
         List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "thesis");
         List<Thesis> thesisList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             thesisList.add(thesisService.findThesisByTid(userItem.getItemId()));
         }
@@ -1038,10 +1038,10 @@ public class ManagerController {
      */
     @GetMapping("reward-overview")
     public String rewardOverview(HttpSession session, Model model) {
-        Integer uid = (Integer) session.getAttribute("uid");
+        String uid = (String) session.getAttribute("uid");
         List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "reward");
         List<Reward> rewardList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             rewardList.add(rewardService.findRewardByRid(userItem.getItemId()));
         }
@@ -1062,10 +1062,10 @@ public class ManagerController {
      */
     @GetMapping("textbook-overview")
     public String textbookOverview(HttpSession session, Model model) {
-        Integer uid = (Integer) session.getAttribute("uid");
+        String uid = (String) session.getAttribute("uid");
         List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "textbook");
         List<Textbook> textbookList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             textbookList.add(textbookService.findTextbookById(userItem.getItemId()));
         }
@@ -1086,10 +1086,10 @@ public class ManagerController {
      */
     @GetMapping("meeting-overview")
     public String meetingOverview(HttpSession session, Model model) {
-        Integer uid = (Integer) session.getAttribute("uid");
+        String uid = (String) session.getAttribute("uid");
         List<UserItem> userItemList = userItemService.findUserItemByUidItemType(uid, "meeting");
         List<Meeting> meetingList = new ArrayList<>();
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
             meetingList.add(meetingService.findMeetingById(userItem.getItemId()));
         }
@@ -1179,12 +1179,12 @@ public class ManagerController {
      */
     @GetMapping("item-detail")
     public String itemDetail(String id, String itemType, Model model, HttpSession session, String from) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         boolean display = true;
         if (!from.equals("user")) {
             display = false;
         }
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         switch (itemType) {
             case "project":
                 Project project = projectService.findProjectByPid(id);
@@ -1245,12 +1245,12 @@ public class ManagerController {
      */
     @GetMapping("item-detail-file")
     public String itemDetailFile(String id, String itemType, Model model, HttpSession session, String from) {
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         boolean display = true;
         if (!from.equals("user")) {
             display = false;
         }
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         switch (itemType) {
             case "project":
                 Project project = projectService.findProjectByPid(id);
@@ -1421,7 +1421,7 @@ public class ManagerController {
      */
     @GetMapping("check")
     public String check(Integer mid, Model model) {
-        Map<Integer, UserInfo> createrMap = new HashMap<>();
+        Map<String, UserInfo> createrMap = new HashMap<>();
         List<Project> projectList = projectService.findProjectByMid(mid);
         int projectNum = 0, thesisNum = 0, rewardNum = 0, textbookNum = 0, meetingNum = 0;
         boolean check=false;  boolean see=false;
@@ -1692,7 +1692,7 @@ public class ManagerController {
             json.put("msg", "该项目题目已被提交！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = project.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -1772,7 +1772,7 @@ public class ManagerController {
             json.put("msg", "该项目已被提交！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = thesis.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -1840,7 +1840,7 @@ public class ManagerController {
             json.put("msg", "该会议已被提交！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = meeting.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
@@ -1925,7 +1925,7 @@ public class ManagerController {
             json.put("msg", "该奖励已被提交！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         if (!nameMap.containsKey(user.getName())) {
             json.put("msg", "此奖励与本账号用户无关！");
             return json;
@@ -1974,7 +1974,7 @@ public class ManagerController {
             json.put("msg", "该教材已被提交！");
             return json;
         }
-        UserInfo user = userInfoService.findUserByUid((Integer) session.getAttribute("uid"));
+        UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         //姓名去重，并重新排序
         String[] names = textbook.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
