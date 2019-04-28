@@ -494,6 +494,66 @@ public class MajorExample {
             return (Criteria) this;
         }
 
+        public Criteria andSortNumIsNull() {
+            addCriterion("sort_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumIsNotNull() {
+            addCriterion("sort_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumEqualTo(Integer value) {
+            addCriterion("sort_num =", value, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumNotEqualTo(Integer value) {
+            addCriterion("sort_num <>", value, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumGreaterThan(Integer value) {
+            addCriterion("sort_num >", value, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sort_num >=", value, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumLessThan(Integer value) {
+            addCriterion("sort_num <", value, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumLessThanOrEqualTo(Integer value) {
+            addCriterion("sort_num <=", value, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumIn(List<Integer> values) {
+            addCriterion("sort_num in", values, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumNotIn(List<Integer> values) {
+            addCriterion("sort_num not in", values, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumBetween(Integer value1, Integer value2) {
+            addCriterion("sort_num between", value1, value2, "sortNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("sort_num not between", value1, value2, "sortNum");
+            return (Criteria) this;
+        }
+
         public Criteria andRemakeIsNull() {
             addCriterion("remake is null");
             return (Criteria) this;

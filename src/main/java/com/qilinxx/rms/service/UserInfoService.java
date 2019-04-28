@@ -28,4 +28,6 @@ public interface UserInfoService {
     Integer startStudent(String uid);
 
     Integer editStudent(UserInfo user);
+
+    List<UserInfo> findUserByMid(int mid);
 }

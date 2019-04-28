@@ -24,6 +24,10 @@ public class Major {
     @Column(name = "state")
     private String state;
 
+    @Column(name = "sort_num")
+    private Integer sortNum;
+
+
     @Column(name = "remake")
     private String remake;
 
@@ -83,6 +87,14 @@ public class Major {
         this.remake = remake == null ? null : remake.trim();
     }
 
+    public Integer getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(Integer sortNum) {
+        this.sortNum = sortNum;
+    }
+
     @Override
     public String toString() {
         return "Major{" +
@@ -92,6 +104,7 @@ public class Major {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", state='" + state + '\'' +
+                ", sortNum=" + sortNum +
                 ", remake='" + remake + '\'' +
                 '}';
     }

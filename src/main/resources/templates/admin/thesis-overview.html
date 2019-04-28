@@ -56,7 +56,7 @@
                 <td th:text="${thesisList.indexOf(thesis)+1}"></td>
                 <td><u style="cursor:pointer" class="text-primary" th:data-name="${thesis.name}" th:data-id="${thesis.tid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${thesis.name}">资讯标题</u></td>
                 <td  th:text="${thesis.host}"></td>
-                <td  th:text="${thesis.people}"></td>
+                <td th:if="${thesis.people!=null}" th:text="${thesis.people}"></td>
                 <td th:text="${thesis.book}"></td>
                 <td th:text="${thesis.rank}">80</td>
                 <td th:text="${thesis.year}+','+${thesis.dossier}+'('+${thesis.issue}+'):'+${thesis.pageNum}">80</td>

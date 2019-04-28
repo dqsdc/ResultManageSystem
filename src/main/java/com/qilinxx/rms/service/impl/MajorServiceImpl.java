@@ -20,7 +20,7 @@ public class MajorServiceImpl implements MajorService {
 
     @Override
     public List<Major> findAllMajor() {
-        return majorMapper.selectAll();
+        return majorMapper.findAllMajorBySort();
     }
 
     @Override
@@ -29,8 +29,8 @@ public class MajorServiceImpl implements MajorService {
     }
 
     @Override
-    public int deleteMajor(int uid) {
-        return majorMapper.deleteByPrimaryKey(uid);
+    public int deleteMajor(int mid) {
+        return majorMapper.deleteByPrimaryKey(mid);
     }
 
     @Override

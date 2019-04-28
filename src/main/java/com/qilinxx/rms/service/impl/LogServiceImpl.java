@@ -50,4 +50,9 @@ public class LogServiceImpl implements LogService {
     public List<Log> getAdminLoginLog() {
         return logMapper.selectAdminLogin();
     }
+
+    @Override
+    public Log getLastAdminLog() {
+        return logMapper.getLastAdminLog();
+    }
 }

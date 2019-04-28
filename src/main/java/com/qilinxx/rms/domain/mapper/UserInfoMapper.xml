@@ -77,4 +77,7 @@
     uid, password, name, sex, title, belong, mid, profile, state, create_time, update_time, 
     remake
   </sql>
+  <select id="findUserByMid" resultMap="BaseResultMap">
+    SELECT * FROM userinfo WHERE mid=#{mid}
+  </select>
 </mapper>

@@ -150,7 +150,7 @@
                     </tr>
                     <tr >
                         <td>其他作者:</td>
-                        <td th:text="${thesis.people}"></td>
+                        <td  th:if="${thesis.people!=null}" th:text="${thesis.people}"></td>
                     </tr>
                     <tr>
                         <td>期刊:</td>

@@ -72,6 +72,9 @@
     id, action, user_id, ip, create_time, state, remark
   </sql>
   <select id="selectAdminLogin" resultMap="BaseResultMap">
-    SELECT * FROM web_logsheet WHERE l_action='登录成功' AND l_user_id='管理员' ORDER BY l_create_time DESC
+    SELECT * FROM log WHERE action='登录成功' AND user_id='admin' ORDER BY create_time DESC
+  </select>
+  <select id="getLastAdminLog" resultMap="BaseResultMap">
+    SELECT * FROM log WHERE action='管理员登录' AND user_id='admin' ORDER BY create_time DESC limit 1
   </select>
 </mapper>

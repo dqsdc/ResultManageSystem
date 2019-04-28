@@ -35,6 +35,6 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!--生成对应表及类名,需要记住的一点是逆向工程无法生成关联关系,只能生成单表操作 -->
-		<table tableName="textbook" domainObjectName="Textbook"></table>
+		<table tableName="reward" domainObjectName="Reward"></table>
 	</context>
 </generatorConfiguration>

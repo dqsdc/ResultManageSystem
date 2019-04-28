@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【其他作者】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【其他作者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" name="people" id="people" placeholder="若为多名作者，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
@@ -113,6 +113,12 @@
 					<option value="其他">其他</option>
 				</select>
 				</span> </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【发表时间】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
+                    </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">【论文摘要】：</label>
@@ -861,10 +867,6 @@
                     required:true,
                     maxlength:250
                 },
-                people:{
-                    required:true,
-                    maxlength:290
-                },
                 book:{
                     required:true,
                     maxlength:250
@@ -896,6 +898,9 @@
                     required:true
                 },
                 type:{
+                    required:true
+                },
+                publishTimeDate:{
                     required:true
                 },
                 profile:{

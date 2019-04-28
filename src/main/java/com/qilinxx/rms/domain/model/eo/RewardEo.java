@@ -6,10 +6,11 @@ package com.qilinxx.rms.domain.model.eo;
  * @Description:
  */
 public class RewardEo {
-    //String[] columnNames = {"获奖名称", "获奖人", "奖励等级","授奖单位","获奖时间","奖励简介","创建时间"};
+    //String[] columnNames = {"获奖名称", "获奖人", "奖励级别"，"奖励等级","授奖单位","获奖时间","奖励简介","创建时间"};
     private String name;
     private String people;
     private String level;
+    private String rank;
     private String company;
     private String getTime;
     private String profile;
@@ -37,6 +38,14 @@ public class RewardEo {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
     public String getCompany() {
@@ -77,6 +86,7 @@ public class RewardEo {
                 "name='" + name + '\'' +
                 ", people='" + people + '\'' +
                 ", level='" + level + '\'' +
+                ", rank='" + rank + '\'' +
                 ", company='" + company + '\'' +
                 ", getTime='" + getTime + '\'' +
                 ", profile='" + profile + '\'' +

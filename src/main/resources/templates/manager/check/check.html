@@ -127,7 +127,7 @@
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${thesis.name}" th:data-id="${thesis.tid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'thesis')" title="查看" th:text="${thesis.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span th:text="${thesis.name}">资讯标题</span></td>
                     <td  th:text="${thesis.host}"></td>
-                    <td  th:text="${thesis.people}"></td>
+                    <td th:if="${thesis.people!=null}" th:text="${thesis.people}"></td>
                     <td th:text="${thesis.book}"></td>
                     <td th:text="${createrMap.get(thesis.createId).name}"></td>
                     <td th:text="${dateKit.formatDateByUnixTime(thesis.createTime)}"></td>

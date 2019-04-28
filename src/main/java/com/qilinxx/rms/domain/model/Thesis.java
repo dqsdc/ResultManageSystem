@@ -39,6 +39,9 @@ public class Thesis {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "publish_time")
+    private Long publishTime;
+
     @Column(name = "profile")
     private String profile;
 
@@ -204,9 +207,17 @@ public class Thesis {
         this.remake = remake == null ? null : remake.trim();
     }
 
+    public Long getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(Long publishTime) {
+        this.publishTime = publishTime;
+    }
+
     @Override
     public String toString() {
-        return "thesis{" +
+        return "Thesis{" +
                 "tid='" + tid + '\'' +
                 ", host='" + host + '\'' +
                 ", people='" + people + '\'' +
@@ -218,9 +229,10 @@ public class Thesis {
                 ", pageNum='" + pageNum + '\'' +
                 ", rank='" + rank + '\'' +
                 ", type='" + type + '\'' +
+                ", publishTime=" + publishTime +
                 ", profile='" + profile + '\'' +
                 ", state='" + state + '\'' +
-                ", createId=" + createId +
+                ", createId='" + createId + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", mid=" + mid +

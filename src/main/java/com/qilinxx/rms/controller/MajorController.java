@@ -1,7 +1,9 @@
 package com.qilinxx.rms.controller;
 
 import com.qilinxx.rms.domain.model.Major;
+import com.qilinxx.rms.domain.model.UserInfo;
 import com.qilinxx.rms.service.MajorService;
+import com.qilinxx.rms.service.UserInfoService;
 import com.qilinxx.rms.util.Commons;
 import com.qilinxx.rms.util.DateKit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ import java.util.List;
 public class MajorController {
     @Autowired
     MajorService majorService;
+
+    @Autowired
+    UserInfoService userInfoService;
 
     @RequestMapping("showMajor")
     public String showMajor(Model model) {
@@ -59,8 +64,10 @@ public class MajorController {
 
     @RequestMapping("deleteMajor")
     @ResponseBody
-    public String deleteMajor(int uid) {
-        majorService.deleteMajor(uid);
+    public String deleteMajor(int mid) {
+        List<UserInfo> userInfos=userInfoService.findUserByMid(mid);
+        if (userInfos.size()>0) return "该专业有用户，不可删除";
+        majorService.deleteMajor(mid);
         return "删除成功";
     }
 }

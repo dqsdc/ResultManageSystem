@@ -844,6 +844,66 @@ public class ThesisExample {
             return (Criteria) this;
         }
 
+        public Criteria andPublishTimeIsNull() {
+            addCriterion("publish_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeIsNotNull() {
+            addCriterion("publish_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeEqualTo(Long value) {
+            addCriterion("publish_time =", value, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeNotEqualTo(Long value) {
+            addCriterion("publish_time <>", value, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeGreaterThan(Long value) {
+            addCriterion("publish_time >", value, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("publish_time >=", value, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeLessThan(Long value) {
+            addCriterion("publish_time <", value, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeLessThanOrEqualTo(Long value) {
+            addCriterion("publish_time <=", value, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeIn(List<Long> values) {
+            addCriterion("publish_time in", values, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeNotIn(List<Long> values) {
+            addCriterion("publish_time not in", values, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeBetween(Long value1, Long value2) {
+            addCriterion("publish_time between", value1, value2, "publishTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublishTimeNotBetween(Long value1, Long value2) {
+            addCriterion("publish_time not between", value1, value2, "publishTime");
+            return (Criteria) this;
+        }
+
         public Criteria andProfileIsNull() {
             addCriterion("profile is null");
             return (Criteria) this;

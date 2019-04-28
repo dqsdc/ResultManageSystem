@@ -36,6 +36,7 @@
 			<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="30">序号</th>
+				<th hidden="hidden">排序数</th>
 				<th width="80">专业名称</th>
 				<th width="150">专业描述</th>
 				<th width="90">更新时间</th>
@@ -47,6 +48,7 @@
 			<tr class="text-c" th:each="major,interStart:${majorList}">
 				<td><input type="checkbox" name="cb"></td>
 				<td th:text="${interStart.count}">1</td>
+				<td hidden="hidden" th:text="${major.sortNum}">排序数</td>
 				<td th:text="${major.name}">计算机</td>
 				<td th:text="${major.profile}" >简介</td>
 				<td th:if="${major.updateTime}==null" th:text="${commons.fmtdate(major.createTime)}">教授</td>
@@ -84,7 +86,7 @@ $(function(){
 	$('.table-sort').dataTable({
         "aaSorting": [
             [
-                1, "asc"
+                2, "asc"
             ]
         ],//默认第几个排序
 		"bStateSave": true,//状态保存
@@ -172,19 +174,23 @@ function change_password(title,url,id,w,h){
 	layer_show(title,url+"?uid="+id,w,h);
 }
 /*用户-删除*/
-function member_del(uid){
+function member_del(mid){
 
     var basePath =[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'POST',
-             url: basePath + '/deleteMajor?uid='+uid,
+             url: basePath + '/deleteMajor?mid='+mid,
 			data:null,
 			success: function(data){
-				layer.msg('已删除!',{icon:1,time:1000});
+			    if (data==='删除成功'){
+                    layer.msg('已删除!',{icon:1,time:1000});
+				}else {
+                    layer.msg(data,{icon:5,time:2000});
+				}
                 setTimeout(function(){
                     window.location.reload();
-                }, 100);
+                }, 1000);
 			},
 			error:function(data) {
                 alert("发生错误");

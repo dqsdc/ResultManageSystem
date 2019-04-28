@@ -8,6 +8,7 @@
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="state" jdbcType="CHAR" property="state" />
+    <result column="sort_num" jdbcType="INTEGER" property="sortNum" />
     <result column="remake" jdbcType="VARCHAR" property="remake" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -69,6 +70,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    mid, name, profile, create_time, update_time, state, remake
+    mid, name, profile, create_time, update_time, state, sort_num, remake
   </sql>
+  <select id="findAllMajorBySort" resultMap="BaseResultMap">
+    SELECT * FROM Major ORDER BY sort_num ASC
+  </select>
 </mapper>

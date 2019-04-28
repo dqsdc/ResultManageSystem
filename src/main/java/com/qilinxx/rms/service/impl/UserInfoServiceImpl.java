@@ -103,6 +103,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         return  userInfoMapper.updateByPrimaryKeySelective(user);
     }
 
+    @Override
+    public List<UserInfo> findUserByMid(int mid) {
+        return userInfoMapper.findUserByMid(mid);
+    }
+
     private UserInfoVo improve(UserInfo info) {
         Major major=majorMapper.selectByPrimaryKey(info.getMid());
         UserInfoVo userInfoVo=new UserInfoVo();

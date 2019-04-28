@@ -16,4 +16,6 @@ public interface LogService {
     List<Log> getAllLog();
 
     List<Log> getAdminLoginLog();
+
+    Log getLastAdminLog();
 }

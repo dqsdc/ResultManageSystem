@@ -45,6 +45,8 @@ public class Reward {
     @Column(name = "level")
     private String level;
 
+    @Column(name = "rank")
+    private String rank;
     /**
      * 获取uuid
      *
@@ -120,7 +122,7 @@ public class Reward {
     /**
      * 获取奖励等级
      *
-     * @return level - 奖励等级
+     * @return level - 奖励级别
      */
     public String getLevel() {
         return level;
@@ -129,10 +131,18 @@ public class Reward {
     /**
      * 设置奖励等级
      *
-     * @param level 奖励等级
+     * @param level 奖励级别
      */
     public void setLevel(String level) {
         this.level = level == null ? null : level.trim();
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
     /**
@@ -281,24 +291,21 @@ public class Reward {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", rid=").append(rid);
-        sb.append(", name=").append(name);
-        sb.append(", people=").append(people);
-        sb.append(", company=").append(company);
-        sb.append(", level=").append(level);
-        sb.append(", getTime=").append(getTime);
-        sb.append(", profile=").append(profile);
-        sb.append(", state=").append(state);
-        sb.append(", createId=").append(createId);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", mid=").append(mid);
-        sb.append(", remake=").append(remake);
-        sb.append("]");
-        return sb.toString();
+        return "Reward{" +
+                "rid='" + rid + '\'' +
+                ", name='" + name + '\'' +
+                ", people='" + people + '\'' +
+                ", company='" + company + '\'' +
+                ", getTime=" + getTime +
+                ", profile='" + profile + '\'' +
+                ", state='" + state + '\'' +
+                ", createId='" + createId + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", mid=" + mid +
+                ", remake='" + remake + '\'' +
+                ", level='" + level + '\'' +
+                ", rank='" + rank + '\'' +
+                '}';
     }
 }

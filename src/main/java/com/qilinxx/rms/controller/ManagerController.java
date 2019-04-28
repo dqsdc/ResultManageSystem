@@ -447,7 +447,9 @@ public class ManagerController {
      */
     @PostMapping("ajax-thesis-form")
     @ResponseBody
-    public JSONObject ajaxThesisForm(Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
+    public JSONObject ajaxThesisForm(Thesis thesis, String publishTimeDate,Integer startPage, Integer endPage, HttpSession session) throws IOException {
+        publishTimeDate += " 00:00:00";
+        thesis.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
         JSONObject json = new JSONObject();
         //以下四种错误
         if(thesis.getDossier()==null&&thesis.getIssue()==null){
@@ -465,26 +467,29 @@ public class ManagerController {
             return json;
         }
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        //姓名去重，并重新排序
-        String[] names = thesis.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
-        String people = "";
-        for (String name : names) {
-            if (!name.equals("")) {
-                nameMap.put(name, "");
-            }
-        }
-        Iterator iterator1 = nameMap.entrySet().iterator();
-        while (iterator1.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator1.next();
-            people = people + (String) entry.getKey() + ",";
-        }
         nameMap.put(thesis.getHost(), "");//添加主持人
+        //姓名去重，并重新排序
+        if (thesis.getPeople()!=null&&!"".equals(thesis.getPeople())) {
+            String[] names = thesis.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+            String people = "";
+            for (String name : names) {
+                if (!name.equals("")) {
+                    nameMap.put(name, "");
+                }
+            }
+            Iterator iterator1 = nameMap.entrySet().iterator();
+            while (iterator1.hasNext()) {
+                Map.Entry entry = (Map.Entry) iterator1.next();
+                people = people + entry.getKey() + ",";
+            }
+
+            thesis.setPeople(people.substring(0, people.lastIndexOf(",")));
+        }
         if (!nameMap.containsKey(user.getName())) {
             json.put("msg", "此论文与本账号用户无关！");
             return json;
         }
-        thesis.setPeople(people.substring(0, people.lastIndexOf(",")));
         /**
          * 新建论文记录
          */

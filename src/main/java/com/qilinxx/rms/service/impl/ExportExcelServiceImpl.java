@@ -86,7 +86,7 @@ public class ExportExcelServiceImpl implements ExportExcelService {
             eos.add((ThesisEo) pojo2Eo(eo,new ThesisEo()));
         }
         ExportExcelUtil<ThesisEo> util = new ExportExcelUtil<>();
-        String[] columnNames = {"论文名称", "第一作者", "其他作者","期刊","年","卷","期","页码","级别","类别","创建时间"};
+        String[] columnNames = {"论文名称", "第一作者", "其他作者","期刊","年","卷","期","页码","级别","类别","发表时间","创建时间"};
         try {
             util.exportExcel("用户导出", columnNames, eos,
                     response.getOutputStream(), ExportExcelUtil.EXCEl_FILE_2007);
@@ -103,7 +103,7 @@ public class ExportExcelServiceImpl implements ExportExcelService {
             eos.add((RewardEo) pojo2Eo(eo,new RewardEo()));
         }
         ExportExcelUtil<RewardEo> util = new ExportExcelUtil<>();
-        String[] columnNames = {"获奖名称", "获奖人", "奖励等级","授奖单位","获奖时间","奖励简介","创建时间"};
+        String[] columnNames = {"获奖名称", "获奖人", "奖励级别","奖励等级","授奖单位","获奖时间","奖励简介","创建时间"};
         try {
             util.exportExcel("用户导出", columnNames, eos,
                     response.getOutputStream(), ExportExcelUtil.EXCEl_FILE_2007);

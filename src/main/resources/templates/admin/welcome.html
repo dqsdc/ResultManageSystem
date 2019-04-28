@@ -25,8 +25,8 @@
 <div class="page-container">
 	<p class="f-20 text-success">欢迎使用<span style="font-weight: bold">计算机科学与技术学院</span>成果管理系统 <span class="f-14">v1.0</span></p>
 	<!--<p th:text="'登录次数 : '+${size}"></p>-->
-	<!--<p th:text="'上次登录Ip : '+${log.lIp}"></p>-->
-	<!--<p th:text="'上次登录时间 : '+${commons.fmtdate(log.lCreateTime)}"></p>-->
+	<p th:text="'上次登录Ip : '+${log.ip}"></p>
+	<p th:text="'上次登录时间 : '+${commons.fmtdate(log.createTime)}"></p>
 
 	<table class="table table-border table-bordered table-bg mt-20">
 		<thead>
@@ -36,16 +36,8 @@
 		</thead>
 		<tbody>
 			<tr>
-				<th width="30%">服务器计算机名</th>
-				<td><span id="lbServerName">http://127.0.0.1/</span></td>
-			</tr>
-			<tr>
 				<td>服务器IP地址</td>
-				<td>115.159.33.73</td>
-			</tr>
-			<tr>
-				<td>服务器域名</td>
-				<td>www.ku-coding.com</td>
+				<td>http://10.20.15.88</td>
 			</tr>
 			<tr>
 				<td>服务器端口 </td>
@@ -60,25 +52,12 @@
 				<td>Chinese (People's Republic of China)</td>
 			</tr>
 			<tr>
-				<td>本文件所在文件夹 </td>
-				<td>D:\WebSite\HanXiPuTai.com\XinYiCMS.Web\</td>
-			</tr>
-			<tr>
 				<td>服务器操作系统 </td>
-				<td>Microsoft Windows NT 5.2.3790 Service Pack 2</td>
-			</tr>
-			<tr>
-				<td>系统所在文件夹 </td>
-				<td>C:\WINDOWS\system32</td>
+				<td>Microsoft Windows 2008 Service Pack 2</td>
 			</tr>
 			<tr>
 				<td>服务器脚本超时时间 </td>
 				<td>30000秒</td>
-			</tr>
-
-			<tr>
-				<td>.NET Framework 版本 </td>
-				<td>2.050727.3655</td>
 			</tr>
 			<tr>
 				<td>服务器IE版本 </td>
@@ -90,7 +69,7 @@
 			</tr>
 			<tr>
 				<td>逻辑驱动器 </td>
-				<td>C:\D:\</td>
+				<td>C:\D:\E:\</td>
 			</tr>
 			<tr>
 				<td>CPU 总数 </td>
@@ -118,11 +97,11 @@
 			</tr>
 			<tr>
 				<td>当前SessionID </td>
-				<!--<td th:text="${#session.getId()}">gznhpwmp34004345jz2q3l45</td>-->
+				<td th:text="${#session.getId()}">gznhpwmp34004345jz2q3l45</td>
 			</tr>
 			<tr>
 				<td>当前系统用户名 </td>
-				<td>NETWORK SERVICE</td>
+				<td>admin</td>
 			</tr>
 		</tbody>
 	</table>

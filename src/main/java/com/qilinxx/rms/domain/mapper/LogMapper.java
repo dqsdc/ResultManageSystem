@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface LogMapper extends Mapper<Log> {
     List<Log> selectAdminLogin();
+    Log getLastAdminLog();
 }

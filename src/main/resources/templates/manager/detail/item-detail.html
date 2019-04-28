@@ -57,12 +57,16 @@
                         <td><span id="lbServerName" th:text="${project.name}">http://127.0.0.1/</span></td>
                     </tr>
                     <tr>
+                        <td >项目类型:</td>
+                        <td th:text="${project.genre}">192.168.1.1</td>
+                    </tr>
+                    <tr>
                         <td >项目题目:</td>
                         <td th:text="${project.topic}">192.168.1.1</td>
                     </tr>
-                    <tr>
-                        <td >项目类型:</td>
-                        <td th:text="${project.genre}">192.168.1.1</td>
+                    <tr th:if="${project.number!=null}">
+                        <td>项目编号:</td>
+                        <td th:text="${project.number}">80</td>
                     </tr>
                     <tr>
                         <td >主持人:</td>
@@ -92,10 +96,6 @@
                         <td>项目来源:</td>
                         <td th:text="${project.projectSource}">80</td>
                     </tr>
-                    <tr th:if="${project.number!=null}">
-                        <td>项目编号:</td>
-                        <td th:text="${project.number}">80</td>
-                    </tr>
                     <tr>
                         <td>项目等级:</td>
                         <td th:text="${project.level}">80</td>
@@ -109,7 +109,7 @@
                         <td th:text="${project.type}">80</td>
                     </tr>
                     <tr>
-                        <td>备注:</td>
+                        <td>项目简介:</td>
                         <td th:text="${project.profile}">80</td>
                     </tr>
                     <tr>
@@ -150,7 +150,7 @@
                     </tr>
                     <tr >
                         <td>其他作者:</td>
-                        <td th:text="${thesis.people}"></td>
+                        <td th:if="${thesis.people!=null}" th:text="${thesis.people}"></td>
                     </tr>
                     <tr>
                         <td>期刊:</td>

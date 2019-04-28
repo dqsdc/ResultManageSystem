@@ -17,6 +17,7 @@ public class ThesisEo {
     private String pageNum;
     private String rank;
     private String type;
+    private String publishTime;
     private String createTime;
 
     public String getName() {
@@ -107,6 +108,14 @@ public class ThesisEo {
         this.createTime = createTime;
     }
 
+    public String getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(String publishTime) {
+        this.publishTime = publishTime;
+    }
+
     @Override
     public String toString() {
         return "ThesisEo{" +
@@ -114,12 +123,13 @@ public class ThesisEo {
                 ", host='" + host + '\'' +
                 ", people='" + people + '\'' +
                 ", book='" + book + '\'' +
-                ", year='" + year + '\'' +
-                ", dossier='" + dossier + '\'' +
+                ", year=" + year +
+                ", dossier=" + dossier +
                 ", issue=" + issue +
                 ", pageNum='" + pageNum + '\'' +
                 ", rank='" + rank + '\'' +
                 ", type='" + type + '\'' +
+                ", publishTime='" + publishTime + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';
     }

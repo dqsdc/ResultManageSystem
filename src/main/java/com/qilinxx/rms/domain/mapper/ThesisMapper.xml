@@ -13,9 +13,10 @@
     <result column="page_num" jdbcType="VARCHAR" property="pageNum" />
     <result column="rank" jdbcType="VARCHAR" property="rank" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="publish_time" jdbcType="BIGINT" property="publishTime" />
     <result column="profile" jdbcType="VARCHAR" property="profile" />
     <result column="state" jdbcType="CHAR" property="state" />
-    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="create_id" jdbcType="INTEGER" property="createId" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
     <result column="mid" jdbcType="INTEGER" property="mid" />
@@ -80,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    tid, host, people, name, book, year, dossier, issue, page_num, rank, type, profile, 
-    state, create_id, create_time, update_time, mid, remake
+    tid, host, people, name, book, year, dossier, issue, page_num, rank, type, publish_time, 
+    profile, state, create_id, create_time, update_time, mid, remake
   </sql>
 </mapper>

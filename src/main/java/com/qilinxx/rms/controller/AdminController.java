@@ -76,6 +76,10 @@ public class AdminController extends BaseController {
         return "admin/index";
     }
 
+    @RequestMapping("admin-password")
+    public String changeAdminPassword(){
+        return "admin/password-change";
+    }
     /**
      * @return  来到教材总览页面
      */
@@ -312,7 +316,10 @@ public class AdminController extends BaseController {
         exportExcelService.exportMeeting(chk,response);
     }
     @RequestMapping("/welcome")
-    public String showWelcome() {
+    public String showWelcome(Model model) {
+        Log log=logService.getLastAdminLog();
+        model.addAttribute("log",log);
+        model.addAttribute("commons", new Commons());
         return "admin/welcome";
     }
 
