@@ -60,7 +60,6 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/loginSub")
     public String login(HttpSession session, String password, String account) {
-        System.out.println(password + "  " + account);
         String uid = (String) session.getAttribute("uid");
         UserInfo user = userInfoService.findUserByUid(account);
         if (uid != null) {

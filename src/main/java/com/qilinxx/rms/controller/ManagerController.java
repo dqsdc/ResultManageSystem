@@ -8,6 +8,7 @@ import com.qilinxx.rms.util.UploadUtil;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +47,8 @@ public class ManagerController {
     MeetingService meetingService;
     @Autowired
     LogService logService;
+    @Autowired
+    NoticeService noticeService;
 
     /**
      * @return 来到教师成果管理系统页面
@@ -987,6 +990,14 @@ public class ManagerController {
         return json;
     }
 
+    @RequestMapping("showNotice")
+    public String showNotice(String type,HttpSession session,Model model){
+        String uid= (String) session.getAttribute("uid");
+        List<Notice> notices=noticeService.getAllNoticesOrderByTime(uid,type);
+        model.addAttribute("notices",notices);
+        model.addAttribute("dateKit", new DateKit());
+        return "manager/notice";
+    }
 
     //项目、论文、奖励、教材、会议的总览页面
 
@@ -1007,6 +1018,8 @@ public class ManagerController {
         }
         //将projectList倒序
         Collections.reverse(projectList);
+        Notice first=noticeService.latestNotice(uid,"project");
+        model.addAttribute("first",first);
         model.addAttribute("uid", uid);
         model.addAttribute("createrMap", createrMap);
         model.addAttribute("projectList", projectList);
@@ -1031,6 +1044,8 @@ public class ManagerController {
         }
         //将projectList倒序
         Collections.reverse(thesisList);
+        Notice first=noticeService.latestNotice(uid,"thesis");
+        model.addAttribute("first",first);
         model.addAttribute("uid", uid);
         model.addAttribute("createrMap", createrMap);
         model.addAttribute("thesisList", thesisList);
@@ -1055,6 +1070,8 @@ public class ManagerController {
         }
         //将rewardList倒序
         Collections.reverse(rewardList);
+        Notice first=noticeService.latestNotice(uid,"reward");
+        model.addAttribute("first",first);
         model.addAttribute("uid", uid);
         model.addAttribute("createrMap", createrMap);
         model.addAttribute("rewardList", rewardList);
@@ -1079,6 +1096,8 @@ public class ManagerController {
         }
         //将projectList倒序
         Collections.reverse(textbookList);
+        Notice first=noticeService.latestNotice(uid,"textbook");
+        model.addAttribute("first",first);
         model.addAttribute("uid", uid);
         model.addAttribute("createrMap", createrMap);
         model.addAttribute("textbookList", textbookList);
@@ -1103,6 +1122,8 @@ public class ManagerController {
         }
         //将projectList倒序
         Collections.reverse(meetingList);
+        Notice first=noticeService.latestNotice(uid,"meeting");
+        model.addAttribute("first",first);
         model.addAttribute("uid", uid);
         model.addAttribute("createrMap", createrMap);
         model.addAttribute("meetingList", meetingList);
@@ -1515,6 +1536,8 @@ public class ManagerController {
     @PostMapping("ajax-item-start")
     @ResponseBody
     public JSONObject ajaxItemStart(String itemType, String id) {
+        Integer i=noticeService.passNoticeByNid(id,itemType);
+        System.out.println("通过记录" + i);
         JSONObject json = new JSONObject();
         switch (itemType) {
             case "project":
@@ -1563,9 +1586,11 @@ public class ManagerController {
      * @param itemType item类别
      * @param id       itemId
      */
+    @Transactional
     @PostMapping("ajax-item-stop")
     @ResponseBody
-    public JSONObject ajaxItemStop(String itemType, String id) {
+    public JSONObject ajaxItemStop(HttpSession session,String itemType, String id,String msg) {
+        String createId=null;
         JSONObject json = new JSONObject();
         switch (itemType) {
             case "project":
@@ -1574,6 +1599,7 @@ public class ManagerController {
                 project.setState("1");
                 project.setUpdateTime(DateKit.getUnixTimeLong());
                 projectService.updateProject(project);
+                createId=projectService.findProjectByPid(id).getCreateId();
                 break;
             case "thesis":
                 Thesis thesis = new Thesis();
@@ -1581,6 +1607,7 @@ public class ManagerController {
                 thesis.setState("1");
                 thesis.setUpdateTime(DateKit.getUnixTimeLong());
                 thesisService.updateThesis(thesis);
+                createId=thesisService.findThesisByTid(id).getCreateId();
                 break;
             case "reward":
                 Reward reward = new Reward();
@@ -1588,6 +1615,7 @@ public class ManagerController {
                 reward.setState("1");
                 reward.setUpdateTime(DateKit.getUnixTimeLong());
                 rewardService.updateReward(reward);
+                createId=rewardService.findRewardByRid(id).getCreateId();
                 break;
             case "textbook":
                 Textbook textbook = new Textbook();
@@ -1595,6 +1623,7 @@ public class ManagerController {
                 textbook.setState("1");
                 textbook.setUpdateTime(DateKit.getUnixTimeLong());
                 textbookService.updateTextbook(textbook);
+                createId=textbookService.findTextbookById(id).getCreateId();
                 break;
             case "meeting":
                 Meeting meeting = new Meeting();
@@ -1602,9 +1631,21 @@ public class ManagerController {
                 meeting.setState("1");
                 meeting.setUpdateTime(DateKit.getUnixTimeLong());
                 meetingService.updateMeeting(meeting);
+                createId=meetingService.findMeetingById(id).getCreateId();
                 break;
         }
-        json.put("msg", "项目未通过审核");
+        Notice notice=new Notice();
+        notice.setNid(com.qilinxx.rms.util.UUID.UU32());
+        notice.setCreateTime(DateKit.getUnixTimeLong());
+        notice.setResultId(id);
+        notice.setType(itemType);
+        notice.setMessage(msg);
+        notice.setCheckId((String) session.getAttribute("uid"));
+        notice.setCreateId(createId);
+        notice.setState("0");
+        System.out.println(notice);
+        noticeService.addNotice(notice);
+        json.put("msg", "未通过审核");
         return json;
     }
 

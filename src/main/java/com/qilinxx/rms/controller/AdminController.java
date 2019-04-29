@@ -61,6 +61,9 @@ public class AdminController extends BaseController {
     RewardService rewardService;
 
     @Autowired
+    NoticeService noticeService;
+
+    @Autowired
     ExportExcelService exportExcelService;
 
     @RequestMapping("/adminIndex")
