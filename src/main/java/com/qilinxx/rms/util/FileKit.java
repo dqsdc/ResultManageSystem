@@ -21,7 +21,7 @@ public class FileKit {
     /**
      * 清除或初始化list
      */
-    public static List<MultipartFile> clearOrInitList(List<MultipartFile> list){
+    public static synchronized List<MultipartFile> clearOrInitList(List<MultipartFile> list){
         if(list==null){
             list=new ArrayList<>();
         }else {

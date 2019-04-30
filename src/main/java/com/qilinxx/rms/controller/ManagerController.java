@@ -260,6 +260,7 @@ public class ManagerController {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> projectFileList = FileKit.getProjectFileList();
+        if (projectFileList==null) projectFileList=FileKit.clearOrInitList(FileKit.getProjectFileList());
         //手动去重
         int i = 0;
         if (projectFileList.size() != 0) {
@@ -418,6 +419,7 @@ public class ManagerController {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> thesisFileList = FileKit.getThesisFileList();
+        if (thesisFileList==null) thesisFileList=FileKit.clearOrInitList(FileKit.getThesisFileList());
         //手动去重
         int i = 0;
         if (thesisFileList.size() != 0) {
@@ -574,6 +576,7 @@ public class ManagerController {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> rewardFileList = FileKit.getRewardFileList();
+        if (rewardFileList==null) rewardFileList=FileKit.clearOrInitList(FileKit.getRewardFileList());
         //手动去重
         int i = 0;
         if (rewardFileList.size() != 0) {
@@ -723,6 +726,7 @@ public class ManagerController {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> textbookFileList = FileKit.getTextbookFileList();
+        if (textbookFileList==null) textbookFileList=FileKit.clearOrInitList(FileKit.getTextbookFileList());
         //手动去重
         int i = 0;
         if (textbookFileList.size() != 0) {
@@ -870,6 +874,7 @@ public class ManagerController {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
         List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
+        if (meetingFileList==null) meetingFileList=FileKit.clearOrInitList(FileKit.getMeetingFileList());
         //手动去重
         int i = 0;
         if (meetingFileList.size() != 0) {
@@ -1393,11 +1398,11 @@ public class ManagerController {
         JSONObject json = new JSONObject();
 
         Document document = documentService.findDocumentByDid(did);
-        List<Document> documentList = documentService.findDocumentByItemId(document.getItemId());
-        if (documentList.size() == 1) {
-            json.put("msg", "至少保留一个文件！");
-            return json;
-        }
+//        List<Document> documentList = documentService.findDocumentByItemId(document.getItemId());
+//        if (documentList.size() == 1) {
+//            json.put("msg", "至少保留一个文件！");
+//            return json;
+//        }
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "//" + document.getPath()));
         documentService.deleteDocumentByDid(did);
         //item 记录更新
@@ -1660,6 +1665,8 @@ public class ManagerController {
     @GetMapping("project-edit")
     public String projectEdit(String id,Model model){
         Project project = projectService.findProjectByPid(id);
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("documentList", documentList);
         model.addAttribute("project",project);
         model.addAttribute("dateKit",new DateKit());
         return "manager/edit/project-edit";
@@ -1671,6 +1678,8 @@ public class ManagerController {
     @GetMapping("thesis-edit")
     public String thesisEdit(String id,Model model){
         Thesis thesis = thesisService.findThesisByTid(id);
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("documentList", documentList);
         model.addAttribute("thesis",thesis);
         model.addAttribute("dateKit",new DateKit());
         return "manager/edit/thesis-edit";
@@ -1682,6 +1691,8 @@ public class ManagerController {
     @GetMapping("meeting-edit")
     public String meetingEdit(String id,Model model){
         Meeting meeting = meetingService.findMeetingById(id);
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("documentList", documentList);
         model.addAttribute("meeting",meeting);
         model.addAttribute("dateKit",new DateKit());
         return "manager/edit/meeting-edit";
@@ -1693,6 +1704,8 @@ public class ManagerController {
     @GetMapping("reward-edit")
     public String rewardEdit(String id,Model model){
         Reward reward = rewardService.findRewardByRid(id);
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("documentList", documentList);
         model.addAttribute("reward",reward);
         model.addAttribute("dateKit",new DateKit());
         return "manager/edit/reward-edit";
@@ -1705,6 +1718,8 @@ public class ManagerController {
     @GetMapping("textbook-edit")
     public String textbookEdit(String id,Model model){
         Textbook textbook = textbookService.findTextbookById(id);
+        List<Document> documentList = documentService.findDocumentByItemId(id);
+        model.addAttribute("documentList", documentList);
         model.addAttribute("textbook",textbook);
         model.addAttribute("dateKit",new DateKit());
         return "manager/edit/textbook-edit";
@@ -1725,7 +1740,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-project-edit-form")
     @ResponseBody
-    public JSONObject ajaxProjectEditForm(String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate)  {
+    public JSONObject ajaxProjectEditForm(String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         project.setPid(id);
         //以下三种种错误
@@ -1791,6 +1806,28 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
+        List<MultipartFile> projectFileList = FileKit.getProjectFileList();
+        Document document = new Document();
+        document.setItemId(project.getPid());
+        document.setItemType("project");
+        String fileName = "";
+        for (MultipartFile file : projectFileList) {
+            fileName = file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\" + user.getUid() + "\\project\\" + project.getCreateTime() + "\\" + fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project", fileName);
+            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//project//" + project.getCreateTime(), fileName);
+            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//project//" + project.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile, targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setProjectFileList(FileKit.clearOrInitList(projectFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project");
+        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -1805,7 +1842,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-thesis-edit-form")
     @ResponseBody
-    public JSONObject ajaxThesisEditForm(String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) {
+    public JSONObject ajaxThesisEditForm(String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         thesis.setTid(id);
         //以下四种错误
@@ -1864,6 +1901,28 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
+        List<MultipartFile> thesisFileList=FileKit.getThesisFileList();
+        Document document = new Document();
+        document.setItemId(thesis.getTid());
+        document.setItemType("thesis");
+        String fileName = "";
+        for (MultipartFile file : thesisFileList) {
+            fileName = file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\" + user.getUid() + "\\thesis\\" + thesis.getCreateTime() + "\\" + fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis", fileName);
+            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//thesis//" + thesis.getCreateTime(), fileName);
+            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//thesis//" + thesis.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile, targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setThesisFileList(FileKit.clearOrInitList(thesisFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis");
+        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -1875,7 +1934,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-meeting-edit-form")
     @ResponseBody
-    public JSONObject ajaxMeetingEditForm(HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate)  {
+    public JSONObject ajaxMeetingEditForm(HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
         startTimeDate += ":00"; endTimeDate += ":00";
@@ -1932,6 +1991,28 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
+        List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
+        Document document = new Document();
+        document.setItemId(meeting.getId());
+        document.setItemType("meeting");
+        String fileName = "";
+        for (MultipartFile file : meetingFileList) {
+            fileName = file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\" + user.getUid() + "\\meeting\\" + meeting.getCreateTime() + "\\" + fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting", fileName);
+            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//meeting//" + meeting.getCreateTime(), fileName);
+            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//meeting//" + meeting.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile, targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setMeetingFileList(FileKit.clearOrInitList(meetingFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting");
+        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -2002,6 +2083,28 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
+        List<MultipartFile> rewardFileList=FileKit.getRewardFileList();
+        Document document = new Document();
+        document.setItemId(reward.getRid());
+        document.setItemType("reward");
+        String fileName = "";
+        for (MultipartFile file : rewardFileList) {
+            fileName = file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\" + user.getUid() + "\\reward\\" + reward.getCreateTime() + "\\" + fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward", fileName);
+            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//reward//" + reward.getCreateTime(), fileName);
+            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//reward//" + reward.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile, targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setRewardFileList(FileKit.clearOrInitList(rewardFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward");
+        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -2012,7 +2115,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-textbook-edit-form")
     @ResponseBody
-    public JSONObject ajaxTextbookEditForm(HttpSession session, Textbook textbook, String publishTimeDate)  {
+    public JSONObject ajaxTextbookEditForm(HttpSession session, Textbook textbook, String publishTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下2种错误
         Integer textBookNum = textbookService.countTextBookByISBNExceptId(textbook.getIsbn(),textbook.getId());
@@ -2068,6 +2171,28 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
+        List<MultipartFile> textbookFileList=FileKit.getTextbookFileList();
+        Document document = new Document();
+        document.setItemId(textbook.getId());
+        document.setItemType("textbook");
+        String fileName = "";
+        for (MultipartFile file : textbookFileList) {
+            fileName = file.getOriginalFilename();
+            document.setName(fileName);
+            document.setType(fileName.substring(fileName.lastIndexOf(".")));
+            document.setPath("upload\\" + user.getUid() + "\\textbook\\" + textbook.getCreateTime() + "\\" + fileName);
+            documentService.createDocument(document);
+            //文件拷贝与删除
+            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook", fileName);
+            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//textbook//" + textbook.getCreateTime(), fileName);
+            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//textbook//" + textbook.getCreateTime());
+            pathFile.mkdirs();
+            FileCopyUtils.copy(tempFile, targetFile);
+            FileKit.deleteFile(tempFile);
+        }
+        FileKit.setTextbookFileList(FileKit.clearOrInitList(textbookFileList));
+        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook");
+        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
