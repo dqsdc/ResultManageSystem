@@ -79,7 +79,7 @@
     UPDATE notice SET state=1 WHERE result_id=#{result_id} AND type=#{type}
   </update>
   <select id="selectLastNotice" resultMap="BaseResultMap">
-      SELECT * FROM notice where type=#{type} and result_id = #{result_id} ORDER BY create_time DESC limit 1
+      SELECT * FROM notice where type=#{type} and result_id = #{result_id} AND state='0' ORDER BY create_time DESC limit 1
   </select>
   <select id="latestNotice" resultMap="BaseResultMap">
       SELECT * FROM notice where type=#{type} and create_id = #{create_id} AND state='0' ORDER BY create_time DESC limit 1

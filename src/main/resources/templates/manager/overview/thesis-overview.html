@@ -31,11 +31,10 @@
     </ul>
     <ul class="placeul">
         <li style="font-weight: bold">
-            <span hidden="hidden" style="border: 3px solid red;margin-right: 5px;margin-top: 17px;"></span>
-            <a onclick="member_show('查看消息','showNotice',1000,450)">消息</a>
+            <a>消息</a>
         </li>
         <li th:if="${first!=null}">
-            <a onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${first.message}"  style="color: red">您的提交没通过审核,点击查看原因</a>
+            <span style="color: red">您的提交没通过审核,点击审核状态中的 未通过 查看原因</span>
         </li>
     </ul>
 </div>
@@ -65,7 +64,7 @@
                 <td th:text="${thesis.rank}">80</td>
                 <td><span th:text="${thesis.year}"></span>,<span th:if="${thesis.dossier!=null}" th:text="${thesis.dossier}"></span><span th:if="${thesis.issue!=null}" th:text="'('+${thesis.issue}+')'"></span>:<span th:text="${thesis.pageNum}"></span></td>
                 <td th:if="${thesis.state}==0"><span class="label label-default radius">待审核</span></td>
-                <td th:if="${thesis.state}==1"><span class="label label-danger radius">未通过</span></td>
+                <td th:if="${thesis.state}==1"><a class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${thesis.remake}">未通过</a></td>
                 <td th:if="${thesis.state}==2"><span class="label label-success radius">已审核</span></td>
                 <td class="f-14 td-manage">
                     <span th:if="${thesis.createId.equals(uid) && !thesis.state.equals('2')}"><a style="text-decoration:none" class="ml-5" th:data-id="${thesis.tid}"  onClick="itemEdit(this,this.getAttribute('data-id'))" href="javascript:;" title="编辑内容"><i class="Hui-iconfont">&#xe60c;</i></a></span>

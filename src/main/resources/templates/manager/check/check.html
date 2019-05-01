@@ -334,12 +334,12 @@
                 layer.msg('已审核', {icon:6,time:1000});
             },
             function(){
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="item_release(this,\''+ id+ '\',\''+itemType+'\')" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-                $(obj).remove();
                 layer.prompt({title: '请输入审核不通过原因', formType: 2}, function(text){
                     item_stop(id,itemType,text);
                     layer.msg('未通过', {icon:5,time:1000});
+                    $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="item_release(this,\''+ id+ '\',\''+itemType+'\')" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
+                    $(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
+                    $(obj).remove();
                 });
             });
     }

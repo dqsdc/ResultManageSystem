@@ -1016,7 +1016,10 @@ public class ManagerController {
         List<Project> projectList = new ArrayList<>();
         Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
-            projectList.add(projectService.findProjectByPid(userItem.getItemId()));
+            Project project=projectService.findProjectByPid(userItem.getItemId());
+            Notice notice=noticeService.selectLastNotice(project.getPid(),"project");
+            if (notice!=null) project.setRemake(notice.getMessage());
+            projectList.add(project);
         }
         for (Project project : projectList) {
             createrMap.put(project.getCreateId(), userInfoService.findUserByUid(project.getCreateId()));
@@ -1042,7 +1045,10 @@ public class ManagerController {
         List<Thesis> thesisList = new ArrayList<>();
         Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
-            thesisList.add(thesisService.findThesisByTid(userItem.getItemId()));
+            Thesis thesis=thesisService.findThesisByTid(userItem.getItemId());
+            Notice notice=noticeService.selectLastNotice(thesis.getTid(),"thesis");
+            if (notice!=null) thesis.setRemake(notice.getMessage());
+            thesisList.add(thesis);
         }
         for (Thesis thesis : thesisList) {
             createrMap.put(thesis.getCreateId(), userInfoService.findUserByUid(thesis.getCreateId()));
@@ -1068,7 +1074,10 @@ public class ManagerController {
         List<Reward> rewardList = new ArrayList<>();
         Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
-            rewardList.add(rewardService.findRewardByRid(userItem.getItemId()));
+            Reward reward=rewardService.findRewardByRid(userItem.getItemId());
+            Notice notice=noticeService.selectLastNotice(reward.getRid(),"reward");
+            if (notice!=null) reward.setRemake(notice.getMessage());
+            rewardList.add(reward);
         }
         for (Reward reward : rewardList) {
             createrMap.put(reward.getCreateId(), userInfoService.findUserByUid(reward.getCreateId()));
@@ -1094,7 +1103,10 @@ public class ManagerController {
         List<Textbook> textbookList = new ArrayList<>();
         Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
-            textbookList.add(textbookService.findTextbookById(userItem.getItemId()));
+            Textbook textbook=textbookService.findTextbookById(userItem.getItemId());
+            Notice notice=noticeService.selectLastNotice(textbook.getId(),"textbook");
+            if (notice!=null) textbook.setRemake(notice.getMessage());
+            textbookList.add(textbook);
         }
         for (Textbook textbook : textbookList) {
             createrMap.put(textbook.getCreateId(), userInfoService.findUserByUid(textbook.getCreateId()));
@@ -1120,7 +1132,10 @@ public class ManagerController {
         List<Meeting> meetingList = new ArrayList<>();
         Map<String, UserInfo> createrMap = new HashMap<>();
         for (UserItem userItem : userItemList) {
-            meetingList.add(meetingService.findMeetingById(userItem.getItemId()));
+            Meeting meeting=meetingService.findMeetingById(userItem.getItemId());
+            Notice notice=noticeService.selectLastNotice(meeting.getId(),"meeting");
+            if (notice!=null) meeting.setRemake(notice.getMessage());
+            meetingList.add(meeting);
         }
         for (Meeting meeting : meetingList) {
             createrMap.put(meeting.getCreateId(), userInfoService.findUserByUid(meeting.getCreateId()));
