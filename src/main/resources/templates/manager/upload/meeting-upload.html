@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【承办单位】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【承办单位】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" class="input-text"  id="organizer" name="organizer">
                     </div>
@@ -151,6 +151,7 @@
 <script type="text/javascript" src="H-ui/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="H-ui/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
+
     //项目附件提交层
     function article_save(){
         alert("刷新父级的时候会自动关闭弹层。");
@@ -411,7 +412,7 @@
                     label: '点击选择文件'
                 },
                 formData: {
-                    uid: 123
+                    key: '[[${key}]]'
                 },
                 dnd: '#dndArea1',
                 paste: '#uploader',
@@ -865,6 +866,7 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
+                    data:{key:'[[${key}]]'},
                     url: "/ajax-meeting-form" ,
                     dataType:"json",
                     success: function(data){

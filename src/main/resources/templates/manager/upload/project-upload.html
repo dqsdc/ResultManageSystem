@@ -485,7 +485,7 @@
                     label: '点击选择文件'
                 },
                 formData: {
-                    uid: 123
+                    key: '[[${key}]]'
                 },
                 dnd: '#dndArea1',
                 paste: '#uploader',
@@ -966,6 +966,7 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
+                    data:{key:'[[${key}]]'},
                     url: "/ajax-project-form" ,
                     dataType:"json",
                     success: function(data){

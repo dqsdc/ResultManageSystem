@@ -240,11 +240,12 @@ public class ManagerController {
      * @return 来到项目上传页面
      */
     @GetMapping("project-upload")
-    public String project(HttpSession session) {
+    public String project(HttpSession session,Model model) {
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        //清空或者初始化fileList
-        FileKit.setProjectFileList(FileKit.clearOrInitList(FileKit.getProjectFileList()));
+        //清空或者初始化fileMap
+        FileKit.projectMap=FileKit.clearOrInitMap(FileKit.projectMap,user.getUid());
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project"));
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+user.getUid());
         return "manager/upload/project-upload";
     }
 
@@ -256,11 +257,12 @@ public class ManagerController {
      */
     @PostMapping("ajax-project-file")
     @ResponseBody
-    public JSONObject ajaxProjectFile(MultipartFile file, HttpSession session) throws IOException {
+    public JSONObject ajaxProjectFile(String key,MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        List<MultipartFile> projectFileList = FileKit.getProjectFileList();
-        if (projectFileList==null) projectFileList=FileKit.clearOrInitList(FileKit.getProjectFileList());
+
+        List<MultipartFile> projectFileList = FileKit.projectMap.get(key);
+        if (projectFileList==null) projectFileList=FileKit.clearOrInitList(projectFileList);
         //手动去重
         int i = 0;
         if (projectFileList.size() != 0) {
@@ -272,7 +274,7 @@ public class ManagerController {
         }
         if (i == 0) {
             projectFileList.add(file);
-            FileKit.setProjectFileList(projectFileList);
+            FileKit.projectMap.put(key,projectFileList);
 
             String path = UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project";//存储的根路径 临时文件目录
             File dirFile = new File(path);
@@ -294,7 +296,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-project-form")
     @ResponseBody
-    public JSONObject ajaxProjectForm(HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
+    public JSONObject ajaxProjectForm(String key,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下四种种错误
         int projectNum = projectService.countProjectByNameHostFrom(project.getName(), project.getHost(), project.getProjectSource());
@@ -306,8 +308,8 @@ public class ManagerController {
             json.put("msg", "该项目题目已被提交！");
             return json;
         }
-        List<MultipartFile> projectFileList = FileKit.getProjectFileList();
-        if (projectFileList.size() == 0) {
+        List<MultipartFile> projectFileList = FileKit.projectMap.get(key);
+        if (projectFileList==null||projectFileList.size() == 0) {
             json.put("msg", "请先上传附件！");
             return json;
         }
@@ -385,7 +387,7 @@ public class ManagerController {
             FileCopyUtils.copy(tempFile, targetFile);
             FileKit.deleteFile(tempFile);
         }
-        FileKit.setProjectFileList(FileKit.clearOrInitList(projectFileList));
+        FileKit.projectMap.remove(key,projectFileList);
         File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project");
         FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
@@ -399,11 +401,12 @@ public class ManagerController {
      * @return 来到论文上传页面
      */
     @GetMapping("thesis-upload")
-    public String thesis(HttpSession session) {
+    public String thesis(Model model,HttpSession session) {
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        //清空或者初始化fileList
-        FileKit.setThesisFileList(FileKit.clearOrInitList(FileKit.getThesisFileList()));
+        //清空或者初始化fileMap
+        FileKit.thesisMap=FileKit.clearOrInitMap(FileKit.thesisMap,user.getUid());
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis"));
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+user.getUid());
         return "manager/upload/thesis-upload";
     }
 
@@ -415,11 +418,11 @@ public class ManagerController {
      */
     @PostMapping("ajax-thesis-file")
     @ResponseBody
-    public JSONObject ajaxThesisFile(MultipartFile file, HttpSession session) throws IOException {
+    public JSONObject ajaxThesisFile(String key,MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        List<MultipartFile> thesisFileList = FileKit.getThesisFileList();
-        if (thesisFileList==null) thesisFileList=FileKit.clearOrInitList(FileKit.getThesisFileList());
+        List<MultipartFile> thesisFileList = FileKit.thesisMap.get(key);
+        if (thesisFileList==null) thesisFileList=FileKit.clearOrInitList(thesisFileList);
         //手动去重
         int i = 0;
         if (thesisFileList.size() != 0) {
@@ -431,7 +434,7 @@ public class ManagerController {
         }
         if (i == 0) {
             thesisFileList.add(file);
-            FileKit.setThesisFileList(thesisFileList);
+            FileKit.thesisMap.put(key,thesisFileList);
 
             String path = UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis";//存储的根路径 临时文件目录
             File dirFile = new File(path);
@@ -452,7 +455,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-thesis-form")
     @ResponseBody
-    public JSONObject ajaxThesisForm(Thesis thesis, String publishTimeDate,Integer startPage, Integer endPage, HttpSession session) throws IOException {
+    public JSONObject ajaxThesisForm(String key,Thesis thesis, String publishTimeDate,Integer startPage, Integer endPage, HttpSession session) throws IOException {
         publishTimeDate += " 00:00:00";
         thesis.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
         JSONObject json = new JSONObject();
@@ -466,8 +469,8 @@ public class ManagerController {
             json.put("msg", "该项目已被提交！");
             return json;
         }
-        List<MultipartFile> thesisFileList = FileKit.getThesisFileList();
-        if (thesisFileList.size() == 0) {
+        List<MultipartFile> thesisFileList = FileKit.thesisMap.get(key);
+        if (thesisFileList==null||thesisFileList.size() == 0) {
             json.put("msg", "请先上传附件！");
             return json;
         }
@@ -541,7 +544,7 @@ public class ManagerController {
             FileCopyUtils.copy(tempFile, targetFile);
             FileKit.deleteFile(tempFile);
         }
-        FileKit.setThesisFileList(FileKit.clearOrInitList(thesisFileList));
+        FileKit.thesisMap.remove(key);
         File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis");
         FileKit.deleteFile(dirFile);
 
@@ -556,11 +559,12 @@ public class ManagerController {
      * @return 来到奖励上传页面
      */
     @GetMapping("reward-upload")
-    public String reward(HttpSession session) {
+    public String reward(Model model,HttpSession session) {
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        //清空或者初始化fileList
-        FileKit.setRewardFileList(FileKit.clearOrInitList(FileKit.getRewardFileList()));
+        //清空或者初始化fileMap
+        FileKit.rewardMap=FileKit.clearOrInitMap(FileKit.rewardMap,user.getUid());
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward"));
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+user.getUid());
         return "manager/upload/reward-upload";
     }
 
@@ -572,11 +576,11 @@ public class ManagerController {
      */
     @PostMapping("ajax-reward-file")
     @ResponseBody
-    public JSONObject ajaxRewardFile(MultipartFile file, HttpSession session) throws IOException {
+    public JSONObject ajaxRewardFile(String key,MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        List<MultipartFile> rewardFileList = FileKit.getRewardFileList();
-        if (rewardFileList==null) rewardFileList=FileKit.clearOrInitList(FileKit.getRewardFileList());
+        List<MultipartFile> rewardFileList = FileKit.rewardMap.get(key);
+        if (rewardFileList==null) rewardFileList=FileKit.clearOrInitList(rewardFileList);
         //手动去重
         int i = 0;
         if (rewardFileList.size() != 0) {
@@ -588,7 +592,7 @@ public class ManagerController {
         }
         if (i == 0) {
             rewardFileList.add(file);
-            FileKit.setRewardFileList(rewardFileList);
+            FileKit.rewardMap.put(key,rewardFileList);
 
             String path = UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward";//存储的根路径 临时文件目录
             File dirFile = new File(path);
@@ -607,7 +611,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-reward-form")
     @ResponseBody
-    public JSONObject ajaxProjectForm(HttpSession session, Reward reward, String getTimeDate) throws IOException {
+    public JSONObject ajaxProjectForm(String key,HttpSession session, Reward reward, String getTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //日期转化为时间戳
         getTimeDate += " 00:00:00";
@@ -635,8 +639,8 @@ public class ManagerController {
             json.put("msg", "该奖励已被提交！");
             return json;
         }
-        List<MultipartFile> rewardFileList = FileKit.getRewardFileList();
-        if (rewardFileList.size() == 0) {
+        List<MultipartFile> rewardFileList = FileKit.rewardMap.get(key);
+        if (rewardFileList==null||rewardFileList.size() == 0) {
             json.put("msg", "请先上传附件！");
             return json;
         }
@@ -692,7 +696,7 @@ public class ManagerController {
             FileCopyUtils.copy(tempFile, targetFile);
             FileKit.deleteFile(tempFile);
         }
-        FileKit.setRewardFileList(FileKit.clearOrInitList(rewardFileList));
+        FileKit.rewardMap.remove(key);
         File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward");
         FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
@@ -706,11 +710,12 @@ public class ManagerController {
      * @return 来到教材的上传页面
      */
     @GetMapping("textbook-upload")
-    public String textbook(HttpSession session) {
+    public String textbook(Model model,HttpSession session) {
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        //清空或者初始化fileList
-        FileKit.setTextbookFileList(FileKit.clearOrInitList(FileKit.getTextbookFileList()));
+        //清空或者初始化fileMap
+        FileKit.textbookMap=FileKit.clearOrInitMap(FileKit.textbookMap,user.getUid());
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook"));
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+user.getUid());
         return "manager/upload/textbook-upload";
     }
 
@@ -722,11 +727,11 @@ public class ManagerController {
      */
     @PostMapping("ajax-textbook-file")
     @ResponseBody
-    public JSONObject ajaxTextbookFile(MultipartFile file, HttpSession session) throws IOException {
+    public JSONObject ajaxTextbookFile(String key,MultipartFile file, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        List<MultipartFile> textbookFileList = FileKit.getTextbookFileList();
-        if (textbookFileList==null) textbookFileList=FileKit.clearOrInitList(FileKit.getTextbookFileList());
+        List<MultipartFile> textbookFileList = FileKit.textbookMap.get(key);
+        if (textbookFileList==null) textbookFileList=FileKit.clearOrInitList(textbookFileList);
         //手动去重
         int i = 0;
         if (textbookFileList.size() != 0) {
@@ -738,7 +743,7 @@ public class ManagerController {
         }
         if (i == 0) {
             textbookFileList.add(file);
-            FileKit.setTextbookFileList(textbookFileList);
+            FileKit.textbookMap.put(key,textbookFileList);
 
             String path = UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook";//存储的根路径 临时文件目录
             File dirFile = new File(path);
@@ -757,7 +762,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-textbook-form")
     @ResponseBody
-    public JSONObject ajaxProjectForm(HttpSession session, Textbook textbook, String publishTimeDate) throws IOException {
+    public JSONObject ajaxProjectForm(String key,HttpSession session, Textbook textbook, String publishTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
         Integer textBookNum = textbookService.countTextBookByISBN(textbook.getIsbn());
@@ -765,8 +770,8 @@ public class ManagerController {
             json.put("msg", "该教材已被提交！");
             return json;
         }
-        List<MultipartFile> textbookFileList = FileKit.getTextbookFileList();
-        if (textbookFileList.size() == 0) {
+        List<MultipartFile> textbookFileList = FileKit.textbookMap.get(key);
+        if (textbookFileList==null||textbookFileList.size() == 0) {
             json.put("msg", "请先上传附件！");
             return json;
         }
@@ -839,7 +844,7 @@ public class ManagerController {
             FileCopyUtils.copy(tempFile, targetFile);
             FileKit.deleteFile(tempFile);
         }
-        FileKit.setTextbookFileList(FileKit.clearOrInitList(textbookFileList));
+        FileKit.textbookMap.remove(key);
         File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook");
         FileKit.deleteFile(dirFile);
 
@@ -854,11 +859,13 @@ public class ManagerController {
      * @return 来到会议上传页面
      */
     @GetMapping("meeting-upload")
-    public String meeting(HttpSession session) {
+    public String meeting(HttpSession session,Model model) {
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        //清空或者初始化fileList
-        FileKit.setMeetingFileList(FileKit.clearOrInitList(FileKit.getMeetingFileList()));
+        //清空或者初始化fileMap
+        FileKit.meetingMap = FileKit.clearOrInitMap(FileKit.meetingMap, user.getUid());
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting"));
+        //添加key值
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+user.getUid());
         return "manager/upload/meeting-upload";
     }
 
@@ -870,11 +877,12 @@ public class ManagerController {
      */
     @PostMapping("ajax-meeting-file")
     @ResponseBody
-    public JSONObject ajaxMeetingFile(MultipartFile file, HttpSession session) throws IOException {
+    public JSONObject ajaxMeetingFile(MultipartFile file, HttpSession session,String key) throws IOException {
         JSONObject json = new JSONObject();
         UserInfo user = userInfoService.findUserByUid((String) session.getAttribute("uid"));
-        List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
-        if (meetingFileList==null) meetingFileList=FileKit.clearOrInitList(FileKit.getMeetingFileList());
+
+        List<MultipartFile> meetingFileList = FileKit.meetingMap.get(key);
+        if (meetingFileList==null) meetingFileList=FileKit.clearOrInitList(meetingFileList);
         //手动去重
         int i = 0;
         if (meetingFileList.size() != 0) {
@@ -886,7 +894,7 @@ public class ManagerController {
         }
         if (i == 0) {
             meetingFileList.add(file);
-            FileKit.setMeetingFileList(meetingFileList);
+            FileKit.meetingMap.put(key,meetingFileList);
 
             String path = UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting";//存储的根路径 临时文件目录
             File dirFile = new File(path);
@@ -905,7 +913,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-meeting-form")
     @ResponseBody
-    public JSONObject ajaxMeetingForm(HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate) throws IOException {
+    public JSONObject ajaxMeetingForm(String key,HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
         startTimeDate += ":00"; endTimeDate += ":00";
@@ -916,8 +924,9 @@ public class ManagerController {
             json.put("msg", "该会议已被提交！");
             return json;
         }
-        List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
-        if (meetingFileList.size() == 0) {
+
+        List<MultipartFile> meetingFileList = FileKit.meetingMap.get(key);
+        if (meetingFileList==null||meetingFileList.size() == 0) {
             json.put("msg", "请先上传附件！");
             return json;
         }
@@ -988,7 +997,7 @@ public class ManagerController {
             FileCopyUtils.copy(tempFile, targetFile);
             FileKit.deleteFile(tempFile);
         }
-        FileKit.setMeetingFileList(FileKit.clearOrInitList(meetingFileList));
+        FileKit.meetingMap.remove(key);
         File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting");
         FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
@@ -1678,12 +1687,16 @@ public class ManagerController {
      * @return  项目内容编辑页面
      */
     @GetMapping("project-edit")
-    public String projectEdit(String id,Model model){
+    public String projectEdit(String id,Model model,HttpSession session){
+        String uid = (String) session.getAttribute("uid");
         Project project = projectService.findProjectByPid(id);
         List<Document> documentList = documentService.findDocumentByItemId(id);
+        FileKit.projectMap = FileKit.clearOrInitMap(FileKit.projectMap, uid);
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//project"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("project",project);
         model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/project-edit";
     }
     /**
@@ -1691,12 +1704,16 @@ public class ManagerController {
      * @return  论文内容编辑页面
      */
     @GetMapping("thesis-edit")
-    public String thesisEdit(String id,Model model){
+    public String thesisEdit(String id,Model model,HttpSession session){
+        String uid = (String) session.getAttribute("uid");
         Thesis thesis = thesisService.findThesisByTid(id);
         List<Document> documentList = documentService.findDocumentByItemId(id);
+        FileKit.thesisMap = FileKit.clearOrInitMap(FileKit.thesisMap, uid);
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//thesis"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("thesis",thesis);
         model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/thesis-edit";
     }
     /**
@@ -1704,12 +1721,16 @@ public class ManagerController {
      * @return  会议内容编辑页面
      */
     @GetMapping("meeting-edit")
-    public String meetingEdit(String id,Model model){
+    public String meetingEdit(String id,Model model,HttpSession session){
+        String uid = (String) session.getAttribute("uid");
         Meeting meeting = meetingService.findMeetingById(id);
         List<Document> documentList = documentService.findDocumentByItemId(id);
+        FileKit.meetingMap = FileKit.clearOrInitMap(FileKit.meetingMap, uid);
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//meeting"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("meeting",meeting);
         model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/meeting-edit";
     }
     /**
@@ -1717,12 +1738,16 @@ public class ManagerController {
      * @return  奖励内容编辑页面
      */
     @GetMapping("reward-edit")
-    public String rewardEdit(String id,Model model){
+    public String rewardEdit(String id,Model model,HttpSession session){
+        String uid = (String) session.getAttribute("uid");
         Reward reward = rewardService.findRewardByRid(id);
         List<Document> documentList = documentService.findDocumentByItemId(id);
+        FileKit.rewardMap = FileKit.clearOrInitMap(FileKit.rewardMap, uid);
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//reward"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("reward",reward);
         model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/reward-edit";
     }
 
@@ -1731,12 +1756,16 @@ public class ManagerController {
      * @return  奖励内容编辑页面
      */
     @GetMapping("textbook-edit")
-    public String textbookEdit(String id,Model model){
+    public String textbookEdit(String id,Model model,HttpSession session){
+        String uid = (String) session.getAttribute("uid");
         Textbook textbook = textbookService.findTextbookById(id);
         List<Document> documentList = documentService.findDocumentByItemId(id);
+        FileKit.textbookMap = FileKit.clearOrInitMap(FileKit.textbookMap, uid);
+        FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//textbook"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("textbook",textbook);
         model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/textbook-edit";
     }
 
@@ -1755,7 +1784,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-project-edit-form")
     @ResponseBody
-    public JSONObject ajaxProjectEditForm(String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
+    public JSONObject ajaxProjectEditForm(String key,String id,HttpSession session, Project project, String startTimeDate, String endTimeDate, String setTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         project.setPid(id);
         //以下三种种错误
@@ -1821,28 +1850,40 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
-        List<MultipartFile> projectFileList = FileKit.getProjectFileList();
-        Document document = new Document();
-        document.setItemId(project.getPid());
-        document.setItemType("project");
-        String fileName = "";
-        for (MultipartFile file : projectFileList) {
-            fileName = file.getOriginalFilename();
-            document.setName(fileName);
-            document.setType(fileName.substring(fileName.lastIndexOf(".")));
-            document.setPath("upload\\" + user.getUid() + "\\project\\" + project.getCreateTime() + "\\" + fileName);
-            documentService.createDocument(document);
-            //文件拷贝与删除
-            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project", fileName);
-            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//project//" + project.getCreateTime(), fileName);
-            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//project//" + project.getCreateTime());
-            pathFile.mkdirs();
-            FileCopyUtils.copy(tempFile, targetFile);
-            FileKit.deleteFile(tempFile);
+        List<MultipartFile> projectFileList = FileKit.projectMap.get(key);
+        if(projectFileList!=null && projectFileList.size()!=0){
+            Project dbProject = projectService.findProjectByPid(id);
+            Document document = new Document();
+            document.setItemId(project.getPid());
+            document.setItemType("project");
+            String fileName = "";
+
+            for (MultipartFile file : projectFileList) {
+                int i=0;
+                fileName = file.getOriginalFilename();
+                List<Document> documentList = documentService.findDocumentByItemId(project.getPid());
+                for (Document d:documentList) {
+                    if(d.getName().equals(fileName)) i++;
+                }
+                if(i!=0){
+                    continue;
+                }
+                document.setName(fileName);
+                document.setType(fileName.substring(fileName.lastIndexOf(".")));
+                document.setPath("upload\\" + user.getUid() + "\\project\\" + dbProject.getCreateTime() + "\\" + fileName);
+                documentService.createDocument(document);
+                //文件拷贝与删除
+                File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project", fileName);
+                File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//project//" + dbProject.getCreateTime(), fileName);
+                File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//project//" + dbProject.getCreateTime());
+                pathFile.mkdirs();
+                FileCopyUtils.copy(tempFile, targetFile);
+                FileKit.deleteFile(tempFile);
+            }
+            FileKit.projectMap.remove(key);
+            File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project");
+            FileKit.deleteFile(dirFile);
         }
-        FileKit.setProjectFileList(FileKit.clearOrInitList(projectFileList));
-        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//project");
-        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -1857,7 +1898,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-thesis-edit-form")
     @ResponseBody
-    public JSONObject ajaxThesisEditForm(String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
+    public JSONObject ajaxThesisEditForm(String key,String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         thesis.setTid(id);
         //以下四种错误
@@ -1916,28 +1957,39 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
-        List<MultipartFile> thesisFileList=FileKit.getThesisFileList();
-        Document document = new Document();
-        document.setItemId(thesis.getTid());
-        document.setItemType("thesis");
-        String fileName = "";
-        for (MultipartFile file : thesisFileList) {
-            fileName = file.getOriginalFilename();
-            document.setName(fileName);
-            document.setType(fileName.substring(fileName.lastIndexOf(".")));
-            document.setPath("upload\\" + user.getUid() + "\\thesis\\" + thesis.getCreateTime() + "\\" + fileName);
-            documentService.createDocument(document);
-            //文件拷贝与删除
-            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis", fileName);
-            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//thesis//" + thesis.getCreateTime(), fileName);
-            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//thesis//" + thesis.getCreateTime());
-            pathFile.mkdirs();
-            FileCopyUtils.copy(tempFile, targetFile);
-            FileKit.deleteFile(tempFile);
+        List<MultipartFile> thesisFileList=FileKit.thesisMap.get(key);
+        if(thesisFileList!=null && thesisFileList.size()!=0) {
+            Thesis dbThesis = thesisService.findThesisByTid(id);
+            Document document = new Document();
+            document.setItemId(thesis.getTid());
+            document.setItemType("thesis");
+            String fileName = "";
+            for (MultipartFile file : thesisFileList) {
+                int i=0;
+                fileName = file.getOriginalFilename();
+                List<Document> documentList = documentService.findDocumentByItemId(thesis.getTid());
+                for (Document d:documentList) {
+                    if(d.getName().equals(fileName)) i++;
+                }
+                if(i!=0){
+                    continue;
+                }
+                document.setName(fileName);
+                document.setType(fileName.substring(fileName.lastIndexOf(".")));
+                document.setPath("upload\\" + user.getUid() + "\\thesis\\" + dbThesis.getCreateTime() + "\\" + fileName);
+                documentService.createDocument(document);
+                //文件拷贝与删除
+                File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis", fileName);
+                File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//thesis//" + dbThesis.getCreateTime(), fileName);
+                File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//thesis//" + dbThesis.getCreateTime());
+                pathFile.mkdirs();
+                FileCopyUtils.copy(tempFile, targetFile);
+                FileKit.deleteFile(tempFile);
+            }
+            FileKit.thesisMap.remove(key);
+            File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis");
+            FileKit.deleteFile(dirFile);
         }
-        FileKit.setThesisFileList(FileKit.clearOrInitList(thesisFileList));
-        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//thesis");
-        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -1949,7 +2001,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-meeting-edit-form")
     @ResponseBody
-    public JSONObject ajaxMeetingEditForm(HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate) throws IOException {
+    public JSONObject ajaxMeetingEditForm(String key,HttpSession session, Meeting meeting, String startTimeDate,String endTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
         startTimeDate += ":00"; endTimeDate += ":00";
@@ -2006,28 +2058,39 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
-        List<MultipartFile> meetingFileList = FileKit.getMeetingFileList();
-        Document document = new Document();
-        document.setItemId(meeting.getId());
-        document.setItemType("meeting");
-        String fileName = "";
-        for (MultipartFile file : meetingFileList) {
-            fileName = file.getOriginalFilename();
-            document.setName(fileName);
-            document.setType(fileName.substring(fileName.lastIndexOf(".")));
-            document.setPath("upload\\" + user.getUid() + "\\meeting\\" + meeting.getCreateTime() + "\\" + fileName);
-            documentService.createDocument(document);
-            //文件拷贝与删除
-            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting", fileName);
-            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//meeting//" + meeting.getCreateTime(), fileName);
-            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//meeting//" + meeting.getCreateTime());
-            pathFile.mkdirs();
-            FileCopyUtils.copy(tempFile, targetFile);
-            FileKit.deleteFile(tempFile);
+        List<MultipartFile> meetingFileList = FileKit.meetingMap.get(key);
+        if(meetingFileList!=null && meetingFileList.size()!=0) {
+            Meeting dbMeeting = meetingService.findMeetingById(meeting.getId());
+            Document document = new Document();
+            document.setItemId(meeting.getId());
+            document.setItemType("meeting");
+            String fileName = "";
+            for (MultipartFile file : meetingFileList) {
+                int i=0;
+                fileName = file.getOriginalFilename();
+                List<Document> documentList = documentService.findDocumentByItemId(meeting.getId());
+                for (Document d:documentList) {
+                    if(d.getName().equals(fileName)) i++;
+                }
+                if(i!=0){
+                    continue;
+                }
+                document.setName(fileName);
+                document.setType(fileName.substring(fileName.lastIndexOf(".")));
+                document.setPath("upload\\" + user.getUid() + "\\meeting\\" + dbMeeting.getCreateTime() + "\\" + fileName);
+                documentService.createDocument(document);
+                //文件拷贝与删除
+                File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting", fileName);
+                File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//meeting//" + dbMeeting.getCreateTime(), fileName);
+                File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//meeting//" + dbMeeting.getCreateTime());
+                pathFile.mkdirs();
+                FileCopyUtils.copy(tempFile, targetFile);
+                FileKit.deleteFile(tempFile);
+            }
+            FileKit.meetingMap.remove(key);
+            File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting");
+            FileKit.deleteFile(dirFile);
         }
-        FileKit.setMeetingFileList(FileKit.clearOrInitList(meetingFileList));
-        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//meeting");
-        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -2038,7 +2101,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-reward-edit-form")
     @ResponseBody
-    public JSONObject ajaxRewardEditForm(String id,HttpSession session, Reward reward, String getTimeDate) throws IOException {
+    public JSONObject ajaxRewardEditForm(String key,String id,HttpSession session, Reward reward, String getTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         reward.setRid(id);
         //日期转化为时间戳
@@ -2098,28 +2161,39 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
-        List<MultipartFile> rewardFileList=FileKit.getRewardFileList();
-        Document document = new Document();
-        document.setItemId(reward.getRid());
-        document.setItemType("reward");
-        String fileName = "";
-        for (MultipartFile file : rewardFileList) {
-            fileName = file.getOriginalFilename();
-            document.setName(fileName);
-            document.setType(fileName.substring(fileName.lastIndexOf(".")));
-            document.setPath("upload\\" + user.getUid() + "\\reward\\" + reward.getCreateTime() + "\\" + fileName);
-            documentService.createDocument(document);
-            //文件拷贝与删除
-            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward", fileName);
-            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//reward//" + reward.getCreateTime(), fileName);
-            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//reward//" + reward.getCreateTime());
-            pathFile.mkdirs();
-            FileCopyUtils.copy(tempFile, targetFile);
-            FileKit.deleteFile(tempFile);
+        List<MultipartFile> rewardFileList=FileKit.rewardMap.get(key);
+        if(rewardFileList!=null && rewardFileList.size()!=0) {
+            Reward dbReward = rewardService.findRewardByRid(id);
+            Document document = new Document();
+            document.setItemId(reward.getRid());
+            document.setItemType("reward");
+            String fileName = "";
+            for (MultipartFile file : rewardFileList) {
+                int i=0;
+                fileName = file.getOriginalFilename();
+                List<Document> documentList = documentService.findDocumentByItemId(reward.getRid());
+                for (Document d:documentList) {
+                    if(d.getName().equals(fileName)) i++;
+                }
+                if(i!=0){
+                    continue;
+                }
+                document.setName(fileName);
+                document.setType(fileName.substring(fileName.lastIndexOf(".")));
+                document.setPath("upload\\" + user.getUid() + "\\reward\\" + dbReward.getCreateTime() + "\\" + fileName);
+                documentService.createDocument(document);
+                //文件拷贝与删除
+                File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward", fileName);
+                File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//reward//" + dbReward.getCreateTime(), fileName);
+                File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//reward//" + dbReward.getCreateTime());
+                pathFile.mkdirs();
+                FileCopyUtils.copy(tempFile, targetFile);
+                FileKit.deleteFile(tempFile);
+            }
+            FileKit.rewardMap.remove(key);
+            File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward");
+            FileKit.deleteFile(dirFile);
         }
-        FileKit.setRewardFileList(FileKit.clearOrInitList(rewardFileList));
-        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//reward");
-        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }
@@ -2130,7 +2204,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-textbook-edit-form")
     @ResponseBody
-    public JSONObject ajaxTextbookEditForm(HttpSession session, Textbook textbook, String publishTimeDate) throws IOException {
+    public JSONObject ajaxTextbookEditForm(String key,HttpSession session, Textbook textbook, String publishTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下2种错误
         Integer textBookNum = textbookService.countTextBookByISBNExceptId(textbook.getIsbn(),textbook.getId());
@@ -2186,28 +2260,39 @@ public class ManagerController {
                 userItemService.createUserItem(userItem);
             }
         }
-        List<MultipartFile> textbookFileList=FileKit.getTextbookFileList();
-        Document document = new Document();
-        document.setItemId(textbook.getId());
-        document.setItemType("textbook");
-        String fileName = "";
-        for (MultipartFile file : textbookFileList) {
-            fileName = file.getOriginalFilename();
-            document.setName(fileName);
-            document.setType(fileName.substring(fileName.lastIndexOf(".")));
-            document.setPath("upload\\" + user.getUid() + "\\textbook\\" + textbook.getCreateTime() + "\\" + fileName);
-            documentService.createDocument(document);
-            //文件拷贝与删除
-            File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook", fileName);
-            File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//textbook//" + textbook.getCreateTime(), fileName);
-            File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//textbook//" + textbook.getCreateTime());
-            pathFile.mkdirs();
-            FileCopyUtils.copy(tempFile, targetFile);
-            FileKit.deleteFile(tempFile);
+        List<MultipartFile> textbookFileList=FileKit.textbookMap.get(key);
+        if(textbookFileList!=null && textbookFileList.size()!=0) {
+            Textbook dbTextbook = textbookService.findTextbookById(textbook.getId());
+            Document document = new Document();
+            document.setItemId(textbook.getId());
+            document.setItemType("textbook");
+            String fileName = "";
+            for (MultipartFile file : textbookFileList) {
+                int i=0;
+                fileName = file.getOriginalFilename();
+                List<Document> documentList = documentService.findDocumentByItemId(textbook.getId());
+                for (Document d:documentList) {
+                    if(d.getName().equals(fileName)) i++;
+                }
+                if(i!=0){
+                    continue;
+                }
+                document.setName(fileName);
+                document.setType(fileName.substring(fileName.lastIndexOf(".")));
+                document.setPath("upload\\" + user.getUid() + "\\textbook\\" + dbTextbook.getCreateTime() + "\\" + fileName);
+                documentService.createDocument(document);
+                //文件拷贝与删除
+                File tempFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook", fileName);
+                File targetFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//textbook//" + dbTextbook.getCreateTime(), fileName);
+                File pathFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//textbook//" + dbTextbook.getCreateTime());
+                pathFile.mkdirs();
+                FileCopyUtils.copy(tempFile, targetFile);
+                FileKit.deleteFile(tempFile);
+            }
+            FileKit.textbookMap.remove(key);
+            File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook");
+            FileKit.deleteFile(dirFile);
         }
-        FileKit.setTextbookFileList(FileKit.clearOrInitList(textbookFileList));
-        File dirFile = new File(UploadUtil.getUploadFilePath() + "/upload//" + user.getUid() + "//temp//textbook");
-        FileKit.deleteFile(dirFile);
         json.put("msg", "提交成功待审核！");
         return json;
     }

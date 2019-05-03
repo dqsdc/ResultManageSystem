@@ -48,5 +48,10 @@ public class ResultManagerSystemApplicationTests {
 		Meeting meeting = meetingMapper.selectByPrimaryKey("1");
 		System.out.println(meeting);
 	}
+	@Test
+	public void testMap(){
+
+
+	}
 
 }

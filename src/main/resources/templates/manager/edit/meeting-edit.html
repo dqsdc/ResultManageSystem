@@ -399,7 +399,7 @@
                     label: '点击选择文件'
                 },
                 formData: {
-                    uid: 123
+                    key:'[[${key}]]'
                 },
                 dnd: '#dndArea1',
                 paste: '#uploader',
@@ -878,7 +878,7 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    data:{'id':'[[${meeting.id}]]'},
+                    data:{'id':'[[${meeting.id}]]',key:'[[${key}]]'},
                     url: "/ajax-meeting-edit-form" ,
                     dataType:"json",
                     success: function(data){
