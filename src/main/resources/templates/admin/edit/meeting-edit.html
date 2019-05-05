@@ -26,77 +26,67 @@
     <link href="H-ui/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-
 <div class="formbody">
     <div id="usual1" class="usual">
-        <div id="tab4" class="tabson" >
-            <form  class="form form-horizontal" id="textbook-form" method="post">
+
+        <div id="tab5" class="tabson" >
+            <form  class="form form-horizontal" id="meeting-form" method="post">
+                <input type="hidden" th:value="${meeting.createId}" name="createId">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议名称】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.name}" type="text"  class="input-text"  id="name" name="name">
+                        <input th:value="${meeting.name}"  type="text" class="input-text"  id="name" name="name">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材主编】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【参会人员】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.people}" type="text" name="people" id="people" placeholder="若为多名主编，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                        <input th:value="${meeting.people}" type="text" name="people" id="people" placeholder="若为多名参会人员，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版社】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【主办单位】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.press}" type="text" name="press" id="press"   class="input-text">
+                        <input th:value="${meeting.sponsor}" type="text" class="input-text"  id="sponsor" name="sponsor">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版年月】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【承办单位】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(textbook.publishTime,'yyyy-MM')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input th:value="${meeting.organizer}" type="text" class="input-text"  id="organizer" name="organizer">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【ISBN】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议开始时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${textbook.isbn}" class="input-text"  id="isbn" name="isbn">
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd HH:mm')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【规划类别】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议结束时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${textbook.type}" placeholder="示例：普通高校教育“十一五”国家规划教材" class="input-text"  id="type" name="type">
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(meeting.endTime,'yyyy-MM-dd HH:mm')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【教材获奖】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【会议简介】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${textbook.reward}"  name="reward" id="reward" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
-                        <p class="textarea-numberbar"><em class="textarea-length"></em></p>
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【教材简介】：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${textbook.profile}" name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
+                        <textarea th:text="${meeting.profile}" name="profile" id="profile" class="textarea"   ></textarea>
                         <p class="textarea-numberbar"><em class="textarea-length"></em></p>
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">【附件详情】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <ul class="imglist">
-                            <li th:if="${documentList.size()}!=0" th:each="document:${documentList}">
+                    <ul class="imglist">
+                        <li th:if="${documentList.size()}!=0" th:each="document:${documentList}">
                         <span>
                             <img th:href="'download?did='+${document.did}" th:download="${document.name}" th:src="'images//'+${document.getType().toLowerCase().substring(1)}+'.png'"  onerror='this.src="images//unknown.png" '  />
                         </span>
-                                <h2><a th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
-                                <p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span>&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'deldte_document(this,\''+${document.did}+'\')'">删除</a></span></p>
-                            </li>
-                        </ul>
-                        <!--显示文件数-->
-                        <!--<div class="pagin">-->
-                            <!--<div class="message">共<i class="blue" th:text="${documentList.size()}">1256</i>个文件</div>-->
-                        <!--</div>-->
+                            <h2><a th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
+                            <p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span>&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'deldte_document(this,\''+${document.did}+'\')'">删除</a></span></p>
+                        </li>
+                    </ul>
                     </div>
                 </div>
                 <div class="row cl">
@@ -406,7 +396,7 @@
                     label: '点击选择文件'
                 },
                 formData: {
-                    key: '[[${key}]]'
+                    key:'[[${key}]]'
                 },
                 dnd: '#dndArea1',
                 paste: '#uploader',
@@ -414,7 +404,7 @@
                 swf: 'H-ui/lib/webuploader/0.1.5/Uploader.swf',
                 chunked: false,
                 chunkSize: 512 * 1024,
-                server: 'ajax-textbook-file',
+                server: 'admin-ajax-meeting-file',
                 // runtimeOrder: 'flash',
 
                 // accept: {
@@ -819,7 +809,7 @@
 <script type="text/javascript">
     function deldte_document(obj,did){
         layer.confirm('确认要删除吗？',function(index){
-            var itemType='textbook';
+            var itemType='meeting';
             $.ajax({
                 type: 'POST',
                 data:{"did":did,"itemType":itemType},
@@ -850,34 +840,31 @@
             increaseArea: '20%'
         });
 
-        $("#textbook-form").validate({
+        $("#meeting-form").validate({
             rules:{
                 name :{
                     required:true,
                     maxlength:250
                 },
-                press :{
-                    required:true,
-                    maxlength:250
-                },
-                isbn :{
-                    required:true,
-                    maxlength:19
-                },
                 people:{
                     required:true,
                     maxlength:290
                 },
-                publishTimeDate:{
+                startTimeDate:{
                     required:true
                 },
-                profile:{
-                    maxlength:200
+                endTimeDate:{
+                    required:true
                 },
-                type:{
+                sponsor:{
+                    required:true,
                     maxlength:250
                 },
-                reward:{
+                organizer:{
+                    required:true,
+                    maxlength:250
+                },
+                profile:{
                     maxlength:200
                 }
 
@@ -888,8 +875,8 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    data:{'id':'[[${textbook.id}]]',key:'[[${key}]]'},
-                    url: "/ajax-textbook-edit-form" ,
+                    data:{'id':'[[${meeting.id}]]',key:'[[${key}]]'},
+                    url: "/admin-meeting-edit-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
@@ -907,6 +894,64 @@
         });
 
 
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#tab2").css("display","none");
+        $("#tab3").css("display","none");
+        $("#tab4").css("display","none");
+        $("#tab1").css("display","none");
+    });
+    $("#a1").click(function () {
+        if($("#a1").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","block");$("#a1").addClass("selected");
+            $("#tab2").css("display","none");$("#a2").removeClass("selected");
+            $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
+        }
+    });
+    $("#a2").click(function () {
+        if($("#a2").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","none");$("#a1").removeClass("selected");
+            $("#tab2").css("display","block");$("#a2").addClass("selected");
+            $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
+        }
+    });
+    $("#a3").click(function () {
+        if($("#a3").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","none");$("#a1").removeClass("selected");
+            $("#tab2").css("display","none");$("#a2").removeClass("selected");
+            $("#tab3").css("display","block");$("#a3").addClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
+        }
+    });
+    $("#a4").click(function () {
+        if($("#a4").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","none");$("#a1").removeClass("selected");
+            $("#tab2").css("display","none");$("#a2").removeClass("selected");
+            $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","block");$("#a4").addClass("selected");
+            $("#tab5").css("display","none");$("#a5").removeClass("selected");
+        }
+    });
+    $("#a5").click(function () {
+        if($("#a5").hasClass("selected")){
+        }else{
+            $("#tab1").css("display","none");$("#a1").removeClass("selected");
+            $("#tab2").css("display","none");$("#a2").removeClass("selected");
+            $("#tab3").css("display","none");$("#a3").removeClass("selected");
+            $("#tab4").css("display","none");$("#a4").removeClass("selected");
+            $("#tab5").css("display","block");$("#a5").addClass("selected");
+        }
     });
 </script>
 </body>

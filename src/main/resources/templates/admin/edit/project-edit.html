@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -29,55 +29,122 @@
 
 <div class="formbody">
     <div id="usual1" class="usual">
-        <div id="tab4" class="tabson" >
-            <form  class="form form-horizontal" id="textbook-form" method="post">
+        <div id="tab1" class="tabson">
+            <form  class="form form-horizontal" id="project-form" method="post">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目名称】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.name}" type="text"  class="input-text"  id="name" name="name">
+                        <input th:value="${project.name}"  type="text" class="input-text" placeholder="示例：2018年高等学校省级质量工程项目"  id="name" name="name">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材主编】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类型】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.people}" type="text" name="people" id="people" placeholder="若为多名主编，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                        <input th:value="${project.genre}" type="text" class="input-text" placeholder="示例：教学研究项目"  id="genre" name="genre">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版社】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目题目】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.press}" type="text" name="press" id="press"   class="input-text">
+                        <input th:value="${project.topic}" type="text" class="input-text"  id="topic" name="topic">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版年月】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【项目编号】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(textbook.publishTime,'yyyy-MM')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${project.number}" class="input-text" placeholder="若有项目编号，请填写！" id="number" name="number">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【ISBN】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【主持人】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${textbook.isbn}" class="input-text"  id="isbn" name="isbn">
+                        <input th:value="${project.host}" type="text" class="input-text" placeholder="只能填写一名主持人" id="host" name="host">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【规划类别】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【参与者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${textbook.type}" placeholder="示例：普通高校教育“十一五”国家规划教材" class="input-text"  id="type" name="type">
+                        <input type="text" th:value="${project.people}" name="people" id="people" placeholder="若为多名参与者，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【教材获奖】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【研究开始时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${textbook.reward}"  name="reward" id="reward" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
-                        <p class="textarea-numberbar"><em class="textarea-length"></em></p>
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(project.startTime,'YYYY-MM-dd')}"  onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【教材简介】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【研究结束时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${textbook.profile}" name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(project.endTime,'YYYY-MM-dd')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【立项时间】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${dateKit.formatDateByUnixTime(project.setTime,'YYYY-MM-dd')}" placeholder="批准时间" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="setTimeDate" id="setTimeDate" class="input-text Wdate" style="width:180px;">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目经费】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${project.money}" name="money" id="money" class="input-text" style="width:90%">
+                        万元</div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目来源】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" th:value="${project.projectSource}" class="input-text"  id="projectSource" name="projectSource">
+                    </div>
+                </div>
+
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目等级】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="level" name="level" class="select">
+					<option value="">请选择</option>
+				    <option value="国家级" th:selected="${project.level.equals('国家级')}">国家级</option>
+                    <option value="部级" th:selected="${project.level.equals('部级')}">部级</option>
+                    <option value="省级" th:selected="${project.level.equals('省级')}">省级</option>
+					<option value="厅级" th:selected="${project.level.equals('厅级')}">厅级</option>、
+                    <option value="市级" th:selected="${project.level.equals('市级')}">市级</option>
+					<option value="校级" th:selected="${project.level.equals('校级')}">校级</option>
+                    <option value="其他" th:selected="${project.level.equals('其他')}">其他</option>
+				</select>
+				</span> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目级别】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="rank" name="rank" class="select">
+					<option value="">请选择</option>
+				    <option value="一类" th:selected="${project.rank.equals('一类')}">一类</option>
+					<option value="二类" th:selected="${project.rank.equals('二类')}">二类</option>
+					<option value="三类" th:selected="${project.rank.equals('三类')}">三类</option>
+					<option value="四类" th:selected="${project.rank.equals('四类')}">四类</option>
+                    <option value="其他" th:selected="${project.rank.equals('其他')}">其他</option>
+				</select>
+				</span> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【项目类别】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="type" name="type" class="select">
+					<option value="">请选择</option>
+				    <option value="科研纵向项目" th:selected="${project.type.equals('科研纵向项目')}">科研纵向项目</option>
+					<option value="科研横向项目" th:selected="${project.type.equals('科研横向项目')}">科研横向项目</option>
+					<option value="质量工程项目" th:selected="${project.type.equals('质量工程项目')}">质量工程项目</option>
+					<option value="其他">其他</option>
+				</select>
+				</span> </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【项目简介】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea th:text="${project.profile}" name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
                         <p class="textarea-numberbar"><em class="textarea-length"></em></p>
                     </div>
                 </div>
@@ -99,6 +166,7 @@
                         <!--</div>-->
                     </div>
                 </div>
+                <input type="hidden" th:value="${project.createId}" name="createId">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【附件上传】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
@@ -414,7 +482,7 @@
                 swf: 'H-ui/lib/webuploader/0.1.5/Uploader.swf',
                 chunked: false,
                 chunkSize: 512 * 1024,
-                server: 'ajax-textbook-file',
+                server: 'admin-ajax-project-file',
                 // runtimeOrder: 'flash',
 
                 // accept: {
@@ -819,7 +887,7 @@
 <script type="text/javascript">
     function deldte_document(obj,did){
         layer.confirm('确认要删除吗？',function(index){
-            var itemType='textbook';
+            var itemType='project';
             $.ajax({
                 type: 'POST',
                 data:{"did":did,"itemType":itemType},
@@ -850,34 +918,58 @@
             increaseArea: '20%'
         });
 
-        $("#textbook-form").validate({
+        $("#project-form").validate({
             rules:{
                 name :{
                     required:true,
                     maxlength:250
                 },
-                press :{
+                topic :{
                     required:true,
                     maxlength:250
                 },
-                isbn :{
+                host :{
                     required:true,
-                    maxlength:19
+                    maxlength:250
                 },
-                people:{
+                 people:{
                     required:true,
-                    maxlength:290
+                     maxlength:290
                 },
-                publishTimeDate:{
+                startTimeDate:{
                     required:true
                 },
-                profile:{
-                    maxlength:200
+                endTimeDate:{
+                    required:true
                 },
-                type:{
+                projectSource:{
+                    required:true,
                     maxlength:250
                 },
-                reward:{
+                money:{
+                    required:true,
+                    number:true,
+                    maxlength:9
+                },
+                rank:{
+                    required:true
+                }, level:{
+                    required:true
+                },
+                setTimeDate:{
+                    required:true
+                },
+                type:{
+                    required:true
+                },
+                number:{
+                    maxlength:60
+                },
+                genre:{
+                    required:true,
+                    maxlength:60
+                },
+                profile:{
                     maxlength:200
                 }
 
@@ -888,8 +980,8 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    data:{'id':'[[${textbook.id}]]',key:'[[${key}]]'},
-                    url: "/ajax-textbook-edit-form" ,
+                    data:{'id':'[[${project.pid}]]',key:'[[${key}]]'},
+                    url: "/admin-ajax-project-edit-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){

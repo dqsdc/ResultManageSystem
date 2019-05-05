@@ -800,8 +800,13 @@ public class ManagerController {
          */
 
         //将日期转化为时间戳
-        publishTimeDate += "-00 00:00:00";
-        textbook.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
+        publishTimeDate += "-01 00:00:00";
+        Date date=DateKit.dateFormat(publishTimeDate);
+        Calendar n = Calendar.getInstance( );
+        n.setTime(date);
+        int month=n.get(Calendar.MONTH);
+        n.set(Calendar.MONTH,month);
+        textbook.setPublishTime(DateKit.getUnixTimeLong(n.getTime()));
         textbook.setId(UUID.randomUUID().toString().replace("-", ""));
         textbook.setState("0");
         textbook.setCreateId(user.getUid());
@@ -2237,8 +2242,13 @@ public class ManagerController {
          */
 
         //将日期转化为时间戳
-        publishTimeDate += "-00 00:00:00";
-        textbook.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
+        publishTimeDate += "-01 00:00:00";
+        Date date=DateKit.dateFormat(publishTimeDate);
+        Calendar n = Calendar.getInstance( );
+        n.setTime(date);
+        int month=n.get(Calendar.MONTH);
+        n.set(Calendar.MONTH,month);
+        textbook.setPublishTime(DateKit.getUnixTimeLong(n.getTime()));
         textbook.setState("0");
         textbook.setUpdateTime(DateKit.getUnixTimeLong());
         textbookService.updateTextbook(textbook);

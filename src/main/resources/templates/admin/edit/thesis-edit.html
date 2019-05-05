@@ -26,58 +26,82 @@
     <link href="H-ui/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-
 <div class="formbody">
     <div id="usual1" class="usual">
-        <div id="tab4" class="tabson" >
-            <form  class="form form-horizontal" id="textbook-form" method="post">
+
+        <div id="tab1" class="tabson">
+
+        </div>
+
+        <div id="tab2" class="tabson" >
+            <form  class="form form-horizontal" id="thesis-form" method="post">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材名称】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【论文名称】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.name}" type="text"  class="input-text"  id="name" name="name">
+                        <input type="text" th:value="${thesis.name}" class="input-text"  id="name" name="name">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【教材主编】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【第一作者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.people}" type="text" name="people" id="people" placeholder="若为多名主编，姓名之间用逗号(中英皆可)隔开"  class="input-text">
+                        <input type="text" th:value="${thesis.host}" class="input-text" placeholder="只能填写一名作者" id="host" name="host">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版社】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【其他作者】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input th:value="${textbook.press}" type="text" name="press" id="press"   class="input-text">
+                        <input type="text" th:value="${thesis.people}" name="people" id="people" placeholder="若为多名作者，姓名之间用逗号(中英皆可)隔开"  class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版年月】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版期刊】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(textbook.publishTime,'yyyy-MM')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${thesis.book}" class="input-text"  id="book" name="book">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【ISBN】：</label>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【期刊详情】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${textbook.isbn}" class="input-text"  id="isbn" name="isbn">
+                        <input class="input-text Wdate" th:value="${thesis.year}"  onfocus="WdatePicker({ dateFmt:'yyyy' })" type="text" name="year" id="year" placeholder="年份" value=""  style=" width:10%">
+                        ,
+                        <input type="text" th:value="${thesis.dossier}" name="dossier" id="dossier" placeholder="卷" value="" class="input-text" style=" width:10%">
+                        (
+                        <input type="text" th:value="${thesis.issue}" name="issue" id="issue" placeholder="期" value="" class="input-text" style=" width:10%">
+                        ):
+                        <input type="text" th:value="${thesis.pageNum.substring(0,thesis.pageNum.indexOf('-'))}" name="startPage" id="startPage" placeholder="起始页码" value="" class="input-text" style=" width:10%">
+                        -
+                        <input type="text" th:value="${thesis.pageNum.substring(thesis.pageNum.indexOf('-')+1)}" name="endPage" id="endPage" placeholder="结束页码" value="" class="input-text" style=" width:10%">
+                        .
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【规划类别】：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${textbook.type}" placeholder="示例：普通高校教育“十一五”国家规划教材" class="input-text"  id="type" name="type">
-                    </div>
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【论文级别】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="rank" name="rank" class="select">
+					<option value="">请选择</option>
+				    <option value="一类" th:selected="${thesis.rank.equals('一类')}">一类</option>
+					<option value="二类" th:selected="${thesis.rank.equals('二类')}">二类</option>
+					<option value="三类" th:selected="${thesis.rank.equals('三类')}">三类</option>
+					<option value="四类" th:selected="${thesis.rank.equals('四类')}">四类</option>
+				</select>
+				</span> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【论文类型】：</label>
+                    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select id="type" name="type" class="select">
+					<option value="">请选择</option>
+				    <option value="学术论文" th:selected="${thesis.type.equals('学术论文')}">学术论文</option>
+					<option value="教研论文"  th:selected="${thesis.type.equals('教研论文')}">教研论文</option>
+					<option value="其他"  th:selected="${thesis.type.equals('其他')}">其他</option>
+				</select>
+				</span> </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【教材获奖】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【论文摘要】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${textbook.reward}"  name="reward" id="reward" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
-                        <p class="textarea-numberbar"><em class="textarea-length"></em></p>
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">【教材简介】：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <textarea th:text="${textbook.profile}" name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
+                        <textarea th:text="${thesis.profile}" name="profile" id="profile" class="textarea"  placeholder="说点什么...最多输入200个字符" ></textarea>
                         <p class="textarea-numberbar"><em class="textarea-length"></em></p>
                     </div>
                 </div>
@@ -99,6 +123,7 @@
                         <!--</div>-->
                     </div>
                 </div>
+                <input type="hidden" th:value="${thesis.createId}" name="createId">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【附件上传】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
@@ -127,6 +152,10 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div id="tab3" class="tabson" >
+
         </div>
     </div>
 </div>
@@ -414,7 +443,7 @@
                 swf: 'H-ui/lib/webuploader/0.1.5/Uploader.swf',
                 chunked: false,
                 chunkSize: 512 * 1024,
-                server: 'ajax-textbook-file',
+                server: 'admin-ajax-thesis-file',
                 // runtimeOrder: 'flash',
 
                 // accept: {
@@ -819,7 +848,7 @@
 <script type="text/javascript">
     function deldte_document(obj,did){
         layer.confirm('确认要删除吗？',function(index){
-            var itemType='textbook';
+            var itemType='thesis';
             $.ajax({
                 type: 'POST',
                 data:{"did":did,"itemType":itemType},
@@ -850,34 +879,54 @@
             increaseArea: '20%'
         });
 
-        $("#textbook-form").validate({
+        $("#thesis-form").validate({
             rules:{
                 name :{
                     required:true,
                     maxlength:250
                 },
-                press :{
+                host :{
                     required:true,
                     maxlength:250
-                },
-                isbn :{
-                    required:true,
-                    maxlength:19
                 },
                 people:{
                     required:true,
                     maxlength:290
                 },
-                publishTimeDate:{
+                book:{
+                    required:true,
+                    maxlength:250
+                },
+                year:{
+                    required:true,
+                    number:true,
+                    maxlength:4
+                },
+                dossier:{
+                    number:true,
+                    maxlength:9
+                },
+                issue:{
+                    number:true,
+                    maxlength:9
+                },
+                startPage:{
+                    required:true,
+                    number:true,
+                    maxlength:9
+                },
+                endPage:{
+                    required:true,
+                    number:true,
+                    maxlength:9
+                },
+                rank:{
+                    required:true
+                },
+                type:{
                     required:true
                 },
                 profile:{
-                    maxlength:200
-                },
-                type:{
-                    maxlength:250
-                },
-                reward:{
                     maxlength:200
                 }
 
@@ -888,8 +937,8 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    data:{'id':'[[${textbook.id}]]',key:'[[${key}]]'},
-                    url: "/ajax-textbook-edit-form" ,
+                    data:{'id':'[[${thesis.tid}]]',key:'[[${key}]]'},
+                    url: "/admin-ajax-thesis-edit-form" ,
                     dataType:"json",
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
@@ -905,7 +954,6 @@
                 });
             }
         });
-
 
     });
 </script>
