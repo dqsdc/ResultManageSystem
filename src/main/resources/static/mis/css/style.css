@@ -5,6 +5,21 @@
  * http://www..com
  * e-mail: admin@.com
  */
+.wth {
+    display: inline-block;
+    width: 188px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    course: hand;
+    border: 1px solid rgb(223, 240, 216);
+}
+
+.wth:hover {
+    text-overflow: inherit;
+    overflow: visible;
+    white-space: pre-wrap;
+}
 *{font-size:9pt;border:0;margin:0;padding:0;}
 body{font-family:'微软雅黑'; margin:0 auto;min-width:980px;}
 ul{display:block;margin:0;padding:0;list-style:none;}

@@ -84,4 +84,11 @@
     tid, host, people, name, book, year, dossier, issue, page_num, rank, type, publish_time, 
     profile, state, create_id, create_time, update_time, mid, remake
   </sql>
+  <update id="setDossierNull" parameterType="string">
+    UPDATE thesis SET dossier=null WHERE tid=#{tid}
+  </update>
+
+  <update id="setIssueNull" parameterType="string">
+    UPDATE thesis SET issue=null WHERE tid=#{tid}
+  </update>
 </mapper>

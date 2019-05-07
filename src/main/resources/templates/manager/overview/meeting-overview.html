@@ -35,7 +35,7 @@
             <a>消息</a>
         </li>
         <li th:if="${first!=null}">
-            <span style="color: red">您的提交没通过审核,点击审核状态中的 未通过 查看原因</span>
+            <span style="color: red">您的提交没通过审核,点击审核状态中的 原因 查看</span>
         </li>
     </ul>
 </div>
@@ -62,9 +62,9 @@
                 <td th:text="${meeting.sponsor}"></td>
                 <td th:text="${meeting.organizer}"></td>
                 <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'YYYY-MM-DD')}"></td>
-                <td th:if="${meeting.state}==0"><span class="label label-default radius">待审核</span></td>
-                <td th:if="${meeting.state}==1"><a class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}">未通过</a>
-                    <!--<a style="padding-left: 3px" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${first.message}">原因</a>-->
+                <td th:if="${meeting.state}==0"><span class="label label-default radius">待审核</span><a th:if="${meeting.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}" class="label label-danger radius">原因</a></td>
+                <td th:if="${meeting.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}">未通过</span><a th:if="${meeting.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}" class="label label-danger radius">原因</a></td>
+                <!--<a style="padding-left: 3px" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${first.message}">原因</a>-->
                 </td>
                 <td th:if="${meeting.state}==2"><span class="label label-success radius">已审核</span></td>
                 <td class="f-14 td-manage">

@@ -23,4 +23,8 @@ public interface ThesisService {
     int countThesisByMid(Integer mid);
     /**通过查询mid 、和状态  返回查询数量*/
     int countThesisByMidState(Integer mid,String state);
+
+    Integer setDossierNull(String tid);
+
+    Integer setIssueNull(String tid);
 }

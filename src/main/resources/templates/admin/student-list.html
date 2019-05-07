@@ -69,8 +69,8 @@
 					<!--onclick="member_edit('编辑','student-edit.html','4','','510')"-->
 					<a title="编辑" th:data-id="${userInfo.uid}"
 					   onclick="member_edit('编辑','student-edit.html',this.getAttribute('data-id'),800,500)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-					<a style="text-decoration:none" class="ml-5" th:data-id="${userInfo.uid}"
-					   onclick="change_password('修改密码','admin-password',this.getAttribute('data-id'),900,470)" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a>
+					<!--<a style="text-decoration:none" class="ml-5" th:data-id="${userInfo.uid}"-->
+					   <!--onclick="change_password('修改密码','admin-password',this.getAttribute('data-id'),900,470)" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a>-->
 					<a title="删除"
 					   th:data-id="${userInfo.uid}"
 					   onclick="member_del(this.getAttribute('data-id'))"

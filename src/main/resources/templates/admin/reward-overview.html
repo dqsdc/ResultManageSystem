@@ -56,8 +56,8 @@
                 <td  th:text="${reward.people}"></td>
                 <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}"></td>
                 <td th:text="${reward.company}"></td>
-                <td th:if="${reward.state}==0"><span class="label label-default radius">待审核</span></td>
-                <td th:if="${reward.state}==1"><span class="label label-danger radius">未通过</span></td>
+                <td th:if="${reward.state}==0"><span class="label label-default radius">待审核</span><a th:if="${reward.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${reward.remake}" class="label label-danger radius">原因</a></td>
+                <td th:if="${reward.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${reward.remake}">未通过</span><a th:if="${reward.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${reward.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${reward.state}==2"><span class="label label-success radius">已审核</span></td>
                 <td class="f-14 td-manage">
                     <span><a style="text-decoration:none" class="ml-5" th:data-id="${reward.rid}"  onClick="itemEdit(this,this.getAttribute('data-id'))" href="javascript:;" title="编辑内容"><i class="Hui-iconfont">&#xe60c;</i></a></span>

@@ -35,7 +35,12 @@
 				<input type="text" class="input-text" th:value="${student.uid}" placeholder="" id="id" name="uid">
 			</div>
 		</div>
-
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">密码：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="如需更改，直接输入" id="password" name="password">
+			</div>
+		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -83,7 +88,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input value=0 name="state" type="radio" id="state-1" checked>
+					<input th:value="${student.state}" name="state" type="radio" id="state-1" checked>
 					<label for="state-1">启用</label>
 				</div>
 				<div class="radio-box">
@@ -160,8 +165,9 @@
                     minlength:2,
                     maxlength:16
                 },
-                sPassword:{
-                    required:true,
+                password:{
+                    minlength:6,
+                    maxlength:10
                 },
                 sAccount:{
                     required:true,

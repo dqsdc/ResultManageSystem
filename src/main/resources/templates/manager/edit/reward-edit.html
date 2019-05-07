@@ -90,7 +90,7 @@
                         <span>
                             <img th:href="'download?did='+${document.did}" th:download="${document.name}" th:src="'images//'+${document.getType().toLowerCase().substring(1)}+'.png'"  onerror='this.src="images//unknown.png" '  />
                         </span>
-                                <h2><a th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
+                                <h2><a class="wth" th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
                                 <p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span>&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'deldte_document(this,\''+${document.did}+'\')'">删除</a></span></p>
                             </li>
                         </ul>

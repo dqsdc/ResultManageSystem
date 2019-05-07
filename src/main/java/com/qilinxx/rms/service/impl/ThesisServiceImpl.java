@@ -68,4 +68,14 @@ public class ThesisServiceImpl implements ThesisService {
         example.createCriteria().andMidEqualTo(mid).andStateEqualTo(state);
         return thesisMapper.selectCountByExample(example);
     }
+
+    @Override
+    public Integer setDossierNull(String tid) {
+         return    thesisMapper.setDossierNull(tid);
+    }
+
+    @Override
+    public Integer setIssueNull(String tid) {
+        return thesisMapper.setIssueNull(tid);
+    }
 }

@@ -35,7 +35,7 @@
             <a>消息</a>
         </li>
         <li th:if="${first!=null}">
-            <span style="color: red">您的提交没通过审核,点击审核状态中的 未通过 查看原因</span>
+            <span style="color: red">您的提交没通过审核,点击审核状态中的 原因 查看</span>
         </li>
     </ul>
 </div>
@@ -64,8 +64,8 @@
                 <td th:text="${project.projectSource}"></td>
                 <td th:text="${dateKit.formatDateByUnixTimeAndType(project.setTime,'yyyy-MM-dd')}"></td>
                 <td th:text="${project.type}"></td>
-                <td th:if="${project.state}==0"><span class="label label-default radius">待审核</span></td>
-                <td th:if="${project.state}==1"><a class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}">未通过</a></td>
+                <td th:if="${project.state}==0"><span class="label label-default radius">待审核</span><a th:if="${project.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}" class="label label-danger radius">原因</a></td>
+                <td th:if="${project.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}">未通过</span><a th:if="${project.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${project.state}==2"><span class="label label-success radius">已审核</span></td>
                 <td class="f-14 td-manage">
                     <span th:if="${project.createId.equals(uid) && !project.state.equals('2')}"><a style="text-decoration:none" class="ml-5" th:data-id="${project.pid}" th:data-title="${project.name}"  onClick="itemEdit(this,this.getAttribute('data-id'))" href="javascript:;"  title="编辑内容"><i class="Hui-iconfont">&#xe60c;</i></a></span>

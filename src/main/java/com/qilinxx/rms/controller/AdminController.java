@@ -978,6 +978,10 @@ public class AdminController extends BaseController {
         thesis.setState("0");
         thesis.setUpdateTime(DateKit.getUnixTimeLong());
         thesisService.updateThesis(thesis);
+        if (thesis.getDossier()==null&& thesis.getIssue()!=null)
+            thesisService.setDossierNull(thesis.getTid());
+        if (thesis.getDossier()!=null&& thesis.getIssue()==null)
+            thesisService.setIssueNull(thesis.getTid());
         /**
          * 新建和删除用户与论文的关系记录
          */

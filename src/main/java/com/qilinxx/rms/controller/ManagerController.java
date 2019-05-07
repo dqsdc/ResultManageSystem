@@ -1576,7 +1576,6 @@ public class ManagerController {
     @ResponseBody
     public JSONObject ajaxItemStart(String itemType, String id) {
         Integer i=noticeService.passNoticeByNid(id,itemType);
-        System.out.println("通过记录" + i);
         JSONObject json = new JSONObject();
         switch (itemType) {
             case "project":
@@ -1954,6 +1953,10 @@ public class ManagerController {
         thesis.setState("0");
         thesis.setUpdateTime(DateKit.getUnixTimeLong());
         thesisService.updateThesis(thesis);
+        if (thesis.getDossier()==null&& thesis.getIssue()!=null)
+            thesisService.setDossierNull(thesis.getTid());
+        if (thesis.getDossier()!=null&& thesis.getIssue()==null)
+            thesisService.setIssueNull(thesis.getTid());
         /**
          * 新建和删除用户与论文的关系记录
          */
