@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【承办单位】：</label>
+                    <label class="form-label col-xs-4 col-sm-2">【承办单位】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input th:value="${meeting.organizer}" type="text" class="input-text"  id="organizer" name="organizer">
                     </div>
@@ -859,10 +859,6 @@
                     required:true,
                     maxlength:250
                 },
-                organizer:{
-                    required:true,
-                    maxlength:250
-                },
                 profile:{
                     maxlength:200
                 }
@@ -880,7 +876,9 @@
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
                             layer.msg(data.msg,{icon:1,time:1500});
-                            window.setTimeout("parent.layer.close(parent.layer.getFrameIndex(window.name))",2000);
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('#btn-refresh').click();
+                            parent.layer.close(index);
                         }else{
                             layer.msg(data.msg,{icon:2,time:1500});
                         }

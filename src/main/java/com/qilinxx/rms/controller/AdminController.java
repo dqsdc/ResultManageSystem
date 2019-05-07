@@ -1,6 +1,5 @@
 package com.qilinxx.rms.controller;
 
-import com.qilinxx.rms.configure.WebConst;
 import com.qilinxx.rms.domain.model.*;
 import com.qilinxx.rms.domain.model.vo.UserInfoVo;
 import com.qilinxx.rms.service.*;
@@ -603,7 +602,7 @@ public class AdminController extends BaseController {
      */
     @PostMapping("admin-meeting-edit-form")
     @ResponseBody
-    public JSONObject ajaxMeetingEditForm(String key, HttpServletRequest request, Meeting meeting, String startTimeDate, String endTimeDate) throws IOException {
+    public JSONObject ajaxMeetingEditForm(String key, Meeting meeting, String startTimeDate, String endTimeDate) throws IOException {
         JSONObject json = new JSONObject();
         //以下三种种错误
         startTimeDate += ":00";
@@ -619,7 +618,8 @@ public class AdminController extends BaseController {
         UserInfo user = userInfoService.findUserByUid(createId);
         System.out.println(user);
         //姓名去重，并重新排序
-        String[] names = meeting.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        String member= meeting.getPeople().replace("，", ",").replace("、", ",").trim();
+        String[] names =member.split(",");
         Map<String, String> nameMap = new HashMap<>();
         String people = "";
         for (String name : names) {
@@ -636,7 +636,7 @@ public class AdminController extends BaseController {
             json.put("msg", "此会议与本账号用户无关！");
             return json;
         }
-        meeting.setPeople(people.substring(0, people.lastIndexOf(",")));
+        meeting.setPeople(member);
         /**
          * 新建项目记录
          */
@@ -780,7 +780,8 @@ public class AdminController extends BaseController {
         String cid=project.getCreateId();
         UserInfo user = userInfoService.findUserByUid(cid);
         //姓名去重，并重新排序
-        String[] names = project.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        String member=project.getPeople().replace("，", ",").replace("、", ",").trim();
+        String[] names = member.split(",");
         Map<String, String> nameMap = new HashMap<>();
         String people = "";
         for (String name : names) {
@@ -798,7 +799,7 @@ public class AdminController extends BaseController {
             json.put("msg", "此项目与本账号用户无关！");
             return json;
         }
-        project.setPeople(people.substring(0, people.lastIndexOf(",")));
+        project.setPeople(member);
         /**
          * 新建项目记录
          */
@@ -946,26 +947,30 @@ public class AdminController extends BaseController {
         }
         String cid=thesis.getCreateId();
         UserInfo user = userInfoService.findUserByUid(cid);
-        //姓名去重，并重新排序
-        String[] names = thesis.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
         Map<String, String> nameMap = new HashMap<>();
-        String people = "";
-        for (String name : names) {
-            if (!name.equals("")) {
-                nameMap.put(name, "");
-            }
-        }
-        Iterator iterator1 = nameMap.entrySet().iterator();
-        while (iterator1.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator1.next();
-            people = people + (String) entry.getKey() + ",";
-        }
         nameMap.put(thesis.getHost(), "");//添加主持人
+        //姓名去重，并重新排序
+        if (thesis.getPeople()!=null&&!"".equals(thesis.getPeople())) {
+            String member=thesis.getPeople().replace("，", ",").replace("、", ",").trim();
+            String[] names = member.split(",");
+            String people = "";
+            for (String name : names) {
+                if (!name.equals("")) {
+                    nameMap.put(name, "");
+                }
+            }
+            Iterator iterator1 = nameMap.entrySet().iterator();
+            while (iterator1.hasNext()) {
+                Map.Entry entry = (Map.Entry) iterator1.next();
+                people = people + (String) entry.getKey() + ",";
+            }
+            nameMap.put(thesis.getHost(), "");//添加主持人
+            thesis.setPeople(member);
+        }
         if (!nameMap.containsKey(user.getName())) {
             json.put("msg", "此论文与本账号用户无关！");
             return json;
         }
-        thesis.setPeople(people.substring(0, people.lastIndexOf(",")));
         /**
          * 更新论文记录
          */
@@ -1094,7 +1099,8 @@ public class AdminController extends BaseController {
         String cid=reward.getCreateId();
         UserInfo user = userInfoService.findUserByUid(cid);
         //姓名去重，并重新排序
-        String[] names = reward.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        String member= reward.getPeople().replace("，", ",").replace("、", ",").trim();
+        String[] names =member.split(",");
         Map<String, String> nameMap = new HashMap<>();
         String people = "";
         for (String name : names) {
@@ -1107,7 +1113,7 @@ public class AdminController extends BaseController {
             Map.Entry entry = (Map.Entry) iterator1.next();
             people = people + (String) entry.getKey() + ",";
         }
-        reward.setPeople(people.substring(0, people.lastIndexOf(",")));
+        reward.setPeople(member);
 
         //以下两种错误
         int rewardNum = rewardService.countRewardByNamePeopleGetTimeExceptRid(reward.getName(), reward.getPeople(), reward.getGetTime(),reward.getRid());
@@ -1252,7 +1258,8 @@ public class AdminController extends BaseController {
         String cid=textbook.getCreateId();
         UserInfo user = userInfoService.findUserByUid(cid);
         //姓名去重，并重新排序
-        String[] names = textbook.getPeople().replace("，", ",").replace("、", ",").replace(" ", "").split(",");
+        String member=textbook.getPeople().replace("，", ",").replace("、", ",").trim();
+        String[] names = member.split(",");
         Map<String, String> nameMap = new HashMap<>();
         String people = "";
         for (String name : names) {
@@ -1269,7 +1276,7 @@ public class AdminController extends BaseController {
             json.put("msg", "此教材与本账号用户无关！");
             return json;
         }
-        textbook.setPeople(people.substring(0, people.lastIndexOf(",")));
+        textbook.setPeople(member);
         /**
          * 新建项目记录
          */

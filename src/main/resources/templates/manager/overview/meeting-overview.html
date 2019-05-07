@@ -23,6 +23,7 @@
     <title>资讯列表</title>
 </head>
 <body>
+<button id="btn-refresh" style="display: none"  onclick="refresh()">刷新</button>
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
@@ -148,8 +149,8 @@
 
 </script>
 <script>
-    function member_show(title,url,w,h){
-        layer_show(title,url+"?type=meeting",w,h);
+    function refresh() {
+        window.location.replace(location.href);
     }
     function lastNotice(text) {
         layer.alert(text, {

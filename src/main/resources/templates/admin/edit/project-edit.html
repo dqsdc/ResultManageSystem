@@ -986,7 +986,9 @@
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
                             layer.msg(data.msg,{icon:1,time:1500});
-                            window.setTimeout("parent.layer.close(parent.layer.getFrameIndex(window.name))",2000);
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('#btn-refresh').click();
+                            parent.layer.close(index);
                         }else{
                             layer.msg(data.msg,{icon:2,time:1500});
                         }

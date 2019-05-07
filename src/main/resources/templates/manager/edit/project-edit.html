@@ -170,7 +170,7 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【附件上传】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <div class="uploader-list-container" style="padding-left: 0px">
-                            <div >&nbsp;&nbsp;会议通知、会议日程、参会证（卡）等</div>
+                            <div >&nbsp;&nbsp;项目批文、项目成员签字页等</div>
                             <div class="queueList">
                                 <div id="dndArea1" class="placeholder">
                                     <div id="filePicker-1"></div>
@@ -985,7 +985,9 @@
                     success: function(data){
                         if(data.msg=="提交成功待审核！"){
                             layer.msg(data.msg,{icon:1,time:1500});
-                            window.setTimeout("parent.layer.close(parent.layer.getFrameIndex(window.name))",2000);
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('#btn-refresh').click();
+                            parent.layer.close(index);
                         }else{
                             layer.msg(data.msg,{icon:2,time:1500});
                         }
