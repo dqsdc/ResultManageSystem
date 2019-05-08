@@ -2,10 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qilinxx.rms.domain.mapper.ProjectMapper">
   <resultMap id="BaseResultMap" type="com.qilinxx.rms.domain.model.Project">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
     <result column="host" jdbcType="VARCHAR" property="host" />
     <result column="people" jdbcType="VARCHAR" property="people" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -14,7 +11,7 @@
     <result column="start_time" jdbcType="BIGINT" property="startTime" />
     <result column="end_time" jdbcType="BIGINT" property="endTime" />
     <result column="project_source" jdbcType="VARCHAR" property="projectSource" />
-    <result column="money" jdbcType="INTEGER" property="money" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="rank" jdbcType="VARCHAR" property="rank" />
@@ -29,9 +26,6 @@
     <result column="remake" jdbcType="VARCHAR" property="remake" />
   </resultMap>
   <sql id="Example_Where_Clause">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -61,9 +55,6 @@
     </where>
   </sql>
   <sql id="Update_By_Example_Where_Clause">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -93,11 +84,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    pid, host, people, name, topic, genre, start_time, end_time, project_source, money,
-    number, level, rank, type, set_time, profile, state, create_id, create_time, update_time,
+    pid, host, people, name, topic, genre, start_time, end_time, project_source, money, 
+    number, level, rank, type, set_time, profile, state, create_id, create_time, update_time, 
     mid, remake
   </sql>
 </mapper>

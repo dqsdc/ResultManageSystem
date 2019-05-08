@@ -28,7 +28,7 @@ public class Project {
     private String projectSource;
 
     @Column(name = "money")
-    private Integer money;
+    private Double money;
 
     @Column(name = "rank")
     private String rank;
@@ -239,7 +239,7 @@ public class Project {
      *
      * @return money - 项目经费（以万为单位）
      */
-    public Integer getMoney() {
+    public Double getMoney() {
         return money;
     }
 
@@ -248,7 +248,7 @@ public class Project {
      *
      * @param money 项目经费（以万为单位）
      */
-    public void setMoney(Integer money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 

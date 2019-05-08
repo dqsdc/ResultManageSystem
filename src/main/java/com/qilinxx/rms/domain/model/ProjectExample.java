@@ -724,52 +724,52 @@ public class ProjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andMoneyEqualTo(Integer value) {
+        public Criteria andMoneyEqualTo(Double value) {
             addCriterion("money =", value, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyNotEqualTo(Integer value) {
+        public Criteria andMoneyNotEqualTo(Double value) {
             addCriterion("money <>", value, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyGreaterThan(Integer value) {
+        public Criteria andMoneyGreaterThan(Double value) {
             addCriterion("money >", value, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyGreaterThanOrEqualTo(Integer value) {
+        public Criteria andMoneyGreaterThanOrEqualTo(Double value) {
             addCriterion("money >=", value, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyLessThan(Integer value) {
+        public Criteria andMoneyLessThan(Double value) {
             addCriterion("money <", value, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyLessThanOrEqualTo(Integer value) {
+        public Criteria andMoneyLessThanOrEqualTo(Double value) {
             addCriterion("money <=", value, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyIn(List<Integer> values) {
+        public Criteria andMoneyIn(List<Double> values) {
             addCriterion("money in", values, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyNotIn(List<Integer> values) {
+        public Criteria andMoneyNotIn(List<Double> values) {
             addCriterion("money not in", values, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyBetween(Integer value1, Integer value2) {
+        public Criteria andMoneyBetween(Double value1, Double value2) {
             addCriterion("money between", value1, value2, "money");
             return (Criteria) this;
         }
 
-        public Criteria andMoneyNotBetween(Integer value1, Integer value2) {
+        public Criteria andMoneyNotBetween(Double value1, Double value2) {
             addCriterion("money not between", value1, value2, "money");
             return (Criteria) this;
         }
@@ -1264,52 +1264,62 @@ public class ProjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdEqualTo(Integer value) {
+        public Criteria andCreateIdEqualTo(String value) {
             addCriterion("create_id =", value, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdNotEqualTo(Integer value) {
+        public Criteria andCreateIdNotEqualTo(String value) {
             addCriterion("create_id <>", value, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdGreaterThan(Integer value) {
+        public Criteria andCreateIdGreaterThan(String value) {
             addCriterion("create_id >", value, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCreateIdGreaterThanOrEqualTo(String value) {
             addCriterion("create_id >=", value, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdLessThan(Integer value) {
+        public Criteria andCreateIdLessThan(String value) {
             addCriterion("create_id <", value, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdLessThanOrEqualTo(Integer value) {
+        public Criteria andCreateIdLessThanOrEqualTo(String value) {
             addCriterion("create_id <=", value, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdIn(List<Integer> values) {
+        public Criteria andCreateIdLike(String value) {
+            addCriterion("create_id like", value, "createId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateIdNotLike(String value) {
+            addCriterion("create_id not like", value, "createId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateIdIn(List<String> values) {
             addCriterion("create_id in", values, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdNotIn(List<Integer> values) {
+        public Criteria andCreateIdNotIn(List<String> values) {
             addCriterion("create_id not in", values, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdBetween(Integer value1, Integer value2) {
+        public Criteria andCreateIdBetween(String value1, String value2) {
             addCriterion("create_id between", value1, value2, "createId");
             return (Criteria) this;
         }
 
-        public Criteria andCreateIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andCreateIdNotBetween(String value1, String value2) {
             addCriterion("create_id not between", value1, value2, "createId");
             return (Criteria) this;
         }
