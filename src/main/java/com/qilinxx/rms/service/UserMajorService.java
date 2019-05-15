@@ -8,7 +8,7 @@ public interface UserMajorService {
     /**通过用户uid得到所有的权限mid*/
     List<UserMajor> findAllUserMajorByUid(String uid);
     /*通过mid查找记录*/
-    List<UserMajor> findAllUserMajorByMid(Integer mid);
+    List<UserMajor> findAllUserMajorByUidAndMid(String uid,Integer mid);
 
     int updatePermission(String uid,int permission[],String power);
 

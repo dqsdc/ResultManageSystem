@@ -77,4 +77,7 @@
   <delete id="deleteByIdAndPower">
     DELETE FROM user_major WHERE uid=#{uid} AND power=#{power}
   </delete>
+  <select id="findAllUserMajorByUidAndMid" resultMap="BaseResultMap">
+    SELECT * FROM user_major WHERE uid=#{uid} AND mid=#{mid}
+  </select>
 </mapper>

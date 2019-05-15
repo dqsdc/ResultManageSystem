@@ -94,9 +94,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Integer editStudent(UserInfo user) {
-        System.out.println("update--->"+user);
         UserInfo old=userInfoMapper.selectByPrimaryKey(user.getUid());
-        if(user.getPassword()==null) user.setPassword(old.getPassword());
+        if(user.getPassword()==null||"".equals(user.getPassword())) user.setPassword(old.getPassword());
         if (user.getName()==null) user.setName(old.getName());
         if (user.getCreateTime()==null)user.setCreateTime(old.getCreateTime());
         user.setUpdateTime(DateKit.getUnixTimeLong());

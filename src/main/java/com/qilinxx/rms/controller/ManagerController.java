@@ -496,7 +496,7 @@ public class ManagerController {
 
             thesis.setPeople(member);
         }
-        if (!nameMap.containsKey(user.getName())) {
+        if (!nameMap.containsKey(user.getName())&&!nameMap.containsKey(user.getName()+"*")) {
             json.put("msg", "此论文与本账号用户无关！");
             return json;
         }
@@ -519,7 +519,7 @@ public class ManagerController {
         Iterator iterator2 = nameMap.entrySet().iterator();
         while (iterator2.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator2.next();
-            List<UserInfo> userInfoList = userInfoService.findUserByName((String) entry.getKey());
+            List<UserInfo> userInfoList = userInfoService.findUserByName(((String) entry.getKey()).replace("*",""));
             if (userInfoList.size() != 0) {
                 userItem.setUid(userInfoList.get(0).getUid());
                 userItemService.createUserItem(userItem);
@@ -1485,7 +1485,8 @@ public class ManagerController {
      * @return 来到项目、论文、奖励审核页面
      */
     @GetMapping("check")
-    public String check(Integer mid, Model model) {
+    public String check(HttpSession session,Integer mid, Model model) {
+        String uid= (String) session.getAttribute("uid");
         Map<String, UserInfo> createrMap = new HashMap<>();
         List<Project> projectList = projectService.findProjectByMid(mid);
         int projectNum = 0, thesisNum = 0, rewardNum = 0, textbookNum = 0, meetingNum = 0;
@@ -1534,7 +1535,7 @@ public class ManagerController {
                 }
             }
         }
-        List<UserMajor> userMajorList = userMajorService.findAllUserMajorByMid(mid);
+        List<UserMajor> userMajorList = userMajorService.findAllUserMajorByUidAndMid(uid,mid);
         String power="";
         for(UserMajor um:userMajorList){
             power+=um.getPower();

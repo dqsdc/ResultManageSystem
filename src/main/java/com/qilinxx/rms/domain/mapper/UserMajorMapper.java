@@ -8,7 +8,10 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 @Repository
-public interface UserMajorMapper extends Mapper<UserMajor>{
+public interface UserMajorMapper extends Mapper<UserMajor> {
     List<UserMajor> selectAllByUid(@Param("uid") String uid);
-    int deleteByIdAndPower(@Param("uid") String uid,@Param("power") String power);
+
+    int deleteByIdAndPower(@Param("uid") String uid, @Param("power") String power);
+
+    List<UserMajor> findAllUserMajorByUidAndMid(@Param("uid") String uid, @Param("mid") Integer mid);
 }

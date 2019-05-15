@@ -22,10 +22,8 @@ public class UserMajorServiceImpl implements UserMajorService {
     }
 
     @Override
-    public List<UserMajor> findAllUserMajorByMid(Integer mid) {
-        UserMajorExample example=new UserMajorExample();
-        example.createCriteria().andMidEqualTo(mid);
-        return userMajorMapper.selectByExample(example);
+    public List<UserMajor> findAllUserMajorByUidAndMid(String uid,Integer mid) {
+        return userMajorMapper.findAllUserMajorByUidAndMid(uid,mid);
     }
 
     @Override
