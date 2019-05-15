@@ -1705,7 +1705,9 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//project"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("project",project);
-        model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("startTime",DateKit.formatDateByUnixTime(project.getStartTime(),"yyyy-MM-dd"));
+        model.addAttribute("endTime",DateKit.formatDateByUnixTime(project.getEndTime(),"yyyy-MM-dd"));
+        model.addAttribute("setTime",DateKit.formatDateByUnixTime(project.getSetTime(),"yyyy-MM-dd"));
         model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/project-edit";
     }
@@ -1722,7 +1724,7 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//thesis"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("thesis",thesis);
-        model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("publishTime",DateKit.formatDateByUnixTime(thesis.getPublishTime(),"yyyy-MM-dd"));
         model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/thesis-edit";
     }
@@ -1739,7 +1741,8 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//meeting"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("meeting",meeting);
-        model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("startTime",DateKit.formatDateByUnixTime(meeting.getStartTime(),"yyyy-MM-dd HH:mm"));
+        model.addAttribute("endTime",DateKit.formatDateByUnixTime(meeting.getEndTime(),"yyyy-MM-dd HH:mm"));
         model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/meeting-edit";
     }
@@ -1756,7 +1759,7 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//reward"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("reward",reward);
-        model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("getTime",DateKit.formatDateByUnixTime(reward.getGetTime(),"yyyy-MM-dd"));
         model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/reward-edit";
     }
@@ -1774,7 +1777,7 @@ public class ManagerController {
         FileKit.deleteFile(new File(UploadUtil.getUploadFilePath() + "/upload//" + uid + "//temp//textbook"));
         model.addAttribute("documentList", documentList);
         model.addAttribute("textbook",textbook);
-        model.addAttribute("dateKit",new DateKit());
+        model.addAttribute("publishTime",DateKit.formatDateByUnixTime(textbook.getPublishTime(),"yyyy-MM"));
         model.addAttribute("key",UUID.randomUUID().toString().replace("-", "")+"-"+uid);
         return "manager/edit/textbook-edit";
     }
@@ -1909,7 +1912,7 @@ public class ManagerController {
      */
     @PostMapping("ajax-thesis-edit-form")
     @ResponseBody
-    public JSONObject ajaxThesisEditForm(String key,String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
+    public JSONObject ajaxThesisEditForm(String publishTimeDate,String key,String id,Thesis thesis, Integer startPage, Integer endPage, HttpSession session) throws IOException {
         JSONObject json = new JSONObject();
         thesis.setTid(id);
         //以下四种错误
@@ -1950,6 +1953,8 @@ public class ManagerController {
         /**
          * 更新论文记录
          */
+        publishTimeDate += " 00:00:00";
+        thesis.setPublishTime(Long.parseLong(String.valueOf(DateKit.getUnixTimeByDate(DateKit.dateFormat(publishTimeDate)))));
         thesis.setPageNum(startPage + "-" + endPage);
         thesis.setState("0");
         thesis.setUpdateTime(DateKit.getUnixTimeLong());

@@ -16,7 +16,7 @@ $.extend($.validator.messages, {
 	email: "请输入有效的电子邮件地址",
 	url: "请输入有效的网址",
 	date: "请输入有效的日期",
-	dateISO: "请输入有效的日期 (YYYY-MM-DD)",
+	dateISO: "请输入有效的日期 (yyyy-MM-dd)",
 	number: "请输入有效的数字",
 	digits: "只能输入数字",
 	creditcard: "请输入有效的信用卡号码",

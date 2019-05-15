@@ -70,19 +70,19 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【研究开始时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(project.startTime,'YYYY-MM-dd')}"  onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${startTime}"  onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【研究结束时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(project.endTime,'YYYY-MM-dd')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${endTime}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【立项时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(project.setTime,'YYYY-MM-dd')}" placeholder="批准时间" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="setTimeDate" id="setTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${setTime}" placeholder="批准时间" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="setTimeDate" id="setTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">

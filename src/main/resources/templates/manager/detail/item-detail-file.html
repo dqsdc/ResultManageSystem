@@ -169,6 +169,10 @@
                         <td th:text="${thesis.type}">80</td>
                     </tr>
                     <tr>
+                        <td>发表时间:</td>
+                        <td th:text="${dateKit.formatDateByUnixTime(thesis.publishTime,'yyyy-MM-dd')}">80</td>
+                    </tr>
+                    <tr>
                         <td>论文摘要:</td>
                         <td th:text="${thesis.profile}">80</td>
                     </tr>

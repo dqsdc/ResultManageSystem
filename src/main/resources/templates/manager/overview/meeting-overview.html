@@ -61,7 +61,7 @@
                 <td  th:text="${meeting.people}"></td>
                 <td th:text="${meeting.sponsor}"></td>
                 <td th:text="${meeting.organizer}"></td>
-                <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'YYYY-MM-DD')}"></td>
+                <td th:text="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd')}"></td>
                 <td th:if="${meeting.state}==0"><span class="label label-default radius">待审核</span><a th:if="${meeting.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${meeting.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}">未通过</span><a th:if="${meeting.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${meeting.remake}" class="label label-danger radius">原因</a></td>
                 <!--<a style="padding-left: 3px" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${first.message}">原因</a>-->

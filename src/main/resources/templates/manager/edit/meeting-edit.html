@@ -57,13 +57,13 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议开始时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(meeting.startTime,'yyyy-MM-dd HH:mm')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${startTime}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议结束时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(meeting.endTime,'yyyy-MM-dd HH:mm')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${endTime}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="endTimeDate" id="endTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">

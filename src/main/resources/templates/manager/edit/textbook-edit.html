@@ -52,7 +52,7 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【出版年月】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(textbook.publishTime,'yyyy-MM')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${publishTime}" onfocus="WdatePicker({ dateFmt:'yyyy-MM' })" name="publishTimeDate" id="publishTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">

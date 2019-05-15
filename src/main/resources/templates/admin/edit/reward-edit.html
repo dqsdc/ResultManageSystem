@@ -45,7 +45,7 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【获奖时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" th:value="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="getTimeDate" id="getTimeDate" class="input-text Wdate" style="width:180px;">
+                        <input type="text" th:value="${getTime}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd' })" name="getTimeDate" id="getTimeDate" class="input-text Wdate" style="width:180px;">
                     </div>
                 </div>
                 <div class="row cl">
