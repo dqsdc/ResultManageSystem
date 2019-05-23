@@ -45,12 +45,13 @@
             <thead>
             <tr class="text-c">
                 <th width="20">ID</th>
-                <th width="120">项目名称</th>
+                <th width="40">项目编号</th>
+                <th width="120">项目题目</th>
                 <th width="20">主持人</th>
                 <th width="80">参与人员</th>
                 <th width="80">项目来源</th>
                 <th width="60">立项时间</th>
-                <th width="60">项目类别</th>
+                <th width="60">项目级别</th>
                 <th width="40">审核状态</th>
                 <th width="40">操作</th>
             </tr>
@@ -58,12 +59,13 @@
             <tbody>
             <tr class="text-c" th:if="${projectList.size()}!=0" th:each="project:${projectList}">
                 <td th:text="${projectList.indexOf(project)+1}"></td>
+                <td th:text="${project.number}"></td>
                 <td><u style="cursor:pointer" class="text-primary" th:data-name="${project.name}" th:data-id="${project.pid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${project.name}">资讯标题</u></td>
                 <td  th:text="${project.host}"></td>
                 <td  th:text="${project.people}"></td>
                 <td th:text="${project.projectSource}"></td>
                 <td th:text="${dateKit.formatDateByUnixTimeAndType(project.setTime,'yyyy-MM-dd')}"></td>
-                <td th:text="${project.type}"></td>
+                <td th:text="${project.rank}"></td>
                 <td th:if="${project.state}==0"><span class="label label-default radius">待审核</span><a th:if="${project.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${project.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}">未通过</span><a th:if="${project.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${project.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${project.state}==2"><span class="label label-success radius">已审核</span></td>

@@ -55,6 +55,12 @@
                     </div>
                 </div>
                 <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">【会议地点】：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input th:value="${meeting.position}" type="text" class="input-text"  id="position" name="position">
+                    </div>
+                </div>
+                <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>【会议开始时间】：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" th:value="${startTime}" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm' })" name="startTimeDate" id="startTimeDate" class="input-text Wdate" style="width:180px;">

@@ -6,7 +6,7 @@ package com.qilinxx.rms.domain.model.eo;
  * @Description:
  */
 public class ThesisEo {
-    // String[] columnNames = {"论文名称", "第一作者", "其他作者","期刊","年","卷","期","页码","级别","类别","创建时间"};
+    // String[] columnNames = {"论文名称", "第一作者", "其他作者","期刊","年","卷","期","页码","论文级别","论文类型","论文摘要","发表时间","创建时间"};
     private String name;
     private String host;
     private String people;
@@ -17,6 +17,7 @@ public class ThesisEo {
     private String pageNum;
     private String rank;
     private String type;
+    private String profile;
     private String publishTime;
     private String createTime;
 
@@ -116,6 +117,14 @@ public class ThesisEo {
         this.publishTime = publishTime;
     }
 
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
     @Override
     public String toString() {
         return "ThesisEo{" +
@@ -129,6 +138,7 @@ public class ThesisEo {
                 ", pageNum='" + pageNum + '\'' +
                 ", rank='" + rank + '\'' +
                 ", type='" + type + '\'' +
+                ", profile='" + profile + '\'' +
                 ", publishTime='" + publishTime + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';

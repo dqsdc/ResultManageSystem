@@ -6,18 +6,18 @@ package com.qilinxx.rms.domain.model.eo;
  * @Description:
  */
 public class ProjectEo {
-   // String[] columnNames = {"项目名称", "项目题目", "项目类型","主持人","参与者","研究开始时间","研究结束时间","立项时间","项目来源","项目经费","项目编号","项目等级","项目类别","项目类型","简介","创建时间"};
+   // String[] columnNames = {"项目名称", "项目类型","项目题目","项目编号", "主持人","参与者","研究开始时间","研究结束时间","立项时间","项目经费","项目来源","项目等级","项目级别","项目类别","简介","创建时间"};
     private String name;
-    private String topic;
     private String genre;
+    private String topic;
+    private String number;
     private String host;
     private String people;
     private String startTime;
     private String endTime;
     private String setTime;
+    private Double money;
     private String projectSource;
-    private Integer money;
-    private String number;
     private String level;
     private String rank;
     private String type;
@@ -96,11 +96,11 @@ public class ProjectEo {
         this.projectSource = projectSource;
     }
 
-    public Integer getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 

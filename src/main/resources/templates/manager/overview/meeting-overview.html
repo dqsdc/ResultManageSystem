@@ -46,6 +46,7 @@
             <tr class="text-c">
                 <th width="20">ID</th>
                 <th width="120">会议名称</th>
+                <th width="40">会议地点</th>
                 <th width="80">参会人员</th>
                 <th width="40">主办单位</th>
                 <th width="40">承办单位</th>
@@ -58,6 +59,7 @@
             <tr class="text-c" th:if="${meetingList.size()}!=0" th:each="meeting:${meetingList}">
                 <td th:text="${meetingList.indexOf(meeting)+1}"></td>
                 <td><u style="cursor:pointer" class="text-primary" th:data-name="${meeting.name}" th:data-id="${meeting.id}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${meeting.name}">资讯标题</u></td>
+                <td th:text="${meeting.position}"> </td>
                 <td  th:text="${meeting.people}"></td>
                 <td th:text="${meeting.sponsor}"></td>
                 <td th:text="${meeting.organizer}"></td>

@@ -6,8 +6,9 @@ package com.qilinxx.rms.domain.model.eo;
  * @Description:
  */
 public class MeetingEo {
-    //String[] columnNames = {"会议名称", "参会人员", "主办单位","承办单位","会议开始时间","会议结束时间","会议简介","创建时间"};
+    //String[] columnNames = {"会议名称","会议地点", "参会人员", "主办单位","承办单位","会议开始时间","会议结束时间","会议简介","创建时间"};
     private String name;
+    private String position;
     private String people;
     private String sponsor;
     private String organizer;
@@ -22,6 +23,14 @@ public class MeetingEo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getPeople() {

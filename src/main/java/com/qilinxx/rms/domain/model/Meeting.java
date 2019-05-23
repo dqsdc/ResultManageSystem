@@ -12,6 +12,9 @@ public class Meeting {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "position")
+    private String position;
+
     @Column(name = "people")
     private String people;
 
@@ -78,6 +81,14 @@ public class Meeting {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     /**

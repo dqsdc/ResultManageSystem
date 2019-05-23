@@ -44,6 +44,7 @@
                 <th width="80">主编</th>
                 <th width="40">出版社</th>
                 <th width="80">出版年月</th>
+                <th width="40">规划类别</th>
                 <th width="40">审核状态</th>
                 <th width="40">操作</th>
             </tr>
@@ -56,6 +57,7 @@
                 <td  th:text="${textbook.people}"></td>
                 <td th:text="${textbook.press}"></td>
                 <td th:text="${dateKit.formatDateByUnixTime(textbook.publishTime,'YYYY-MM')}"></td>
+                <td th:text="${textbook.type}"></td>
                 <td th:if="${textbook.state}==0"><span class="label label-default radius">待审核</span><a th:if="${textbook.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${textbook.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${textbook.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${textbook.remake}">未通过</span><a th:if="${textbook.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${textbook.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${textbook.state}==2"><span class="label label-success radius">已审核</span></td>

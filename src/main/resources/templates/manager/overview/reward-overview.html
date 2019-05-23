@@ -47,8 +47,10 @@
                 <th width="20">ID</th>
                 <th width="120">奖励名称</th>
                 <th width="80">获奖人</th>
-                <th width="80">获奖时间</th>
                 <th width="60">授奖单位</th>
+                <th width="80">获奖时间</th>
+                <th width="40">奖励级别</th>
+                <th width="40">奖励等级</th>
                 <th width="40">审核状态</th>
                 <th width="40">操作</th>
             </tr>
@@ -58,8 +60,10 @@
                 <td th:text="${rewardList.indexOf(reward)+1}"></td>
                 <td><u style="cursor:pointer" class="text-primary" th:data-name="${reward.name}" th:data-id="${reward.rid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${reward.name}">资讯标题</u></td>
                 <td  th:text="${reward.people}"></td>
-                <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}"></td>
                 <td th:text="${reward.company}"></td>
+                <td th:text="${dateKit.formatDateByUnixTime(reward.getTime,'yyyy-MM-dd')}"></td>
+                <td th:text="${reward.level}"></td>
+                <td th:text="${reward.rank}"></td>
                 <td th:if="${reward.state}==0"><span class="label label-default radius">待审核</span><a th:if="${reward.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${reward.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${reward.state}==1"><span class="label label-danger radius" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${reward.remake}">未通过</span><a th:if="${reward.remake!=null}" onclick="lastNotice(this.getAttribute('data-id'))" th:data-id="${reward.remake}" class="label label-danger radius">原因</a></td>
                 <td th:if="${reward.state}==2"><span class="label label-success radius">已审核</span></td>

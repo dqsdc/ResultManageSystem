@@ -194,18 +194,6 @@ function member_del(uid){
 }
 </script>
 <script>
-    function getSelectLine() {
-        var nTrs = table.fnGetNodes();//fnGetNodes获取表格所有行，nTrs[i]表示第i行tr
-        for ( var i = 0; i < nTrs.length; i++) {
-            if($(nTrs[i]).hasClass('selected')){//相当于$(tr)
-                var selectLine = table.fnGetData(nTrs[i]);
-                alert(selectLine[4]);//获取一行第4列数据
-            }
-        }
-    }
-
-</script>
-<script>
     /*生成excel*/
     function excel() {
         var cb=document.getElementsByName("cb");

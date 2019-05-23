@@ -68,7 +68,7 @@ public class ExportExcelServiceImpl implements ExportExcelService {
                 eos.add((ProjectEo) pojo2Eo(eo,new ProjectEo()));
         }
         ExportExcelUtil<ProjectEo> util = new ExportExcelUtil<>();
-        String[] columnNames = {"项目名称", "项目题目", "项目类型","主持人","参与者","研究开始时间","研究结束时间","立项时间","项目来源","项目经费","项目编号","项目等级","项目类别","项目类型","简介","创建时间"};
+        String[] columnNames = {"项目名称", "项目类型","项目题目","项目编号", "主持人","参与者","研究开始时间","研究结束时间","立项时间","项目经费","项目来源","项目等级","项目级别","项目类别","简介","创建时间"};
 
         try {
             util.exportExcel("用户导出", columnNames, eos,
@@ -86,7 +86,7 @@ public class ExportExcelServiceImpl implements ExportExcelService {
             eos.add((ThesisEo) pojo2Eo(eo,new ThesisEo()));
         }
         ExportExcelUtil<ThesisEo> util = new ExportExcelUtil<>();
-        String[] columnNames = {"论文名称", "第一作者", "其他作者","期刊","年","卷","期","页码","级别","类别","发表时间","创建时间"};
+        String[] columnNames = {"论文名称", "第一作者", "其他作者","期刊","年","卷","期","页码","论文级别","论文类型","论文摘要","发表时间","创建时间"};
         try {
             util.exportExcel("用户导出", columnNames, eos,
                     response.getOutputStream(), ExportExcelUtil.EXCEl_FILE_2007);
@@ -138,7 +138,7 @@ public class ExportExcelServiceImpl implements ExportExcelService {
             eos.add((MeetingEo) pojo2Eo(eo,new MeetingEo()));
         }
         ExportExcelUtil<MeetingEo> util = new ExportExcelUtil<>();
-        String[] columnNames = {"会议名称", "参会人员", "主办单位","承办单位","会议开始时间","会议结束时间","会议简介","创建时间"};
+        String[] columnNames = {"会议名称","会议地点", "参会人员", "主办单位","承办单位","会议开始时间","会议结束时间","会议简介","创建时间"};
         try {
             util.exportExcel("用户导出", columnNames, eos,
                     response.getOutputStream(), ExportExcelUtil.EXCEl_FILE_2007);
