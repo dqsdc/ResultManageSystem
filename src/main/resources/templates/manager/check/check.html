@@ -91,12 +91,12 @@
                     <tr class="text-c" th:if="${projectList.size()}!=0" th:each="project:${projectList}">
                         <td th:text="${projectList.indexOf(project)+1}"></td>
                         <td th:text="${project.number}"></td>
-                        <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${project.name}" th:data-id="${project.pid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'project')" title="查看" th:text="${project.name}">资讯标题</u></td>
-                        <td th:if="${see==false}"><span  th:text="${project.name}">资讯标题</span></td>
+                        <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${project.topic}" th:data-id="${project.pid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'project')" title="查看" th:text="${project.topic}">资讯标题</u></td>
+                        <td th:if="${see==false}"><span  th:text="${project.topic}">资讯标题</span></td>
                         <td  th:text="${project.host}"></td>
                         <td  th:text="${project.people}"></td>
                         <td th:text="${project.projectSource}"></td>
-                        <td th:text="${dateKit.formatDateByUnixTime(project.createTime)}"></td>
+                        <td th:text="${dateKit.formatDateByUnixTime(project.setTime,'yyyy-MM-dd')}"></td>
                         <td th:text="${project.rank}"></td>
                         <td th:if="${project.state}==0" class="td-status"><span class="label label-default radius">待审核</span></td>
                         <td th:if="${project.state}==1" class="td-status"><span class="label label-danger radius">未通过</span></td>

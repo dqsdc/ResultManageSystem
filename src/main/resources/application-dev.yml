@@ -9,10 +9,10 @@ spring:
            password: 123
            driver-class-name: com.mysql.cj.jdbc.Driver
            filters: stat
-           maxActive: 20
-           initialSize: 1
-           maxWait: 60000
-           minIdle: 1
+           maxActive: 100
+           initialSize: 20
+           maxWait: 6000
+           minIdle: 10
            timeBetweenEvictionRunsMillis: 60000
            minEvictableIdleTimeMillis: 300000
            validationQuery: select 'x' FROM DUAL

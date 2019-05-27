@@ -56,7 +56,7 @@
                 <td><input type="checkbox" th:value="${project.pid}" name="cb"></td>
                 <td th:text="${projectList.indexOf(project)+1}"></td>
                 <td th:text="${project.number}"></td>
-                <td><u style="cursor:pointer" class="text-primary" th:data-name="${project.name}" th:data-id="${project.pid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${project.name}">资讯标题</u></td>
+                <td><u style="cursor:pointer" class="text-primary" th:data-name="${project.topic}" th:data-id="${project.pid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'))" title="查看" th:text="${project.topic}">资讯标题</u></td>
                 <td  th:text="${project.host}"></td>
                 <td  th:text="${project.people}"></td>
                 <td th:text="${project.projectSource}"></td>
