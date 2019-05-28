@@ -24,21 +24,6 @@
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <title>资讯列表</title>
-    <style type="text/css">
-        .red-point{
-            position: relative;
-        }
-        .red-point::before{
-            content: " ";
-            border: 3px solid red;
-            border-radius: 145px;
-            position: absolute;
-            z-index: 1000;
-            right: 13px;
-            margin-right: 0px;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 
 <body>
@@ -71,10 +56,13 @@
         </div>
 
         <div id="tab1" class="tabson" style="height: 37px;">
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+                <a href="javascript:;" onclick="excel(1)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6e2;</i> 生成excel</a></span></div>
             <div class="mt-20">
                 <table id="project" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
                     <thead>
                     <tr class="text-c">
+                        <th width="25"><input type="checkbox" name="" value=""></th>
                         <th width="20">ID</th>
                         <th width="40">项目编号</th>
                         <th width="120">项目题目</th>
@@ -89,6 +77,7 @@
                     </thead>
                     <tbody>
                     <tr class="text-c" th:if="${projectList.size()}!=0" th:each="project:${projectList}">
+                        <td><input type="checkbox" th:value="${project.pid}" name="Project_cb"></td>
                         <td th:text="${projectList.indexOf(project)+1}"></td>
                         <td th:text="${project.number}"></td>
                         <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${project.topic}" th:data-id="${project.pid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'project')" title="查看" th:text="${project.topic}">资讯标题</u></td>
@@ -109,9 +98,13 @@
         </div>
 
         <div id="tab2" class="tabson">
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+                <a href="javascript:;" onclick="excel(2)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6e2;</i> 生成excel</a></span></div>
+            <div class="mt-20">
             <table id="thesis" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
                 <thead>
                 <tr class="text-c">
+                    <th width="25"><input type="checkbox" name="" value=""></th>
                     <th width="20">ID</th>
                     <th width="120">论文名称</th>
                     <th width="20">第一作者</th>
@@ -125,6 +118,7 @@
                 </thead>
                 <tbody>
                 <tr class="text-c" th:if="${thesisList.size()}!=0" th:each="thesis:${thesisList}">
+                    <td><input type="checkbox" th:value="${thesis.tid}" name="Thesis_cb"></td>
                     <td th:text="${thesisList.indexOf(thesis)+1}"></td>
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${thesis.name}" th:data-id="${thesis.tid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'thesis')" title="查看" th:text="${thesis.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span th:text="${thesis.name}">资讯标题</span></td>
@@ -140,13 +134,17 @@
                 </tr>
                 </tbody>
             </table>
-
+            </div>
         </div>
 
         <div id="tab3" class="tabson">
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+                <a href="javascript:;" onclick="excel(3)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6e2;</i> 生成excel</a></span></div>
+            <div class="mt-20">
             <table id="reward" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
                 <thead>
                 <tr class="text-c">
+                    <th width="25"><input type="checkbox" name="" value=""></th>
                     <th width="20">ID</th>
                     <th width="120">奖励名称</th>
                     <th width="80">获奖人</th>
@@ -160,6 +158,7 @@
                 </thead>
                 <tbody>
                 <tr class="text-c" th:if="${rewardList.size()}!=0" th:each="reward:${rewardList}">
+                    <td><input type="checkbox" th:value="${reward.rid}" name="Reward_cb"></td>
                     <td th:text="${rewardList.indexOf(reward)+1}"></td>
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${reward.name}" th:data-id="${reward.rid}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'reward')" title="查看" th:text="${reward.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span  th:text="${reward.name}">资讯标题</span></td>
@@ -175,12 +174,17 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <div id="tab4" class="tabson">
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+                <a href="javascript:;" onclick="excel(4)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6e2;</i> 生成excel</a></span></div>
+            <div class="mt-20">
             <table id="textbook" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
                 <thead>
                 <tr class="text-c">
+                    <th width="25"><input type="checkbox" name="" value=""></th>
                     <th width="20">ID</th>
                     <th width="120">教材名称</th>
                     <th width="80">主编</th>
@@ -193,6 +197,7 @@
                 </thead>
                 <tbody>
                 <tr class="text-c" th:if="${textbookList.size()}!=0" th:each="textbook:${textbookList}">
+                    <td><input type="checkbox" th:value="${textbook.id}" name="Textbook_cb"></td>
                     <td th:text="${textbookList.indexOf(textbook)+1}"></td>
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${textbook.name}" th:data-id="${textbook.id}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'textbook')" title="查看" th:text="${textbook.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span th:text="${textbook.name}">资讯标题</span></td>
@@ -207,12 +212,17 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <div id="tab5" class="tabson">
+            <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+                <a href="javascript:;" onclick="excel(5)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6e2;</i> 生成excel</a></span></div>
+            <div class="mt-20">
             <table id="meeting" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
                 <thead>
                 <tr class="text-c">
+                    <th width="25"><input type="checkbox" name="" value=""></th>
                     <th width="20">ID</th>
                     <th width="120">会议名称</th>
                     <th width="50">会议地点</th>
@@ -228,6 +238,7 @@
                 </thead>
                 <tbody>
                 <tr class="text-c" th:if="${meetingList.size()}!=0" th:each="meeting:${meetingList}">
+                    <td><input type="checkbox" th:value="${meeting.id}" name="Meeting_cb"></td>
                     <td th:text="${meetingList.indexOf(meeting)+1}"></td>
                     <td th:if="${see==true}"><u style="cursor:pointer" class="text-primary" th:data-name="${meeting.name}" th:data-id="${meeting.id}"   onClick="item_detail(this.getAttribute('data-name'),this.getAttribute('data-id'),'meeting')" title="查看" th:text="${meeting.name}">资讯标题</u></td>
                     <td th:if="${see==false}"><span th:text="${meeting.name}">资讯标题</span></td>
@@ -245,6 +256,7 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
@@ -271,6 +283,55 @@
 <script type="text/javascript" src="H-ui/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="H-ui/lib/laypage/1.2/laypage.js"></script>
 </body>
+<script>
+    /*生成excel*/
+    function excel(index) {
+        var indexName;
+        var check;
+        switch (index){
+            case 1: indexName="Project";check='input[name="Project_cb"]:checked';break;
+            case 2: indexName="Thesis";check='input[name="Thesis_cb"]:checked';break;
+            case 3: indexName="Reward";check='input[name="Reward_cb"]:checked';break;
+            case 4: indexName="Textbook";check='input[name="Textbook_cb"]:checked';break;
+            case 5: indexName="Meeting";check='input[name="Project_cb"]:checked';break;
+        }
+        var cb=document.getElementsByName(indexName+'_cb');
+        var a=0;
+        var arr=new Array();
+        //循环判断有没有选择,如果有就a++
+        for(var i=0;i<cb.length;i++){
+            if(cb[i].checked){
+                //因为删除会改变数组下标,所以把对象拿出来放到一个数组中
+                arr[a]=cb[i].parentNode.parentNode;
+                a++;
+            }
+        }
+        //判断如果标识符等于0就没有选中的
+        if(a==0){
+            alert("请至少选择一行");
+        }else{
+            var chk = [];
+            $(check).each(function () {
+                //var method =  $("#" + $(this).val()).val();
+                chk.push($(this).val());
+                console.log(chk);
+            });
+
+            var form = $("<form>");   //定义一个form表单
+            form.attr('style', 'display:none');   //在form表单中添加查询参数
+            form.attr('target', '');
+            form.attr('method', 'post');
+            form.attr('action', '/export'+indexName+'?chk='+chk);
+
+            var input1 = $('<input>');
+            input1.attr('type', 'hidden');
+            input1.attr('name', 'strUrl');
+            $('body').append(form);  //将表单放置在web中 
+            form.append(input1);   //将查询参数控件提交到表单上
+            form.submit();
+        }
+    }
+</script>
 <script type="text/javascript">
     $('#project').dataTable({
         "bStateSave": true,//状态保存
