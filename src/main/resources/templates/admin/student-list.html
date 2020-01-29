@@ -118,7 +118,7 @@ function member_show(title,url,id,w,h){
 /*用户-停用*/
 function member_stop(obj,id){
     var basePath =[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
-	layer.confirm('确认要停用吗？',function(index){
+	layer.confirm('确认要停用吗？',function(){
 		$.ajax({
 			type: 'POST',
 			url: basePath+'/stopStudent?uid='+id,
