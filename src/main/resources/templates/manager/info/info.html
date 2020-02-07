@@ -82,8 +82,27 @@
 				<td>简介:</td>
 				<td th:text="${user.profile}">Microsoft-IIS/6.0</td>
 			</tr>
+			<tr>
+				<td>附件</td>
+				<td>
+					<div style="display: flex;flex-wrap: wrap;">
+						<div id="tab2" class="tabson">
+							<ul class="imglist">
+								<li th:if="${documentList.size()}!=0" th:each="document:${documentList}">
+									<span>
+										<img th:href="'download?did='+${document.did}" th:download="${document.name}" th:src="'images//'+${document.getType().toLowerCase().substring(1)}+'.png'"  onerror='this.src="images//unknown.png" '  />
+									</span>
+									<h2><a class="wth" th:href="'download?did='+${document.did}" th:download="${document.name}" th:text="${document.name}">软件界面设计下载</a></h2>
+									<p><a th:href="'download?did='+${document.did}" th:download="${document.name}" >下载</a><span>&nbsp;&nbsp;&nbsp;&nbsp;<a  th:onclick="'delete_document(this,\''+${document.did}+'\')'">删除</a></span></p>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>
+			</tr>
 		</tbody>
 	</table>
+</div>
 </div>
 <footer class="footer mt-20">
 	<div class="container">
@@ -92,6 +111,31 @@
 </footer>
 <script type="text/javascript" src="H-ui/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="H-ui/static/h-ui/js/H-ui.min.js"></script>
-
+<script type="text/javascript" src="H-ui/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+    function delete_document(obj,did){
+        layer.confirm('确认要删除吗？',function(index){
+            var itemType='[[${itemType}]]';
+            $.ajax({
+                type: 'POST',
+                data:{"did":did,"itemType":itemType},
+                url: 'ajax-document-delete',
+                dataType: 'json',
+                success: function(data){
+                    if(data.msg=="删除成功！"){
+                        $(obj).parents("li").remove();
+                        layer.msg(data.msg,{icon:1,time:1500});
+                    }else {
+                        layer.msg(data.msg,{icon:2,time:1500});
+                    }
+                },
+                error:function(data) {
+                    layer.msg('发生未知错误',{icon:2,time:1500});
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+</script>
 </body>
 </html>

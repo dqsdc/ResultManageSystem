@@ -27,4 +27,8 @@ public interface ProjectService {
     int countProjectByTopic(String topic);
     /**通过查询项目题目topic，返回重复个数     除了指定的pid*/
     int countProjectByTopicExceptPid(String topic,String pid);
+
+    int countProjectByTopicHostSettime(String topic,String host,Long setTime);
+
+    int countProjectByTopicHostSettimeExceptPid(String topic,String host,Long setTime,String pid);
 }

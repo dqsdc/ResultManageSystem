@@ -84,4 +84,18 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.selectCountByExample(example);
     }
 
+    @Override
+    public int countProjectByTopicHostSettime(String topic, String host, Long setTime) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andTopicEqualTo(topic).andHostEqualTo(host).andSetTimeEqualTo(setTime);
+        return projectMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int countProjectByTopicHostSettimeExceptPid(String topic, String host, Long setTime, String pid) {
+        ProjectExample example=new ProjectExample();
+        example.createCriteria().andTopicEqualTo(topic).andHostEqualTo(host).andSetTimeEqualTo(setTime).andPidNotEqualTo(pid);
+        return projectMapper.selectCountByExample(example);
+    }
+
 }

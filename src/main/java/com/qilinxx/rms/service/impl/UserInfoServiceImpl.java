@@ -87,7 +87,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Integer startStudent(String uid) {
         UserInfo user=userInfoMapper.selectByPrimaryKey(uid);
-        user.setState("0");
+        user.setState("3");
         return  userInfoMapper.updateByPrimaryKeySelective(user);
 
     }

@@ -17,6 +17,7 @@ public class FileKit {
     public static Map<String,List<MultipartFile>> rewardMap;
     public static Map<String,List<MultipartFile>> textbookMap;
     public static Map<String,List<MultipartFile>> meetingMap;
+    public static Map<String,List<MultipartFile>> selfMap;
 
     /**
      * 清除或初始化map,去除对应uid
